@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/fontawesome.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/brands.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/fontawesome.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/regular.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/solid.css') }}">
+        <script src="{{ url_for('static', filename='js/index.js') }}" defer="defer"></script>
+    </head>
+    <body>
+        <div class="top-nav-bar-container">
+            <div class="menu-icon-container" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars fa-xl"></i>
+            </div>
+            <div class="logo-container">
+                ReachKart
+            </div>
+            <div class="search-bar-container">
+                <div class="search-bar-input-container">
+                    <input type="text" class="search-bar" placeholder="Books..">
+                </div>
+                <div class="search-bar-icon-container">
+                    <button><i class="fa-solid fa-search"></i></button>
+                </div>
+            </div>
+            <div class="navigation-menu-container">
+
+            </div>
+            <div class="user-profile-container">
+                <div class="user-profile-icon-container">
+                    <i class="fa-solid fa-user fa-xl"></i>
+                </div>
+            </div>
+        </div>
+        <div class="main-content-area">
+            <div class="sidebar-menu-container" id="sidebar-menu-container">
+            </div>
+            <div class="main-content-page-area">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+    
+</html>
