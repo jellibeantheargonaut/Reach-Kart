@@ -53,29 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* sigin button signin request */
-function checkSession() {
-    return fetch('/check_session')
-        .then(response => response.json())
-        .then(data => {
-            if (data.logged_in) {
-                window.location.href = '/';
-                return true;
-            }
-            return false;
-        })
-        .catch(error => {
-            console.error('Session check failed:', error);
-            return false;
-        });
-}
-
-async function signIn() {
-    // Check if user is already logged in
-    const loggedIn = await checkSession();
-    if (loggedIn) {
-        toggleUserAccountMenu();
-        return;
-    }
+function signIn() {
     const email = document.getElementById('signin-email').value;
     const password = document.getElementById('signin-password').value;
     const data = {
@@ -104,3 +82,61 @@ async function signIn() {
         }
     })
 }
+
+/*
+/* function for meilisearch search */
+/* filepath: /Users/jellibean/Documents/Github/Reach-Kart/static/js/index.js */
+document.addEventListener('DOMContentLoaded', () => {
+    const searchClient = new MeiliSearch({
+        host: 'http://localhost:7700',
+        apiKey: 'GugSsWTPnuqs41p84ai0dH0LI6GqLliXYvBdrw4vAw8'
+    });
+
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    let debounceTimer;
+
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        const query = e.target.value;
+
+        if (query.length < 2) {
+            searchResults.style.display = 'none';
+            return;
+        }
+        debounceTimer = setTimeout(async () => {
+            try {
+                const results = await searchClient
+                    .index('books')
+                    .search(query, {
+                        attributesToRetrieve: ['name']
+                    });
+
+                searchResults.innerHTML = '';
+                
+                if (results.hits.length > 0) {
+                    results.hits.forEach(product => {
+                        const resultContainer = document.createElement('div');
+                        resultContainer.className = 'search-result-item';
+                        resultContainer.innerText = product.name;
+                        searchResults.appendChild(resultContainer);
+                    });
+                    searchResults.style.display = 'flex';
+                    document.getElementById('overlay-container').style.display = 'block';
+                } else {
+                    searchResults.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Search failed:', error);
+            }
+        }, 300);
+    });
+
+    // Close results when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target)) {
+            searchResults.style.display = 'none';
+            document.getElementById('overlay-container').style.display = 'none';
+        }
+    });
+});

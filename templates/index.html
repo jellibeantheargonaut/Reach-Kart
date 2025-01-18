@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/regular.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/solid.css') }}">
         <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/meilisearch@latest/dist/bundles/meilisearch.umd.js"></script>
     </head>
     <body>
         <div class="top-nav-bar-container">
@@ -19,12 +20,15 @@
             <div class="logo-container" onclick="window.location.href='/'">
                 Reach <i class="fa-solid fa-cart-shopping"></i>
             </div>
+            <div class="overlay-container" id="overlay-container"></div>
             <div class="search-bar-container">
                 <div class="search-bar-input-container">
-                    <input type="text" class="search-bar" placeholder="Books..">
+                    <input type="text" class="search-bar" id="searchInput" placeholder="books..">
                 </div>
                 <div class="search-bar-icon-container">
                     <button><i class="fa-solid fa-search"></i></button>
+                </div>
+                <div id="searchResults" class="search-results-container">
                 </div>
             </div>
             <div class="navigation-menu-container">
