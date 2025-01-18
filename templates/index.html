@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="https://googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signin-page.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/fontawesome.css') }}">
@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/fontawesome.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/regular.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/solid.css') }}">
-        <script src="{{ url_for('static', filename='js/index.js') }}" defer="defer"></script>
+        <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
     </head>
     <body>
         <div class="top-nav-bar-container">
@@ -30,8 +30,8 @@
             <div class="navigation-menu-container">
 
             </div>
-            <div class="user-profile-container" onclick="toggleUserAccountMenu()">
-                <div class="user-profile-icon-container">
+            <div class="user-profile-container">
+                <div class="user-profile-icon-container" onclick="toggleSignin()">
                     <i class="fa-solid fa-user fa-xl"></i>
                 </div>
                 <div class="user-profile-dropdown-container" id="userDropdown">
@@ -51,6 +51,26 @@
                 {% endblock %}
             </div>
         </div>
+        <div class="signin-overlay-container" id="signin-overlay">
+            <div class="signin-form-container">
+                <div class="signin-form-title-container">
+                    <p>Sign In</p>
+                </div>
+                <div class="signin-form-inputs-container">
+                    <input type="text" id="signin-email" placeholder="Email">
+                    <input type="password" id="signin-password" placeholder="Password">
+                    
+                </div>
+                <div class="signin-form-button-container">
+                    <button onclick="signIn()">Sign In</button>
+                </div>
+                <div class="signin-status-container" id="signin-status">
+                    <!-- login status here   -->
+                </div>
+                <div>
+                    <p>Don't have an account? <a href="#">Sign Up</a></p>
+                </div>
+            </div>
+        </div>
     </body>
-    
 </html>
