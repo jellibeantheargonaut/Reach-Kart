@@ -16,7 +16,7 @@ app = Flask(__name__)
 # homepage endpoint
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
 
 #=========================================
 # Auxilliary Functions used in the Web Application

@@ -28,6 +28,13 @@ body {
     height: 100%;
     color: white;
 }
+.menu-icon-container:hover {
+    cursor: pointer;
+}
+.menu-icon-container:active {
+    background-color: white;
+    color: black;
+}
 .logo-container {
     display: flex;
     flex-direction: row;
@@ -37,7 +44,7 @@ body {
     height: 100%;
     font-size: 35px;
     color: white;
-    font-style: italic;
+    cursor: pointer;
 }
 .search-bar-container {
     display: flex;
@@ -91,6 +98,7 @@ body {
 }
 .search-bar-icon-container button:active {
     background-color: #006A4E;
+    color: white;
 }
 .navigation-menu-container {
     display: flex;
@@ -101,6 +109,7 @@ body {
     height: 100%;
 }
 .user-profile-container {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -118,6 +127,43 @@ body {
     width: 40px;
     height: 40px;
 }
+/* User Account Drop down styles */
+.user-profile-dropdown-container {
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 100%;
+    right: 0;
+    background: white;
+    min-width: 150px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.457);
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+.user-icon-dropdown-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.user-icon-dropdown-item:hover {
+    background-color: rgb(62, 107, 62);
+}
+
+.user-icon-dropdown-divider {
+    border-top: 1px solid #e0e0e0;
+    margin: 4px 0;
+}
 /*--------------------------------------*/
 
 /* CSS for main content area */
@@ -133,12 +179,14 @@ body {
 }
 .sidebar-menu-container {
     display: none;
+    position: absolute;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: 20%;
+    width: 15%;
     height: 100%;
     background-color: rgb(42, 42, 42);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.608);
     border-top: 1px solid white;
     overflow-y: auto;
 }
