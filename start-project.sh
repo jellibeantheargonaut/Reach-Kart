@@ -9,7 +9,6 @@ cd rk-src
 node rk-server.js
 echo "✅ Node application is running"
 
-# on exit remove the certificates
-rm data/reachkart.key
-rm data/reachkart.crt
-echo "✅ Removed self signed certificates"
+## Start hardhat node
+#npx hardhat node
+

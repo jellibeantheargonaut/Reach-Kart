@@ -20,6 +20,7 @@
     "express": "^4.21.2",
     "hardhat": "^2.22.18",
     "jsonwebtoken": "^9.0.2",
+    "sqlite3": "^5.1.7",
     "web3": "^4.16.0"
   },
   "devDependencies": {

@@ -1,0 +1,22 @@
+[
+  { "email": "alice.johnson@example.com", "password": "Alice@2024", "name": "AliceJohnson" },
+  { "email": "michael.smith@example.com", "password": "Mikey#789", "name": "MichaelSmith" },
+  { "email": "sophia.brown@example.com", "password": "Sophia!Pass", "name": "SophiaBrown" },
+  { "email": "james.wilson@example.com", "password": "WilsonPass$12", "name": "JamesWilson" },
+  { "email": "olivia.martin@example.com", "password": "Olivia#Secure1", "name": "OliviaMartin" },
+  { "email": "ethan.anderson@example.com", "password": "Ethan2024!", "name": "EthanAnderson" },
+  { "email": "emma.thomas@example.com", "password": "Emma@Safe99", "name": "EmmaThomas" },
+  { "email": "william.harris@example.com", "password": "WillHarris123$", "name": "WilliamHarris" },
+  { "email": "ava.miller@example.com", "password": "AvaSecure@45", "name": "AvaMiller" },
+  { "email": "logan.moore@example.com", "password": "LoganMoore#77", "name": "LoganMoore" },
+  { "email": "mia.clark@example.com", "password": "MiaPass!2024", "name": "MiaClark" },
+  { "email": "benjamin.white@example.com", "password": "BenWhite789#", "name": "BenjaminWhite" },
+  { "email": "charlotte.hall@example.com", "password": "Charlotte@456", "name": "CharlotteHall" },
+  { "email": "lucas.green@example.com", "password": "LucasGreenPass1!", "name": "LucasGreen" },
+  { "email": "amelia.adams@example.com", "password": "AmeliaSafe#99", "name": "AmeliaAdams" },
+  { "email": "henry.baker@example.com", "password": "HenryBaker!67", "name": "HenryBaker" },
+  { "email": "ella.carter@example.com", "password": "EllaCarter@12", "name": "EllaCarter" },
+  { "email": "jackson.evans@example.com", "password": "Jackson#Pass90", "name": "JacksonEvans" },
+  { "email": "scarlett.wright@example.com", "password": "ScarlettWright!55", "name": "ScarlettWright" },
+  { "email": "grayson.roberts@example.com", "password": "GraysonRoberts2024$", "name": "GraysonRoberts" }
+]
