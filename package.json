@@ -1,0 +1,28 @@
+{
+  "name": "reachkart",
+  "version": "1.0.0",
+  "description": "eCommerce Web App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jellibeantheargonaut/Reach-Kart.git"
+  },
+  "author": "Jellibean",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jellibeantheargonaut/Reach-Kart/issues"
+  },
+  "homepage": "https://github.com/jellibeantheargonaut/Reach-Kart#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "hardhat": "^2.22.18",
+    "jsonwebtoken": "^9.0.2",
+    "web3": "^4.16.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0"
+  }
+}

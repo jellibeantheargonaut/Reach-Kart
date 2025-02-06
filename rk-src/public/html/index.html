@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signin-page.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+        <link rel="stylesheet" type="text/css" href="/css/signin-page.css">
+        <link rel="stylesheet" type="text/css" href="/css/index.css">
 
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/fontawesome.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/brands.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/fontawesome.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/regular.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-6.2-web/css/solid.css') }}">
-        <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/regular.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/solid.css">
+
+        <script src="/js/index.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/meilisearch@latest/dist/bundles/meilisearch.umd.js"></script>
     </head>
     <body>
@@ -51,8 +52,6 @@
             <div class="sidebar-menu-container" id="sidebar-menu-container">
             </div>
             <div class="main-content-page-area">
-                {% block content %}
-                {% endblock %}
             </div>
         </div>
         <div class="signin-overlay-container" id="signin-overlay">

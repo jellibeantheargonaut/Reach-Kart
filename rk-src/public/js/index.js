@@ -89,7 +89,7 @@ function signIn() {
 document.addEventListener('DOMContentLoaded', () => {
     const searchClient = new MeiliSearch({
         host: 'http://localhost:7700',
-        apiKey: 'GugSsWTPnuqs41p84ai0dH0LI6GqLliXYvBdrw4vAw8'
+        apiKey: 'axrrgJ-2uN3ctpdWndhWhbMuetNUHLm6fzRAGvcVm8M'
     });
 
     const searchInput = document.getElementById('searchInput');
