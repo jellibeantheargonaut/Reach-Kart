@@ -102,6 +102,10 @@ function checkLogin(email,password) {
                     console.log(`✅ User ${row.name} logged in with wallet id ${row.wid}`);
                     return resolve(true);
                 }
+                else {
+                    console.log(`❌ Password mismatch for user with email ${email}`);
+                    return resolve(false);
+                }
             }
             console.log(`❌ User with email ${email} not found`);
             return resolve(false);
@@ -109,6 +113,8 @@ function checkLogin(email,password) {
     });
 }
 
+//==============================================================================
+// utility functions
 function userExists(email){
     return new Promise((resolve,reject) => {
         db.get(`SELECT * FROM users WHERE email = ?`,[email], (err,row) => {
@@ -124,10 +130,26 @@ function userExists(email){
     });
 }
 
+function getWalletId(email){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT * FROM users WHERE email = ?`,[email], (err,row) => {
+            if(err){
+                console.error(err.message);
+                reject(err);
+            }
+            if(row){
+                return resolve(row.wid);
+            }
+            return resolve(null);
+        });
+    });
+}
+
 module.exports = {
     createUser,
     generateToken,
     verifyToken,
     checkLogin,
-    userExists
+    userExists,
+    getWalletId
 };

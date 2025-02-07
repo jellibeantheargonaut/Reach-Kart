@@ -28,6 +28,10 @@ app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/html/index.html'));
 });
 
+//==============================================================================
+
+// routes for user account stuff
+
 // routes for login and signup
 app.post('/login', async (req, res) => {
     const data = req.body;
@@ -39,14 +43,18 @@ app.post('/login', async (req, res) => {
     if(status){
       const password = data.password;
       const email = data.email;
-      if(await checkLogin(email,password)){
+      const check = await checkLogin(email,password);
+      if(check){
         const token = await generateToken(email);
         res.cookie('jwt',token);
         return res.json({token:token});
       }
+      else {
+        return res.status(401).json({message:'Invalid password'});
+      }
     }
     else {
-      return res.status(401).json({message:'Invalid email or password'});
+      return res.status(401).json({message:'User does not exist'});
     }
 });
 app.post('/signup', async (req, res) => {
@@ -61,6 +69,14 @@ app.post('/signup', async (req, res) => {
       return res.json({message:'User created'});
     }
 });
+
+// route to logout the user
+app.get('/logout', (req, res) => {
+    res.clearCookie('jwt');
+    res.redirect('/');
+});
+
+//==============================================================================
 
 //==============================================================================
 // start the server
