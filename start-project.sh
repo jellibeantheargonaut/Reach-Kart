@@ -11,4 +11,3 @@ echo "✅ Node application is running"
 
 ## Start hardhat node
 #npx hardhat node
-

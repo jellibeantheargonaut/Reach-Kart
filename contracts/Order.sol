@@ -42,7 +42,6 @@ contract Order {
 
     // functions to handle the order
     function placeOrder() public {
-        require(msg.sender == buyer, "You aren't the buyer");
         require(status == OrderStatus.Pending, "Order is not pending");
 
         status = OrderStatus.Placed;
@@ -51,9 +50,7 @@ contract Order {
     }
 
     function payAmount() public payable {
-        require(msg.sender == buyer, "You aren't the buyer");
         require(status == OrderStatus.Delivered, "Order is not delivered");
-        require(msg.value == orderAmount, "Incorrect amount sent");
 
         status = OrderStatus.Paid;
         seller.transfer(orderAmount);
@@ -61,7 +58,6 @@ contract Order {
     }
 
     function cancelOrder() public {
-        require(msg.sender == buyer, "You aren't the buyer");
         require(status == OrderStatus.Placed || status == OrderStatus.Pending, "Order is not placed or pending");
 
         status = OrderStatus.Cancelled;
@@ -70,7 +66,6 @@ contract Order {
     }
 
     function returnOrder() public {
-        require(msg.sender == buyer, "You aren't the buyer");
         require(status == OrderStatus.Delivered, "Order is not delivered");
 
         status = OrderStatus.Returned;
@@ -79,7 +74,6 @@ contract Order {
     }
 
     function shipOrder() public {
-        require(msg.sender == seller, "You aren't the seller");
         require(status == OrderStatus.Paid, "Order is not paid");
 
         status = OrderStatus.Shipped;
@@ -88,7 +82,6 @@ contract Order {
     }
 
     function confirmDelivery() public {
-        require(msg.sender == buyer, "You aren't the buyer");
         require(status == OrderStatus.Shipped, "Order is not shipped");
 
         status = OrderStatus.Delivered;
@@ -97,7 +90,6 @@ contract Order {
     }
 
     function getRefund() public {
-        require(msg.sender == buyer, "You aren't the buyer");
         require(status == OrderStatus.Cancelled || status == OrderStatus.Returned, "Order is not cancelled or returned");
 
         status = OrderStatus.Refunded;
@@ -105,5 +97,9 @@ contract Order {
         emit OrderRefunded(block.timestamp);
 
         buyer.transfer(orderAmount);
+    }
+
+    function getStatus() public view returns(OrderStatus) {
+        return status;
     }
 }

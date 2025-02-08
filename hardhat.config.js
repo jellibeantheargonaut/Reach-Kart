@@ -5,9 +5,10 @@ const { utils, Wallet } = require("ethers");
 module.exports = {
   solidity: "0.8.28",
   networks: {
+    hardhat: {},
     reachkart: {
       url: "http://localhost:8545",
-      chainId: 1338
+      chainId: 2032
     }
   }
 };

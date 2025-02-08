@@ -28,22 +28,27 @@ const SECRET_KEY = process.env.SECRET_KEY || 'SuperSecretPassword';
 
 db.run(` CREATE TABLE IF NOT EXISTS users (
     wid string PRIMARY KEY,
+    pk string NOT NULL,
     email string NOT NULL,
     password string NOT NULL,
-    name string NOT NULL)`
+    name string NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    account_type string DEFAULT 'user' NOT NULL)`
 );
 
 // create a new user
 // this function is called when a new user signs up
-function createUser(email,password,name) {
-    const wid = ethers.Wallet.createRandom().address;
+function createUser(email,password,name,accountType){
+    const wallet = ethers.Wallet.createRandom();
+    const wid = wallet.address;
+    const pk = wallet.privateKey;
     // join this wallet to reachkart hardhat network
     //const provider = new ethers.JsonRpcProvider('http://localhost:8545');
     //wid.connect(provider);
 
     // hash the password using SHA256
     const passHash = crypto.createHash('sha256').update(password).digest('hex');
-    db.run(`INSERT INTO users(wid,email,password,name) VALUES(?,?,?,?)`,[wid,email,passHash,name], (err) => {
+    db.run(`INSERT INTO users(wid,pk,email,password,name,account_type) VALUES(?,?,?,?,?,?)`,[wid,pk,email,passHash,name,accountType], (err) => {
         if(err){
             console.error(err.message);
         }
@@ -64,7 +69,9 @@ async function generateToken(email){
                 const email = row.email;
                 const payload = {
                     email: email,
-                    walletId: walletId
+                    accountType: row.account_type,
+                    walletId: walletId,
+                    pkey: row.pk
                 };
                 const options = {
                     expiresIn: '1d'

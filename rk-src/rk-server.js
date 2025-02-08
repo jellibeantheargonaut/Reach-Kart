@@ -22,7 +22,7 @@ app.use(express.json());
 // Routes to serve the static pages
 //==============================================================================
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/html/index.html'));
+    res.sendFile(path.join(__dirname, 'public/html/index.html'));
 });
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/html/index.html'));
@@ -47,6 +47,7 @@ app.post('/login', async (req, res) => {
       if(check){
         const token = await generateToken(email);
         res.cookie('jwt',token);
+        res.redirect('/home');
         return res.json({token:token});
       }
       else {
@@ -77,6 +78,9 @@ app.get('/logout', (req, res) => {
 });
 
 //==============================================================================
+
+// routes for seller accounts
+
 
 //==============================================================================
 // start the server
