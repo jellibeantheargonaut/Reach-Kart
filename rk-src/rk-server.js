@@ -80,6 +80,18 @@ app.get('/logout', (req, res) => {
 //==============================================================================
 
 // routes for seller accounts
+app.get('/seller/home', (req, res) => {
+    if(req.cookies.jwt){
+      const token = req.cookies.jwt;
+      const status = verifyToken(token);
+      if(status){
+        res.sendFile(path.join(__dirname, 'public/html/seller.html'));
+      }
+    }
+    else {
+      res.redirect('/');
+    }
+});
 
 //==============================================================================
 

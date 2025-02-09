@@ -13,6 +13,7 @@ contract ProductRegistry {
         uint quantity;
     }
     Product public product;
+    string public productId; // uuid for database reference
     uint public rating;
 
 
@@ -21,9 +22,10 @@ contract ProductRegistry {
     ProductStatus public status;
 
     // constructor to create the product registry
-    constructor( address _seller, string memory _name, string memory _description, uint _price, uint _quantity) payable {
+    constructor( address _seller, string memory _productId,string memory _name, string memory _description, uint _price, uint _quantity) payable {
         seller = _seller;
         product = Product(_name, _description, _price, _quantity);
+        productId = _productId;
         status = ProductStatus.Available;
     }
 
@@ -73,7 +75,6 @@ contract ProductRegistry {
 
     // functions to handle the product
     function addProduct() public {
-        require(msg.sender == seller, "You aren't the seller");
         require(status == ProductStatus.SoldOut, "Product is not sold out");
 
         product.quantity += 1;
@@ -83,7 +84,6 @@ contract ProductRegistry {
     }
 
     function sellProduct() public {
-        require(msg.sender == seller, "You aren't the seller");
         require(status == ProductStatus.Available, "Product is not available");
 
         if(product.quantity == 0){
@@ -100,7 +100,6 @@ contract ProductRegistry {
     }
 
     function discontinueProduct() public {
-        require(msg.sender == seller, "You aren't the seller");
         require(status != ProductStatus.Discontinued, "Product is already discontinued");
 
         status = ProductStatus.Discontinued;

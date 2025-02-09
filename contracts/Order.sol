@@ -9,7 +9,7 @@ contract Order {
     uint public orderTime;
     address payable public seller;
     address payable public buyer;
-    string public orderId;
+    string public orderId; // uuid for database reference
     uint public orderAmount;
 
     // enum to represent the status of the order

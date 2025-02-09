@@ -7,10 +7,13 @@ module.exports = {
   networks: {
     hardhat: {
       chainId: 6969,
-      accounts: Array(10).fill().map(() => ({
-        privateKey: ethers.Wallet.createRandom().privateKey,
-        balance: ethers.parseEther("1000").toString()
-      }))
+      accounts: [
+        {
+          // A single account as a reserve for the network 
+          privateKey: ethers.Wallet.createRandom().privateKey,
+          balance: ethers.parseEther("10000000000").toString()
+        }
+      ]
     }
   }
 };
