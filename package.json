@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jellibeantheargonaut/Reach-Kart#readme",
   "dependencies": {
+    "ethers": "^6.13.5",
     "express": "^4.21.2",
     "hardhat": "^2.22.18",
     "jsonwebtoken": "^9.0.2",

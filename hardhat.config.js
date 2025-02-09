@@ -1,14 +1,16 @@
 require("@nomicfoundation/hardhat-toolbox");
-const { utils, Wallet } = require("ethers");
+const { ethers } = require("ethers");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.28",
   networks: {
-    hardhat: {},
-    reachkart: {
-      url: "http://localhost:8545",
-      chainId: 2032
+    hardhat: {
+      chainId: 6969,
+      accounts: Array(10).fill().map(() => ({
+        privateKey: ethers.Wallet.createRandom().privateKey,
+        balance: ethers.parseEther("1000").toString()
+      }))
     }
   }
 };

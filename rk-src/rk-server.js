@@ -81,7 +81,13 @@ app.get('/logout', (req, res) => {
 
 // routes for seller accounts
 
+//==============================================================================
 
+// routes for functions to seller operations
+
+//==============================================================================
+
+// routes for functions to user operations
 //==============================================================================
 // start the server
 app.listen(port, () => {

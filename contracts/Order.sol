@@ -16,6 +16,8 @@ contract Order {
     enum OrderStatus { Placed, Pending, Paid, Shipped, Delivered, Cancelled, Refunded, Returned }
     OrderStatus public status;
 
+    // mappings
+    mapping(OrderStatus => string) public statusMessages;
     // events to represent the order status changes
     event OrderPlaced(uint timestamp);
     event OrderPaid(uint timestamp);
@@ -37,20 +39,28 @@ contract Order {
         buyer = _buyer;
         orderAmount = _orderAmount;
         orderId = _orderId;
-        status = OrderStatus.Pending;
+        status = OrderStatus.Placed;
+
+        statusMessages[OrderStatus.Placed] = "Placed";
+        statusMessages[OrderStatus.Pending] = "Pending";
+        statusMessages[OrderStatus.Paid] = "Paid";
+        statusMessages[OrderStatus.Shipped] = "Shipped";
+        statusMessages[OrderStatus.Delivered] = "Delivered";
+        statusMessages[OrderStatus.Cancelled] = "Cancelled";
+        statusMessages[OrderStatus.Refunded] = "Refunded";
+        statusMessages[OrderStatus.Returned] = "Returned";
     }
 
     // functions to handle the order
-    function placeOrder() public {
-        require(status == OrderStatus.Pending, "Order is not pending");
-
-        status = OrderStatus.Placed;
+    function confirmOrder() public {
+        require(status == OrderStatus.Placed, "Order is not placed");
+        status = OrderStatus.Pending;
 
         emit OrderPlaced(block.timestamp);
     }
 
     function payAmount() public payable {
-        require(status == OrderStatus.Delivered, "Order is not delivered");
+        require(status == OrderStatus.Pending, "Order is not pending");
 
         status = OrderStatus.Paid;
         seller.transfer(orderAmount);
@@ -89,17 +99,14 @@ contract Order {
         emit OrderDelivered(block.timestamp);
     }
 
-    function getRefund() public {
+    function getRefund() public payable{
         require(status == OrderStatus.Cancelled || status == OrderStatus.Returned, "Order is not cancelled or returned");
-
         status = OrderStatus.Refunded;
-
-        emit OrderRefunded(block.timestamp);
-
         buyer.transfer(orderAmount);
+        emit OrderRefunded(block.timestamp);
     }
 
-    function getStatus() public view returns(OrderStatus) {
-        return status;
+    function getStatus() public view returns(string memory) {
+        return statusMessages[status];
     }
 }
