@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jellibeantheargonaut/Reach-Kart#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "ethers": "^6.13.5",
     "express": "^4.21.2",
     "hardhat": "^2.22.18",

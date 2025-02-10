@@ -99,6 +99,9 @@ body {
     font-size: 20px;
     color: black;
 }
+.search-bar-icon-container button:hover {
+    cursor: pointer;
+}
 .search-bar-icon-container button:active {
     background-color: #006A4E;
     color: white;
@@ -151,8 +154,8 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: auto;
+    width: 90%;
+    height: 20%;
     margin: 5px;
     border-radius: 5px;
     cursor: pointer;
@@ -160,7 +163,7 @@ body {
 }
 
 .user-icon-dropdown-item:hover {
-    background-color: rgb(62, 107, 62);
+    background-color: rgb(26, 69, 137);
 }
 
 .user-icon-dropdown-divider {

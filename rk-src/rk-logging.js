@@ -69,7 +69,7 @@ async function generateToken(email){
                 const email = row.email;
                 const payload = {
                     email: email,
-                    accountType: row.account_type,
+                    account_type: row.account_type,
                     walletId: walletId,
                     pkey: row.pk
                 };

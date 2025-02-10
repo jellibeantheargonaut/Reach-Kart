@@ -32,25 +32,6 @@ document.addEventListener('click', function(event) {
     }
 });
 
-/* filepath: /Users/jellibean/Documents/Github/Reach-Kart/static/js/index.js */
-function toggleSignin() {
-    const overlay = document.getElementById('signin-overlay');
-    overlay.style.display = overlay.style.display === 'none' ? 'flex' : 'none';
-}
-document.addEventListener('DOMContentLoaded', () => {
-    const overlay = document.querySelector('.signin-overlay-container');
-    const form = document.querySelector('.signin-form-container');
-
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            overlay.style.display = 'none';
-        }
-    });
-
-    form.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-});
 
 /* sigin button signin request */
 function signIn() {
@@ -86,6 +67,7 @@ function signIn() {
 /*
 /* function for meilisearch search */
 /* filepath: /Users/jellibean/Documents/Github/Reach-Kart/static/js/index.js */
+/* this should be moved to server */
 document.addEventListener('DOMContentLoaded', () => {
     const searchClient = new MeiliSearch({
         host: 'http://localhost:7700',
