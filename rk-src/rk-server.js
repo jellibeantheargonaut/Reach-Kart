@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cookieParser = require('cookie-parser');
+const { getWalletBalance } = require('./rk-chainapi');
 
 // Importing the required modules
 const { createUser, checkLogin, userExists, verifyToken, generateToken } = require('./rk-logging');
@@ -25,11 +26,6 @@ app.use(cookieParser());
 // Routes to serve the static pages
 //==============================================================================
 
-// routes for landing pages when not logged in
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/sigin-page.html'));
-});
-
 // landing pages when logged in
 app.get('/', loggedIn,(req, res) => {
     res.sendFile(path.join(__dirname, 'public/html/index.html'));
@@ -47,16 +43,6 @@ app.get('/profile', loggedIn, (req, res) => {
 app.get('/order', loggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, 'public/html/order.html'));
 });
-
-//==============================================================================
-
-// routes for user account stuff
-
-// routes for login and signup
-
-
-// route to logout the user
-
 
 //==============================================================================
 
@@ -125,6 +111,27 @@ function loggedIn(req, res, next){
       res.redirect('/common/signin');
     }
 }
+
+// routes for user account static pages
+//==============================================================================
+app.get('/', loggedIn,(req, res) => {
+  res.sendFile(path.join(__dirname, 'public/html/index.html'));
+});
+app.get('/home', loggedIn, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/html/index.html'));
+});
+
+// account profile pages for users
+app.get('/profile', loggedIn, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/html/profile.html'));
+});
+
+// order confirmation page
+app.get('/order', loggedIn, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/html/order.html'));
+});
+
+//==============================================================================
 
 // routes for functions to user operations
 
@@ -200,9 +207,35 @@ app.get('/common/logout', (req, res) => {
   return res.status(200).json({message:'Logged out'});
 });
 
+// app.get('/common/getUserDetails', loggedIn, (req, res) => {}
+app.get('/common/getUserDetails', loggedIn, (req, res) => {
+  const token = req.cookies.jwt;
+  const userDetails = verifyToken(token);
+  if (userDetails) {
+    const details = {
+      name: userDetails.name,
+      email: userDetails.email,
+      account_type: userDetails.account_type,
+      walletId: userDetails.walletId
+    };
+    return res.status(200).json(details);
+  } else {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+});
 
 // app.post('/common/getWallets', (req, res) => {}
 // app.post('/common/getWalletBalance', (req, res) => {}
+app.get('/common/getWalletBalance', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const userDetails = verifyToken(token);
+  if (userDetails) {
+    const balance = await getWalletBalance(userDetails.walletId);
+    return res.status(200).json({ balance: balance });
+  } else {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+});
 // app.post('/common/getWalletTransactions', (req, res) => {}
 // app.post('/common/createWallet', (req, res) => {}
 

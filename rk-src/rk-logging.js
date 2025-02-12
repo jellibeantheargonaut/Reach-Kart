@@ -54,6 +54,13 @@ function createUser(email,password,name,accountType){
         }
         console.log(`✅ User ${name} created with wallet id ${wid}`);
     });
+    // also add entry in wallets table
+    db.run(`INSERT INTO wallets(wid,pk,email) VALUES(?,?,?)`,[wid,pk,email], (err) => {
+        if(err){
+            console.error(err.message);
+        }
+        console.log(`✅ Wallet ${wid} created for user ${name}`);
+    });
 }
 
 // function to generate a jwt token
@@ -65,12 +72,11 @@ async function generateToken(email){
                 console.error(err.message);
             }
             if(row){
-                const walletId = row.wid;
-                const email = row.email;
                 const payload = {
-                    email: email,
+                    name: row.name,
+                    email: row.email,
                     account_type: row.account_type,
-                    walletId: walletId,
+                    walletId: row.wid,
                     pkey: row.pk
                 };
                 const options = {

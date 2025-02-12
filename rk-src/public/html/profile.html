@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
     <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/regular.css">
     <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/solid.css">
+
+    <script defer src="/js/profile-page.js"></script>
 </head>
 <body>
     <div class="sidebar-menu">
@@ -26,7 +28,7 @@
             <div class="sidebar-menu-item">
                 Orders
             </div>
-            <div class="sidebar-menu-item">
+            <div class="sidebar-menu-item" onclick="setWalletDetails()">
                 Wallets
             </div>
             <div class="sidebar-menu-item">
@@ -45,6 +47,18 @@
         <div class="orders-container">
         </div>
         <div class="wallets-container">
+            <div class="wallet-container">
+                <div class="wallet-container-header">
+                    <div class="wallet-address">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                </div>
+                <div class="wallet-content">
+                    <div class="wallet-balance">
+                        <i class="fa-brands fa-ethereum"></i> 1000000.00 
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="addresses-container">
         </div>
