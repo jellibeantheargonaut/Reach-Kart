@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/signin-page.css">
+
+        <script defer src="/js/signin-page.js"></script>
+    </head>
+    <body>
+        <div class="form-container">
+            <div class="form-title">
+                Sign Up
+            </div>
+            <div class="form-fields">
+                <input type="text" id="username" placeholder="Username">
+                <input type="text" id="email" placeholder="Email">
+                <input type="password" id="password" placeholder="Password">
+                <input type="password" id="confirm-password" placeholder="Confirm Password">
+            </div>
+            <div class="form-buttons">
+                <button id="signin-button" onclick="signup()">Sign Up</button>
+            </div>
+            <div class="form-messages">
+                Passwords do not match
+            </div>
+            <div class="form-links">
+                Already have an account? <a href="/common/signin">Sign in</a>
+            </div>
+        </div>
+    </body>
+</html>

@@ -33,37 +33,6 @@ document.addEventListener('click', function(event) {
 });
 
 
-/* sigin button signin request */
-function signIn() {
-    const email = document.getElementById('signin-email').value;
-    const password = document.getElementById('signin-password').value;
-    const data = {
-        email: email,
-        password: password
-    };
-    fetch('/signin', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            document.getElementById('signin-status').innerText = 'Signin successful';
-            document.getElementById('signin-status').style.color = '#00A550';
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 2000);
-        }
-        else {
-            document.getElementById('signin-status').innerText = 'Signin failed';
-            document.getElementById('signin-status').style.color = 'red';
-        }
-    })
-}
-
 /*
 /* function for meilisearch search */
 /* filepath: /Users/jellibean/Documents/Github/Reach-Kart/static/js/index.js */
@@ -122,3 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function logout() {
+    fetch('/common/logout', {
+        method: 'GET'
+    }).then((response) => {
+        if (response.status === 200) {
+            window.location.href = '/home';
+        }
+    });
+}

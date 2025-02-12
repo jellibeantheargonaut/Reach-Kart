@@ -27,7 +27,7 @@ app.use(cookieParser());
 
 // routes for landing pages when not logged in
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/login.html'));
+    res.sendFile(path.join(__dirname, 'public/html/sigin-page.html'));
 });
 
 // landing pages when logged in
@@ -53,48 +53,10 @@ app.get('/order', loggedIn, (req, res) => {
 // routes for user account stuff
 
 // routes for login and signup
-app.post('/login', async (req, res) => {
-    const data = req.body;
-    // if cookie is present, user is already logged in
-    // redirect to home page
-    // check if the user exists in the database
-    // if yes, generate a jwt token and send it back
-    const status = await userExists(data.email);
-    if(status){
-      const password = data.password;
-      const email = data.email;
-      const check = await checkLogin(email,password);
-      if(check){
-        const token = await generateToken(email);
-        res.cookie('jwt',token);
-        return res.json({token:token});
-      }
-      else {
-        return res.status(401).json({message:'Invalid password'});
-      }
-    }
-    else {
-      return res.status(401).json({message:'User does not exist'});
-    }
-});
-app.post('/signup', async (req, res) => {
-    const data = req.body;
-    // create a new user
-    const status = await userExists(data.email);
-    if(status){
-      return res.json({message:'User already exists'});
-    }
-    else {
-      createUser(data.email,data.password,data.name);
-      return res.json({message:'User created'});
-    }
-});
+
 
 // route to logout the user
-app.get('/logout', (req, res) => {
-    res.clearCookie('jwt');
-    res.redirect('/');
-});
+
 
 //==============================================================================
 
@@ -156,11 +118,11 @@ function loggedIn(req, res, next){
         next();
       }
       else {
-        res.redirect('/login');
+        res.redirect('/common/signin');
       }
     }
     else {
-      res.redirect('/login');
+      res.redirect('/common/signin');
     }
 }
 
@@ -182,9 +144,63 @@ function loggedIn(req, res, next){
 // routes for operations that are common to both users and sellers
 
 // these routes are provided by the chain api
+
+
 // app.post('/common/login', (req, res) => {}
+app.post('/common/signin', async (req, res) => {
+  const data = req.body;
+  // if cookie is present, user is already logged in
+  // redirect to home page
+  // check if the user exists in the database
+  // if yes, generate a jwt token and send it back
+  const status = await userExists(data.email);
+  if(status){
+    const password = data.password;
+    const email = data.email;
+    const check = await checkLogin(email,password);
+    if(check){
+      const token = await generateToken(email);
+      res.cookie('jwt',token);
+      return res.status(200).json({token:token});
+    }
+    else {
+      return res.status(401).json({message:'Invalid password'});
+    }
+  }
+  else {
+    return res.status(401).json({message:'User does not exist'});
+  }
+});
+app.get('/common/signin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/html/signin-page.html'));
+});
+
+
 // app.post('/common/signup', (req, res) => {}
+app.post('/common/signup', async (req, res) => {
+  const data = req.body;
+  // create a new user
+  const status = await userExists(data.email);
+  if(status){
+    return res.status(401).json({message:'User already exists'});
+  }
+  else {
+    createUser(data.email,data.password,data.name,data.account_type);
+    return res.json({message:'User created'});
+  }
+});
+app.get('/common/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/html/signup-page.html'));
+});
+
+
 // app.get('/common/logout', (req, res) => {}
+app.get('/common/logout', (req, res) => {
+  res.clearCookie('jwt');
+  return res.status(200).json({message:'Logged out'});
+});
+
+
 // app.post('/common/getWallets', (req, res) => {}
 // app.post('/common/getWalletBalance', (req, res) => {}
 // app.post('/common/getWalletTransactions', (req, res) => {}

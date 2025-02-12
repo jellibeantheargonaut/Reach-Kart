@@ -1,0 +1,81 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    height: 80%;
+    position: absolute;
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.form-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+    font-size: 30px;
+}
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+}
+.form-fields input {
+    font-size: 20px;
+    width: 60%;
+    height: 50px;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(134, 134, 134);
+    background-color: rgba(91, 91, 91, 0.089);
+    outline: none;
+}
+.form-fields input:focus {
+    border: 1px solid blue;
+    color: black;
+}
+.form-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+}
+.form-buttons button {
+    font-size: 20px;
+    width: 40%;
+    height: 50px;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(40, 40, 40);
+    color: white;
+    outline: none;
+}
+.form-buttons button:hover {
+    background-color: rgb(62, 62, 62);
+    cursor: pointer;
+}
+.form-messages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+    font-size: 20px;
+    color: rgb(227, 94, 94);
+}
