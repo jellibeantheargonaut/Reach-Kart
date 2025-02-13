@@ -51,62 +51,16 @@ contract Order {
         statusMessages[OrderStatus.Returned] = "Returned";
     }
 
-    // functions to handle the order
-    function confirmOrder() public {
-        require(status == OrderStatus.Placed, "Order is not placed");
-        status = OrderStatus.Pending;
-
-        emit OrderPlaced(block.timestamp);
+    // getter functions
+    function getOrderSeller() public view returns(address) {
+        return seller;
     }
 
-    function payAmount() public payable {
-        require(status == OrderStatus.Pending, "Order is not pending");
-
-        status = OrderStatus.Paid;
-        seller.transfer(orderAmount);
-        emit OrderPaid(block.timestamp);
+    function getOrderBuyer() public view returns(address) {
+        return buyer;
     }
 
-    function cancelOrder() public {
-        require(status == OrderStatus.Placed || status == OrderStatus.Pending, "Order is not placed or pending");
-
-        status = OrderStatus.Cancelled;
-
-        emit OrderCancelled(block.timestamp);
-    }
-
-    function returnOrder() public {
-        require(status == OrderStatus.Delivered, "Order is not delivered");
-
-        status = OrderStatus.Returned;
-
-        emit OrderReturned(block.timestamp);
-    }
-
-    function shipOrder() public {
-        require(status == OrderStatus.Paid, "Order is not paid");
-
-        status = OrderStatus.Shipped;
-
-        emit OrderShipped(block.timestamp);
-    }
-
-    function confirmDelivery() public {
-        require(status == OrderStatus.Shipped, "Order is not shipped");
-
-        status = OrderStatus.Delivered;
-
-        emit OrderDelivered(block.timestamp);
-    }
-
-    function getRefund() public payable{
-        require(status == OrderStatus.Cancelled || status == OrderStatus.Returned, "Order is not cancelled or returned");
-        status = OrderStatus.Refunded;
-        buyer.transfer(orderAmount);
-        emit OrderRefunded(block.timestamp);
-    }
-
-    function getStatus() public view returns(string memory) {
-        return statusMessages[status];
+    function getOrderAmount() public view returns(uint) {
+        return orderAmount;
     }
 }

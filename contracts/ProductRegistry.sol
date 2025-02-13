@@ -5,7 +5,7 @@
 pragma solidity ^0.8.28;
 
 contract ProductRegistry {
-    address public seller;
+    address payable public seller;
     struct Product {
         string name;
         string description;
@@ -22,7 +22,7 @@ contract ProductRegistry {
     ProductStatus public status;
 
     // constructor to create the product registry
-    constructor( address _seller, string memory _productId,string memory _name, string memory _description, uint _price, uint _quantity) payable {
+    constructor( address payable _seller, string memory _productId,string memory _name, string memory _description, uint _price, uint _quantity) payable {
         seller = _seller;
         product = Product(_name, _description, _price, _quantity);
         productId = _productId;

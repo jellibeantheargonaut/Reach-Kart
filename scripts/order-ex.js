@@ -16,12 +16,12 @@ async function main() {
   console.log("Funding buyer with 2 ETH");
   let tx = await deployer.sendTransaction({
     to: buyer.address,
-    value: ethers.parseEther("5.0")
+    value: ethers.parseEther("200")
   });
   await tx.wait();
   tx = await deployer.sendTransaction({
     to: seller.address,
-    value: ethers.parseEther("5.0")
+    value: ethers.parseEther("200")
   });
   await tx.wait();
   console.log("Buyer funded with 2 ETH");
@@ -32,7 +32,7 @@ async function main() {
     seller.address,
     buyer.address,
     uuid(),
-    ethers.parseEther("2.0") // Initial funding for the order contract
+    ethers.parseEther("3") // Initial funding for the order contract
   );
   console.log(`✅ Order Contract deployed at ${orderContract.address}`);
 
@@ -47,7 +47,7 @@ async function main() {
   console.log("Seller balance:", ethers.formatEther(await provider.getBalance(seller.address)));
 
   // Pay for the order
-  tx = await orderContract.connect(buyer).payAmount({ value: ethers.parseEther("2.0") });
+  tx = await orderContract.connect(buyer).payAmount({ value: ethers.parseEther("3") });
   await tx.wait();
   console.log("✅ Payment made for order");
   console.log("Buyer balance:", ethers.formatEther(await provider.getBalance(buyer.address)));
@@ -74,7 +74,7 @@ async function main() {
   console.log("Order status:", await orderContract.getStatus());
 
   // Get refund
-  tx = await orderContract.connect(seller).getRefund({ value: ethers.parseEther("2.0") });
+  tx = await orderContract.connect(seller).getRefund({ value: ethers.parseEther("3") });
   await tx.wait();
   console.log("✅ Order refunded");
   console.log("Order status:", await orderContract.getStatus());
