@@ -46,19 +46,17 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 const { ethers } = require('hardhat');
 const { v4: uuid } = require('uuid');
-const crypto = require('crypto');
 const path = require('path');
-const { eth } = require('web3');
 
 db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){
         console.error(err.message);
     }
-    console.log('✅ Connected to the rk database');
+    console.log('📶 Connected to the rk database');
 });
 
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
-console.log('✅ Connected to the hardhat network');
+console.log('📶 Connected to the hardhat network');
 
 // function to create database and tables
 function createDatabases(){
@@ -75,7 +73,7 @@ function createDatabases(){
         orderPaid TIMESTAMP,
         orderRefunded TIMESTAMP)`
     );
-    console.log('✅ Orders table created');
+    console.log('👍🏻 Orders table created');
 
     // create the products table if not exists
     db.run(`CREATE TABLE IF NOT EXISTS products (
@@ -84,7 +82,7 @@ function createDatabases(){
         dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         dateUpdated TIMESTAMP)`
     );
-    console.log('✅ Products table created');
+    console.log('👍🏻 Products table created');
 
     // create the wallets table if not exists
     db.run(`CREATE TABLE IF NOT EXISTS wallets (
@@ -92,16 +90,16 @@ function createDatabases(){
         pk string NOT NULL,
         email string NOT NULL)`
     );
-    console.log('✅ Wallets table created');
+    console.log('👍🏻 Wallets table created');
 
     // create the addresses table if not exists
     db.run(`CREATE TABLE IF NOT EXISTS addresses (
         email string PRIMARY KEY,
         address string NOT NULL)`
     );
-    console.log('✅ Addresses table created');
+    console.log('👍🏻 Addresses table created');
 
-    console.log('✅ Database and tables created');
+    console.log('👍🏻 Database and tables created');
 }
 
 // functions to handle wallet operations
@@ -127,15 +125,15 @@ async function createWallet(email){
         if(err){
             console.error(err.message);
         }
-        console.log(`✅ Wallet ${wid} created for user ${email}`);
+        console.log(`💳 Wallet ${wid} created for user ${email}`);
     });
-    console.log(`✅ Wallet ${wid} connected to hardhat network`);
+    console.log(`💳 Wallet ${wid} connected to hardhat network`);
 }
 
 // function to get the balance of a wallet
 async function getWalletBalance(wid){
     const balance = await provider.getBalance(wid);
-    console.log(`💰 Balance of wallet ${wid} is ${ethers.formatEther(balance)}`);
+    console.log(`💵 Balance of wallet ${wid} is ${ethers.formatEther(balance)}`);
     return ethers.formatEther(balance);
 }
 
@@ -150,7 +148,6 @@ async function getWalletPrivateKey(wid){
         });
     });
 }
-
 // function to fund a wallet
 async function fundWallet(wid,amount){
     const reserve = await provider.getSigner(0);
@@ -159,7 +156,7 @@ async function fundWallet(wid,amount){
         value: ethers.parseEther(amount)
     });
     await tx.wait();
-    console.log(`💰 Wallet ${wid} funded with ${amount} ETH`);
+    console.log(`🤑 Wallet ${wid} funded with ${amount} ETH`);
 }
 
 // function to send a transaction
@@ -170,7 +167,11 @@ async function transferFunds(buyerWid, sellerWid, amount){
         value: ethers.parseEther(amount.toString())
     });
     await tx.wait();
-    console.log(`💰 ${amount} ETH transferred from ${buyerWid} to ${sellerWid}`);
+    console.log(`Transaction hash: ${tx.hash}`);
+    console.log(`💵 ${amount} ETH transferred from ${buyerWid} to ${sellerWid}`);
+
+    // return the transaction hash
+    return tx.hash;
 }
 
 
@@ -189,16 +190,16 @@ async function deployProductContract(sellerAddress, productName, productDescript
     const Product = await ethers.getContractFactory('ProductRegistry',seller);
     const productId = uuid();
     const etherPrice = ethers.parseEther(productPrice);
-    console.log(`✅ Product ${productId} created by seller ${sellerAddress}`);
+    console.log(`📦 Product ${productId} created by seller ${sellerAddress}`);
     const productContract = await Product.deploy(sellerAddress,productId,productName,productDescription,etherPrice,productQuantity);
-    console.log(`✅ Product contract deployed at ${productContract.address}`);
+    console.log(`📦 Product contract deployed at ${productContract.address}`);
 
     // insert the product into the products table
     db.run(`INSERT INTO products(productId,productAddress,dateAdded) VALUES(?,?,?)`,[productId,await productContract.getAddress(),Date.now()], (err) => {
         if(err){
             console.error(err.message);
         }
-        console.log(`✅ Product ${productId} entered in database table`);
+        console.log(`📦 Product ${productId} entered in database table`);
     });
 }
 
@@ -212,7 +213,7 @@ async function setProductPrice(productId,productPrice){
         const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
         const etherPrice = ethers.parseEther(productPrice);
         await productContract.setProductPrice(etherPrice);
-        console.log(`✅ Product ${productId} price set to ${productPrice}`);
+        console.log(`📦 Product ${productId} price set to ${productPrice}`);
     });
 
     // update the dateUpdated field in the products table
@@ -220,7 +221,7 @@ async function setProductPrice(productId,productPrice){
         if(err){
             console.error(err.message);
         }
-        console.log(`✅ Product ${productId} updated in database table`);
+        console.log(`📦 Product ${productId} updated in database table`);
     });
 }
 // function to set the quantity of the product
@@ -232,7 +233,7 @@ async function setProductQuantity(productId,productQuantity){
         const productAddress = row.productAddress;
         const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
         await productContract.setProductQuantity(productQuantity);
-        console.log(`✅ Product ${productId} quantity set to ${productQuantity}`);
+        console.log(`📦 Product ${productId} quantity set to ${productQuantity}`);
     });
 
     // update the dateUpdated field in the products table
@@ -240,7 +241,7 @@ async function setProductQuantity(productId,productQuantity){
         if(err){
             console.error(err.message);
         }
-        console.log(`✅ Product ${productId} updated in database table`);
+        console.log(`📦 Product ${productId} updated in database table`);
     });
 }
 
@@ -253,7 +254,7 @@ async function getProductPrice(productId){
         const productAddress = row.productAddress;
         const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
         const productPrice = await productContract.getProductPrice();
-        console.log(`💰 Price of product ${productId} is ${productPrice}`);
+        console.log(`💵 Price of product ${productId} is ${productPrice}`);
         return ethers.formatEther(productPrice);
     });
 }
@@ -322,7 +323,7 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
         const productPrice = await productContract.getProductPrice();
         // calculate the total price
         let totalPrice = BigInt(productPrice) * BigInt(productQuantity);
-        console.log(`💰 Total price of order for product ${productId} is ${ethers.formatEther(totalPrice)}`);
+        console.log(`💵 Total price of order for product ${productId} is ${ethers.formatEther(totalPrice)}`);
 
         // deploy the order contract
         // get buyer pkey
@@ -331,15 +332,15 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
         const buyer = await new ethers.Wallet(buyerPkey,provider);
         const Order = await ethers.getContractFactory('Order',buyer);
         const orderId = uuid();
-        const orderContract = await Order.deploy(Date.now(),sellerAddress,buyerAddress,orderId,totalPrice);
-        console.log(`✅ Order contract deployed at ${orderContract.address}`);
+        const orderContract = await Order.deploy(Date.now(),sellerAddress,buyerAddress,orderId,totalPrice,productQuantity);
+        console.log(`👍🏻 Order contract deployed at ${orderContract.address}`);
 
         // insert the order into the orders table
         db.run(`INSERT INTO orders(orderId,orderAddress,productId,buyerAddress,orderPlaced) VALUES(?,?,?,?,?)`,[orderId,await orderContract.getAddress(),productId,buyerAddress,Date.now()], (err) => {
             if(err){
                 console.error(err.message);
             }
-            console.log(`✅ Order ${orderId} entered in database table for ${productId}`);
+            console.log(`👍🏻 Order ${orderId} entered in database table for ${productId}`);
         });
     });
 }
@@ -350,7 +351,7 @@ async function confirmOrder(orderId){
         if(err){
             console.error(err.message);
         }
-        console.log(`✅ Order ${orderId} confirmed at ${new Date(Date.now()).toISOString()}`);
+        console.log(`👍🏻 Order ${orderId} confirmed at ${new Date(Date.now()).toISOString()}`);
     });
 }
 // function to cancel the order
@@ -360,7 +361,7 @@ async function cancelOrder(orderId){
         if(err){
             console.error(err.message);
         }
-        console.log(`✅ Order ${orderId} cancelled at ${new Date(Date.now()).toISOString()}`);
+        console.log(`👎🏻 Order ${orderId} cancelled at ${new Date(Date.now()).toISOString()}`);
     });
 }
 // function to pay for the order
@@ -375,20 +376,19 @@ async function payOrder(orderId){
         const orderPrice = await orderContract.getOrderAmount();
         // get the buyer wallet address
         const buyerWid = await orderContract.getOrderBuyer();
-        console.log(`📦 Buyer: ${buyerWid}`)
+        console.log(`💳 Buyer: ${buyerWid}`)
         // get the seller wallet address
         const sellerWid = await orderContract.getOrderSeller();
-        console.log(`📦 Seller: ${sellerWid}`);
+        console.log(`💳 Seller: ${sellerWid}`);
 
         // transfer the funds from buyer to seller
-        let tx = await transferFunds(buyerWid,sellerWid,orderPrice);
-        await tx.wait();
+        let txId = await transferFunds(buyerWid,sellerWid,ethers.formatEther(orderPrice));
         // update the transactionId field in the orders table
-        db.run(`UPDATE orders SET transactionId = ? WHERE orderId = ?`,[tx.hash,orderId], (err) => {
+        db.run(`UPDATE orders SET transactionId = ? WHERE orderId = ?`,[txId,orderId], (err) => {
             if(err){
                 console.error(err.message);
             }
-            console.log(`✅ Order ${orderId} transactionId updated to ${tx.hash}`);
+            console.log(`👍🏻 Order ${orderId} transactionId updated to ${txId}`);
         });
     });
     // update the orderPaid field in the orders table
@@ -396,7 +396,7 @@ async function payOrder(orderId){
         if(err){
             console.error(err.message);
         }
-        console.log(`✅ Order ${orderId} paid at ${new Date(Date.now()).toISOString()}`);
+        console.log(`👍🏻 Order ${orderId} paid at ${new Date(Date.now()).toISOString()}`);
     });
 }
 // function to refund the order
@@ -419,10 +419,12 @@ async function payOrder(orderId){
 
 // Module exports
 module.exports = {
+    createDatabases,
     getWallets,
     createWallet,
     getWalletBalance,
     fundWallet,
+    transferFunds,
 
     deployProductContract,
     setProductPrice,

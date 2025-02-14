@@ -11,6 +11,7 @@ contract Order {
     address payable public buyer;
     string public orderId; // uuid for database reference
     uint public orderAmount;
+    uint public orderQuantity;
 
     // enum to represent the status of the order
     enum OrderStatus { Placed, Pending, Paid, Shipped, Delivered, Cancelled, Refunded, Returned }
@@ -28,7 +29,7 @@ contract Order {
     event OrderReturned(uint timestamp);
 
     // constructor to create the order
-    constructor(uint _orderTime, address payable _seller, address payable _buyer,string memory _orderId, uint _orderAmount) payable {
+    constructor(uint _orderTime, address payable _seller, address payable _buyer,string memory _orderId, uint _orderAmount, uint _orderQuantity) payable {
         require(
             block.timestamp < _orderTime,
             "Order time should be in the future"
@@ -38,6 +39,7 @@ contract Order {
         seller = _seller;
         buyer = _buyer;
         orderAmount = _orderAmount;
+        orderQuantity = _orderQuantity;
         orderId = _orderId;
         status = OrderStatus.Placed;
 
@@ -62,5 +64,9 @@ contract Order {
 
     function getOrderAmount() public view returns(uint) {
         return orderAmount;
+    }
+    
+    function getOrderQuantity() public view returns(uint) {
+        return orderQuantity;
     }
 }

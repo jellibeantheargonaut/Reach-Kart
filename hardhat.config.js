@@ -13,7 +13,7 @@ module.exports = {
           privateKey: ethers.Wallet.createRandom().privateKey,
           balance: ethers.parseEther("10000000000").toString()
         }
-      ],
+      ]
     }
   }
 };
