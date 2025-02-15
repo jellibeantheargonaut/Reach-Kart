@@ -51,6 +51,10 @@ contract ProductRegistry {
         return product.name;
     }
 
+    function getProductDescription() public view returns(string memory) {
+        return product.description;
+    }
+
     function getProductRating() public view returns(uint) {
         return rating;
     }

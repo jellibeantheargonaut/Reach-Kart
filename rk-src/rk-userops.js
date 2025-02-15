@@ -12,7 +12,8 @@
 
 const sqlite3  = require('sqlite3');
 const { v4: uuid } = require('uuid');
-const path = require('path')
+const path = require('path');
+const chainApi = require('./rk-chainapi');
 
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){
@@ -129,6 +130,77 @@ async function viewOrders(email){
     });
 }
 
+// function to generate a bill for the order
+async function generateBill(orderId){
+
+    return new Promise(async (resolve, reject) => {
+        console.log(`[ rk-userops ] 🧾 Generating bill for order ${orderId}`)
+        // get ordet placed date
+        const orderPlaced = await chainApi.getOrderPlacedDate(orderId);
+        // get order payment date
+        const orderPaid = await chainApi.getOrderPaidDate(orderId);
+        // get order transaction
+        const orderTransaction = await chainApi.getOrderTransaction(orderId);
+        // get product id of the order
+        const orderProductId = await chainApi.getOrderProduct(orderId);
+        // get quantity of the product
+        const orderQuantity = await chainApi.getOrderQuantity(orderId);
+        // get order total
+        const orderPrice = await chainApi.getOrderPrice(orderId);
+        // getting the product details
+        const productName = await chainApi.getProductName(orderProductId);
+        const productDescription = await chainApi.getProductDescription(orderProductId)
+        // payload of the bill
+        const bill = {
+            orderId: orderId,
+            orderPlaced: orderPlaced,
+            orderPaid: orderPaid,
+            productId: orderProductId,
+            productName: productName,
+            productDescription: productDescription,
+            quantity: orderQuantity,
+            price: orderPrice,
+            transaction: orderTransaction
+        }
+        resolve(bill);
+    });
+}
+
+// function to generate the shipment bill
+async function generateShipmentBill(orderId){
+    return new Promise(async (resolve, reject) => {
+        console.log(`[ rk-userops ] 🧾 Generating shipment bill for order ${orderId}`)
+        
+        // get shipmentId from shipments table using orderId
+        db.get(`SELECT shipmentId FROM shipments WHERE orderId = ?`, [orderId], async (err, row) => {
+            if(err){
+                console.error(err.message);
+                reject(row);
+            }
+            const shipmentId = row.shipmentId;
+            
+            // get the shipment details
+            const shipmentBuyer = await chainApi.getShipmentBuyer(shipmentId);
+            const shipmentSeller = await chainApi.getShipmentSeller(shipmentId);
+            const shipmentDeliveredDate = await chainApi.getShipmentDeliveredDate(shipmentId);
+            const shipmentSource = await chainApi.getShipmentSource(shipmentId);
+            const shipmentDestination = await chainApi.getShipmentDestination(shipmentId);
+
+            // payload of the shipment bill
+            const bill = {
+                shipmentId: shipmentId,
+                orderId: orderId,
+                buyer: shipmentBuyer,
+                seller: shipmentSeller,
+                deliveredDate: shipmentDeliveredDate,
+                source: shipmentSource,
+                destination: shipmentDestination
+            }
+            resolve(bill);
+        });
+    });
+}
+
 
 
 
@@ -136,5 +208,7 @@ async function viewOrders(email){
 module.exports = {
     addAddress,
     getAddresses,
-    viewOrders
+    viewOrders,
+    generateBill,
+    generateShipmentBill
 }

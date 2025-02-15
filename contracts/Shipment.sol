@@ -55,8 +55,8 @@ contract Shipment {
         return sellerMail;
     }
 
-    function getShipmentStatus() public view returns(ShipmentStatus) {
-        return status;
+    function getShipmentStatus() public view returns(string memory) {
+        return statusMessages[status];
     }
 
     // setter functions
