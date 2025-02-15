@@ -10,13 +10,19 @@
 // 
 // @author: JellibeanTheArgonaut
 
-const { sqlite3 } = require('sqlite3');
-const { ethers } = require('hardhat');
-const { getWalletId } = require('./rk-logging');
+const sqlite3  = require('sqlite3');
 const { v4: uuid } = require('uuid');
+const path = require('path')
+
+const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
+    if(err){
+        console.error(err.message);
+    }
+    console.log('[ rk-userops ] 📶 Connected to the rk database');
+});
 
 // function to place an order
-// this function calls apis from rk-chainapi.js
+// these apis are called from the server
 // to place an order
 //
 //
@@ -64,3 +70,71 @@ const { v4: uuid } = require('uuid');
 // @param {string} address - the address of the buyer ( address of the wallet )
 // @parma {string} sellerId - the id of the seller ( address of the wallet )
 // @param {string} productId - the id of the product
+
+// function to add the address of user to the database
+async function addAddress(email, address){
+    const query = `INSERT INTO addresses (email, address) VALUES (?, ?)`;
+    db.run(query, [email, address], (err) => {
+        if(err){
+            console.error(err.message);
+        }
+        console.log('[ rk-userops ] 📫 Address added to the database');
+    });
+}
+
+async function getAddresses(email){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT address FROM addresses WHERE email = ?`, [email], (err,rows) => {
+            if(err){
+                console.log(err.message);
+                reject(rows);
+            }
+            console.log(`[ rk-userops ] 📫 Addresses of ${email}`);
+            resolve(rows);
+        });
+    });
+}
+
+//========================================================================================================
+// Orders related functions
+//========================================================================================================
+// function to place an order
+// function to confirm the order
+// function to cancel and order
+// function to pay for an order
+
+// function to view orders
+async function viewOrders(email){
+    return new Promise((resolve,reject) => {
+        // get wid from the email from the users table
+        db.get(`SELECT wid FROM users WHERE email = ?`, [email], (err, row) => {
+            if(err){
+                console.error(err.message);
+                reject(row);
+            }
+            if(row){
+                const wid = row.wid;
+                // get all the orders from the orders table
+                db.all(`SELECT * FROM orders WHERE buyerAddress = ?`, [wid], (err, rows) => {
+                    if(err){
+                        console.error(err.message);
+                        reject(rows);
+                    }
+                    console.log(`[ rk-userops ] 📦 Orders of ${email}`);
+                    console.log(rows);
+                    resolve(rows);
+                });
+            }
+        });
+    });
+}
+
+
+
+
+// module to export the functions
+module.exports = {
+    addAddress,
+    getAddresses,
+    viewOrders
+}

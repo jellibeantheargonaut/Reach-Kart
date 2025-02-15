@@ -7,8 +7,10 @@ const cookieParser = require('cookie-parser');
 const { getWalletBalance } = require('./rk-chainapi');
 
 // Importing the required modules
-const { createUser, checkLogin, userExists, verifyToken, generateToken } = require('./rk-logging');
-const { log } = require('console');
+const loggingApi = require('./rk-logging');
+const userOps = require('./rk-userops');
+const sellerOps = require('./rk-sellerops');
+const chainApi = require('./rk-chainapi');
 
 // Express js settings
 const app = express();
@@ -50,7 +52,7 @@ app.get('/order', loggedIn, (req, res) => {
 function sellerOnly(req, res, next){
     if(req.cookies.jwt){
       const token = req.cookies.jwt;
-      const status = verifyToken(token);
+      const status = loggingApi.verifyToken(token);
       if(status){
         if(token.account_type === 'seller'){
           next();
@@ -99,7 +101,7 @@ app.get('/seller/orders', sellerOnly,(req, res) => {
 function loggedIn(req, res, next){
     if(req.cookies.jwt){
       const token = req.cookies.jwt;
-      const status = verifyToken(token);
+      const status = loggingApi.verifyToken(token);
       if(status){
         next();
       }
@@ -142,7 +144,15 @@ app.get('/order', loggedIn, (req, res) => {
 // app.post('/user/payOrder', (req, res) => {}
 // app.post('/user/confirmOrder', (req, res) => {}
 // app.post('/user/refundOrder', (req, res) => {}
-// app.post('/user/viewOrders', (req, res) => {}
+
+// app.get('/user/viewOrders', (req, res) => {}
+app.get('/users/viewOrders', loggedIn, async (req,res) => {
+  const token = await loggingApi.verifyToken(req.cookies.jwt);
+  const email = token.email;
+  const orders = await userOps.viewOrders(email);
+  return res.status(200).json(orders);
+})
+
 // app.post('/user/viewOrder', (req, res) => {}
 // app.post('/user/getOrderBill', (req, res) => {}
 
@@ -160,13 +170,13 @@ app.post('/common/signin', async (req, res) => {
   // redirect to home page
   // check if the user exists in the database
   // if yes, generate a jwt token and send it back
-  const status = await userExists(data.email);
+  const status = await loggingApi.userExists(data.email);
   if(status){
     const password = data.password;
     const email = data.email;
-    const check = await checkLogin(email,password);
+    const check = await loggingApi.checkLogin(email,password);
     if(check){
-      const token = await generateToken(email);
+      const token = await loggingApi.generateToken(email);
       res.cookie('jwt',token);
       return res.status(200).json({token:token});
     }
@@ -187,7 +197,7 @@ app.get('/common/signin', (req, res) => {
 app.post('/common/signup', async (req, res) => {
   const data = req.body;
   // create a new user
-  const status = await userExists(data.email);
+  const status = await loggingApi.userExists(data.email);
   if(status){
     return res.status(401).json({message:'User already exists'});
   }
@@ -210,7 +220,7 @@ app.get('/common/logout', (req, res) => {
 // app.get('/common/getUserDetails', loggedIn, (req, res) => {}
 app.get('/common/getUserDetails', loggedIn, (req, res) => {
   const token = req.cookies.jwt;
-  const userDetails = verifyToken(token);
+  const userDetails = loggingApi.verifyToken(token);
   if (userDetails) {
     const details = {
       name: userDetails.name,
@@ -228,9 +238,9 @@ app.get('/common/getUserDetails', loggedIn, (req, res) => {
 // app.post('/common/getWalletBalance', (req, res) => {}
 app.get('/common/getWalletBalance', loggedIn, async (req, res) => {
   const token = req.cookies.jwt;
-  const userDetails = verifyToken(token);
+  const userDetails = loggingApi.verifyToken(token);
   if (userDetails) {
-    const balance = await getWalletBalance(userDetails.walletId);
+    const balance = await chainApi.getWalletBalance(userDetails.walletId);
     return res.status(200).json({ balance: balance });
   } else {
     return res.status(401).json({ message: 'Invalid token' });
@@ -241,6 +251,14 @@ app.get('/common/getWalletBalance', loggedIn, async (req, res) => {
 
 // app.post('/common/getQRCode', (req, res) => {} // function to get qr code for product payment
 // app.post('/common/getProductDetails', (req, res) => {} // function to get product details
+
+// app.get('/common/getAddresses', loggedIn, (req, res) => {}
+app.get('/common/getAddresses', loggedIn, async (req,res) => {
+  const token = loggingApi.verifyToken(req.cookies.jwt);
+  const email = token.email;
+  const addresses = await userOps.getAddresses(email);
+  return res.status(200).json(addresses);
+})
 
 //
 //==============================================================================

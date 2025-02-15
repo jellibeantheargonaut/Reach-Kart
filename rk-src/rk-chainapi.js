@@ -3,6 +3,16 @@
 //
 // @author: JellibeanTheArgonaut
 
+// Users are stored in the users table in the database
+//
+// schema of the users table
+// wid - the wallet id of the user
+// pk - the private key of the wallet
+// email - the email of the user
+// password - the password of the user
+// name - the name of the user
+// created_at - the time when the user was created
+// account_type - the type of account (user or seller)
 
 // Orders are stored in orders table in the database
 //
@@ -40,6 +50,14 @@
 // schema of the addresses table
 // email - the email of the user
 // address - the physical address of the user
+//
+// Shipments are stored in the shipments table in the database
+//
+// schema of the shipments table
+// shipmentId - the id of the shipment UUIDv4
+// shipmentAddress - the address of the shipment contract
+// shippedDate - the time when the shipment was placed
+// deliveredDate - the time when the shipment was delivered
 
 // Importing the required modules
 const sqlite3 = require('sqlite3').verbose();
@@ -48,18 +66,38 @@ const { ethers } = require('hardhat');
 const { v4: uuid } = require('uuid');
 const path = require('path');
 
-db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
+// setting up sqlite3 database
+// create new if not exists
+if(!fs.existsSync('./data/reachkart.db')){
+    console.log('[ rk-chainapi ] 📂 Database not found. Creating a new one');
+    fs.openSync('./data/reachkart.db', 'w');
+    console.log('[ rk-chainapi ] 📂 Database created');
+}
+
+const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){
         console.error(err.message);
     }
-    console.log('📶 Connected to the rk database');
+    console.log('[ rk-chainapi ] 📶 Connected to the rk database');
 });
 
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
-console.log('📶 Connected to the hardhat network');
+console.log('[ rk-chainapi ] 📶 Connected to the hardhat network');
 
 // function to create database and tables
 function createDatabases(){
+    // create the users table if not exists
+    db.run(` CREATE TABLE IF NOT EXISTS users (
+        wid string PRIMARY KEY,
+        pk string NOT NULL,
+        email string NOT NULL,
+        password string NOT NULL,
+        name string NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        account_type string DEFAULT 'user' NOT NULL)`
+    );
+    console.log('[ rk-chainapi ] 👍🏻 Users table created');
+
     // create the orders table if not exists
     db.run(`CREATE TABLE IF NOT EXISTS orders (
         orderId string PRIMARY KEY,
@@ -73,7 +111,7 @@ function createDatabases(){
         orderPaid TIMESTAMP,
         orderRefunded TIMESTAMP)`
     );
-    console.log('👍🏻 Orders table created');
+    console.log('[ rk-chainapi ] 👍🏻 Orders table created');
 
     // create the products table if not exists
     db.run(`CREATE TABLE IF NOT EXISTS products (
@@ -82,7 +120,7 @@ function createDatabases(){
         dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         dateUpdated TIMESTAMP)`
     );
-    console.log('👍🏻 Products table created');
+    console.log('[ rk-chainapi ] 👍🏻 Products table created');
 
     // create the wallets table if not exists
     db.run(`CREATE TABLE IF NOT EXISTS wallets (
@@ -90,16 +128,40 @@ function createDatabases(){
         pk string NOT NULL,
         email string NOT NULL)`
     );
-    console.log('👍🏻 Wallets table created');
+    console.log('[ rk-chainapi ] 👍🏻 Wallets table created');
 
     // create the addresses table if not exists
     db.run(`CREATE TABLE IF NOT EXISTS addresses (
         email string PRIMARY KEY,
         address string NOT NULL)`
     );
-    console.log('👍🏻 Addresses table created');
+    console.log('[ rk-chainapi ] 👍🏻 Addresses table created');
 
-    console.log('👍🏻 Database and tables created');
+    // create the shipments table if not exists
+    db.run(`CREATE TABLE IF NOT EXISTS shipments (
+        shipmentId string PRIMARY KEY,
+        shipmentAddress string NOT NULL,
+        shippedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        deliveredDate TIMESTAMP)`
+    );
+    console.log('[ rk-chainapi ] 👍🏻 Shipments table created');
+
+    console.log('[ rk-chainapi ] 👍🏻 Database and tables created');
+}
+// function to delete tables in database
+function deleteTables(){
+    db.run(`DROP TABLE IF EXISTS users`);
+    console.log('🪓 Users table deleted');
+    db.run(`DROP TABLE IF EXISTS orders`);
+    console.log('🪓 Orders table deleted');
+    db.run(`DROP TABLE IF EXISTS products`);
+    console.log('🪓 Products table deleted');
+    db.run(`DROP TABLE IF EXISTS wallets`);
+    console.log('🪓 Wallets table deleted');
+    db.run(`DROP TABLE IF EXISTS addresses`);
+    console.log('🪓 Addresses table deleted');
+    db.run(`DROP TABLE IF EXISTS shipments`);
+    console.log('🪓 Shipments table deleted');
 }
 
 // functions to handle wallet operations
@@ -125,15 +187,15 @@ async function createWallet(email){
         if(err){
             console.error(err.message);
         }
-        console.log(`💳 Wallet ${wid} created for user ${email}`);
+        console.log(`[ rk-chainapi ] 💳 Wallet ${wid} created for user ${email}`);
     });
-    console.log(`💳 Wallet ${wid} connected to hardhat network`);
+    console.log(`[ rk-chainapi ] 💳 Wallet ${wid} connected to hardhat network`);
 }
 
 // function to get the balance of a wallet
 async function getWalletBalance(wid){
     const balance = await provider.getBalance(wid);
-    console.log(`💵 Balance of wallet ${wid} is ${ethers.formatEther(balance)}`);
+    console.log(`[ rk-chainapi ] 💵 Balance of wallet ${wid} is ${ethers.formatEther(balance)}`);
     return ethers.formatEther(balance);
 }
 
@@ -156,7 +218,7 @@ async function fundWallet(wid,amount){
         value: ethers.parseEther(amount)
     });
     await tx.wait();
-    console.log(`🤑 Wallet ${wid} funded with ${amount} ETH`);
+    console.log(`[ rk-chainapi ] 🤑 Wallet ${wid} funded with ${amount} ETH`);
 }
 
 // function to send a transaction
@@ -167,8 +229,7 @@ async function transferFunds(buyerWid, sellerWid, amount){
         value: ethers.parseEther(amount.toString())
     });
     await tx.wait();
-    console.log(`Transaction hash: ${tx.hash}`);
-    console.log(`💵 ${amount} ETH transferred from ${buyerWid} to ${sellerWid}`);
+    console.log(`[ rk-chainapi ] 💵 ${amount} ETH transferred from ${buyerWid} to ${sellerWid}`);
 
     // return the transaction hash
     return tx.hash;
@@ -190,16 +251,16 @@ async function deployProductContract(sellerAddress, productName, productDescript
     const Product = await ethers.getContractFactory('ProductRegistry',seller);
     const productId = uuid();
     const etherPrice = ethers.parseEther(productPrice);
-    console.log(`📦 Product ${productId} created by seller ${sellerAddress}`);
+    console.log(`[ rk-chainapi ] 📦 Product ${productId} created by seller ${sellerAddress}`);
     const productContract = await Product.deploy(sellerAddress,productId,productName,productDescription,etherPrice,productQuantity);
-    console.log(`📦 Product contract deployed at ${productContract.address}`);
+    console.log(`[ rk-chainapi ] 📦 Product contract deployed at ${productContract.address}`);
 
     // insert the product into the products table
     db.run(`INSERT INTO products(productId,productAddress,dateAdded) VALUES(?,?,?)`,[productId,await productContract.getAddress(),Date.now()], (err) => {
         if(err){
             console.error(err.message);
         }
-        console.log(`📦 Product ${productId} entered in database table`);
+        console.log(`[ rk-chainapi ] 📦 Product ${productId} entered in database table`);
     });
 }
 
@@ -213,7 +274,7 @@ async function setProductPrice(productId,productPrice){
         const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
         const etherPrice = ethers.parseEther(productPrice);
         await productContract.setProductPrice(etherPrice);
-        console.log(`📦 Product ${productId} price set to ${productPrice}`);
+        console.log(`[ rk-chainapi ] 📦 Product ${productId} price set to ${productPrice}`);
     });
 
     // update the dateUpdated field in the products table
@@ -221,7 +282,7 @@ async function setProductPrice(productId,productPrice){
         if(err){
             console.error(err.message);
         }
-        console.log(`📦 Product ${productId} updated in database table`);
+        console.log(`[ rk-chainapi ] 📦 Product ${productId} updated in database table`);
     });
 }
 // function to set the quantity of the product
@@ -233,7 +294,7 @@ async function setProductQuantity(productId,productQuantity){
         const productAddress = row.productAddress;
         const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
         await productContract.setProductQuantity(productQuantity);
-        console.log(`📦 Product ${productId} quantity set to ${productQuantity}`);
+        console.log(`[ rk-chainapi ] 📦 Product ${productId} quantity set to ${productQuantity}`);
     });
 
     // update the dateUpdated field in the products table
@@ -241,7 +302,7 @@ async function setProductQuantity(productId,productQuantity){
         if(err){
             console.error(err.message);
         }
-        console.log(`📦 Product ${productId} updated in database table`);
+        console.log(`[ rk-chainapi ] 📦 Product ${productId} updated in database table`);
     });
 }
 
@@ -254,7 +315,7 @@ async function getProductPrice(productId){
         const productAddress = row.productAddress;
         const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
         const productPrice = await productContract.getProductPrice();
-        console.log(`💵 Price of product ${productId} is ${productPrice}`);
+        console.log(`[ rk-chainapi ] 💵 Price of product ${productId} is ${productPrice}`);
         return ethers.formatEther(productPrice);
     });
 }
@@ -267,7 +328,7 @@ async function getProductQuantity(productId){
         const productAddress = row.productAddress;
         const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
         const productQuantity = await productContract.getProductQuantity();
-        console.log(`📦 Quantity of product ${productId} is ${productQuantity}`);
+        console.log(`[ rk-chainapi ] 📦 Quantity of product ${productId} is ${productQuantity}`);
         return productQuantity;
     });
 }
@@ -323,7 +384,7 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
         const productPrice = await productContract.getProductPrice();
         // calculate the total price
         let totalPrice = BigInt(productPrice) * BigInt(productQuantity);
-        console.log(`💵 Total price of order for product ${productId} is ${ethers.formatEther(totalPrice)}`);
+        console.log(`[ rk-chainapi ] 💵 Total price of order for product ${productId} is ${ethers.formatEther(totalPrice)}`);
 
         // deploy the order contract
         // get buyer pkey
@@ -333,14 +394,14 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
         const Order = await ethers.getContractFactory('Order',buyer);
         const orderId = uuid();
         const orderContract = await Order.deploy(Date.now(),sellerAddress,buyerAddress,orderId,totalPrice,productQuantity);
-        console.log(`👍🏻 Order contract deployed at ${orderContract.address}`);
+        console.log(`[ rk-chainapi ] 👍🏻 Order contract deployed at ${orderContract.address}`);
 
         // insert the order into the orders table
         db.run(`INSERT INTO orders(orderId,orderAddress,productId,buyerAddress,orderPlaced) VALUES(?,?,?,?,?)`,[orderId,await orderContract.getAddress(),productId,buyerAddress,Date.now()], (err) => {
             if(err){
                 console.error(err.message);
             }
-            console.log(`👍🏻 Order ${orderId} entered in database table for ${productId}`);
+            console.log(`[ rk-chainapi ] 👍🏻 Order ${orderId} entered in database table for ${productId}`);
         });
     });
 }
@@ -351,7 +412,7 @@ async function confirmOrder(orderId){
         if(err){
             console.error(err.message);
         }
-        console.log(`👍🏻 Order ${orderId} confirmed at ${new Date(Date.now()).toISOString()}`);
+        console.log(`[ rk-chainapi ] 👍🏻 Order ${orderId} confirmed at ${new Date(Date.now()).toISOString()}`);
     });
 }
 // function to cancel the order
@@ -361,7 +422,7 @@ async function cancelOrder(orderId){
         if(err){
             console.error(err.message);
         }
-        console.log(`👎🏻 Order ${orderId} cancelled at ${new Date(Date.now()).toISOString()}`);
+        console.log(`[ rk-chainapi ] 👎🏻 Order ${orderId} cancelled at ${new Date(Date.now()).toISOString()}`);
     });
 }
 // function to pay for the order
@@ -376,10 +437,10 @@ async function payOrder(orderId){
         const orderPrice = await orderContract.getOrderAmount();
         // get the buyer wallet address
         const buyerWid = await orderContract.getOrderBuyer();
-        console.log(`💳 Buyer: ${buyerWid}`)
+        console.log(`[ rk-chainapi ] 💳 Buyer: ${buyerWid}`)
         // get the seller wallet address
         const sellerWid = await orderContract.getOrderSeller();
-        console.log(`💳 Seller: ${sellerWid}`);
+        console.log(`[ rk-chainapi ] 💳 Seller: ${sellerWid}`);
 
         // transfer the funds from buyer to seller
         let txId = await transferFunds(buyerWid,sellerWid,ethers.formatEther(orderPrice));
@@ -388,7 +449,7 @@ async function payOrder(orderId){
             if(err){
                 console.error(err.message);
             }
-            console.log(`👍🏻 Order ${orderId} transactionId updated to ${txId}`);
+            console.log(`[ rk-chainapi ] 👍🏻 Order ${orderId} transactionId updated to ${txId}`);
         });
     });
     // update the orderPaid field in the orders table
@@ -396,30 +457,393 @@ async function payOrder(orderId){
         if(err){
             console.error(err.message);
         }
-        console.log(`👍🏻 Order ${orderId} paid at ${new Date(Date.now()).toISOString()}`);
+        console.log(`[ rk-chainapi ] 👍🏻 Order ${orderId} paid at ${new Date(Date.now()).toISOString()}`);
     });
 }
 // function to refund the order
 // function to get the address of the order contract
 // function to get the date when the order was placed
+async function getOrderPlacedDate(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT orderPlaced FROM orders WHERE orderId = ?`,[orderId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.orderPlaced);
+        });
+    });
+}
+
 // function to get the date when the order was confirmed
+async function getOrderConfirmedDate(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT orderConfirmed FROM orders WHERE orderId = ?`,[orderId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.orderConfirmed);
+        });
+    });
+}
+
 // function to get the date when the order was cancelled
+async function getOrderCancelledDate(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT orderCancelled FROM orders WHERE orderId = ?`,[orderId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.orderCancelled);
+        });
+    });
+}
+
 // function to get the date when the order was paid
+async function getOrderPaidDate(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT orderPaid FROM orders WHERE orderId = ?`,[orderId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.orderPaid);
+        });
+    });
+}
+
 // function to get the date when the order was refunded
+async function getOrderRefundedDate(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT orderRefunded FROM orders WHERE orderId = ?`,[orderId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.orderRefunded);
+        });
+    });
+}
+
 // function to get the buyer of the order
 // function to get the seller of the order
+
 // function to get the product of the order
+async function getOrderProduct(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT productId FROM orders WHERE orderId = ?`,[orderId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.productId);
+        });
+    });
+}
+
 // function to get the quantity of the order
+async function getOrderQuantity(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT orderAddress FROM orders WHERE orderId = ?`,[orderId], async (err,row) => {
+            if(err){
+                reject(err);
+            }
+            
+            const orderAddress = row.orderAddress;
+            const orderContract = await ethers.getContractAt('Order',orderAddress,provider);
+            const orderQuantity = await orderContract.getOrderQuantity();
+            resolve(orderQuantity.toString());
+        });
+    });
+}
+
 // function to get the price of the order
+async function getOrderPrice(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT orderAddress FROM orders WHERE orderId = ?`, [orderId], async (err,row) => {
+            if(err){
+                reject(err);
+            }
+            const orderAddress = row.orderAddress;
+            const orderContract = await ethers.getContractAt('Order',orderAddress,provider);
+            const orderPrice = await orderContract.getOrderAmount();
+            resolve(ethers.formatEther(orderPrice));
+        });
+    });
+}
+
 // function to get the status of the order
 // function to get the tracking details of the order
-// function to get the invoice of the order
+// function to get the transaction details of the order
+async function getOrderTransaction(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT transactionId FROM orders WHERE orderId = ?`,[orderId], async (err,row) => {
+            if(err){
+                reject(err);
+            }
+            
+            const transactionId = row.transactionId;
+            const tx = await provider.getTransaction(transactionId);
+            const block = await provider.getBlock(tx.blockNumber);
+
+            const details = {
+                hash: tx.hash,
+                blockNumber: tx.blockNumber,
+                from: tx.from,
+                to: tx.to,
+                value: ethers.formatEther(tx.value),
+                gasPrice: ethers.formatEther(tx.gasPrice),
+                gasLimit: tx.gasLimit,
+                time: new Date(block.timestamp * 1000).toLocaleString('en-US', {
+                    month: 'long',      // Full month name (e.g., "January")
+                    day: 'numeric',     // Day of the month (e.g., "1")
+                    year: 'numeric',    // Full year (e.g., "2023")
+                    hour: 'numeric',    // Hour (e.g., "12")
+                    minute: 'numeric',  // Minute (e.g., "30")
+                    second: 'numeric',  // Second (e.g., "45")
+                    hour12: true        // Use 12-hour clock (e.g., "AM/PM")
+                  }),
+            };
+            resolve(details);
+        });
+    });
+}
+
+//==================================================================================
+// Shipment Smart contract APIs
+//==================================================================================
+
+// deploy the shipment contract
+async function deployShipmentContract(buyerMail, sellerMail, orderId){
+    
+    // generate the shipment id
+    const shipmentId = uuid();
+
+    // get the seller wallet address
+    const sellerWid = await getWallets(sellerMail);
+    const seller = await new ethers.Wallet(sellerWid[0].pk,provider);
+
+    // deploy the shipment contract
+    const Shipment = await ethers.getContractFactory('Shipment',seller);
+    const shipmentContract = await Shipment.deploy(Date.now(),shipmentId,orderId,buyerMail,sellerMail);
+    console.log(`[ rk-chainapi ] 🚚 Shipment contract deployed at ${await shipmentContract.getAddress()}`);
+
+    // insert the shipment into the shipments table
+    db.run(`INSERT INTO shipments(shipmentId,shipmentAddress,shippedDate) VALUES(?,?,?)`,[shipmentId,await shipmentContract.getAddress(),Date.now()], (err) => {
+        if(err){
+            console.error(err.message);
+        }
+        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} entered in database table`);
+    });
+}
+
+// function to get the destination address of the shipment contract
+async function getShipmentDestination(shipmentId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`,[shipmentId], async (err,row) => {
+            if(err){
+                reject(err);
+            }
+            const shipmentAddress = row.shipmentAddress;
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+
+            // buyer mail is the destination address
+            const destination = await shipmentContract.getShipmentBuyer();
+            // get the address of the buyer from the addresses table
+            db.get(`SELECT address FROM addresses WHERE email = ?`,[destination], (err,row) => {
+                if(err){
+                    reject(err);
+                }
+                resolve(row.address);
+            });
+        });
+    });
+}
+
+// function to get the source of the shipment contract
+async function getShipmentSource(shipmentId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`,[shipmentId], async (err,row) => {
+            if(err){
+                reject(err);
+            }
+            const shipmentAddress = row.shipmentAddress;
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+
+            // seller mail is the source address
+            const source = await shipmentContract.getShipmentSeller();
+            // get the address of the seller from the addresses table
+            db.get(`SELECT address FROM addresses WHERE email = ?`,[source], (err,row) => {
+                if(err){
+                    reject(err);
+                }
+                resolve(row.address);
+            });
+        });
+    });
+}
+
+// function to get the date when the shipment was placed
+async function getShipmentShippedDate(shipmentId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT shippedDate FROM shipments WHERE shipmentId = ?`,[shipmentId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.shippedDate);
+        });
+    });
+}
+
+// function to get the date when the shipment was delivered
+async function getShipmentDeliveredDate(shipmentId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT deliveredDate FROM shipments WHERE shipmentId = ?`,[shipmentId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.deliveredDate);
+        });
+    });
+}
+
+// function to get shipment buyer
+async function getShipmentBuyer(shipmentId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
+            if(err){
+                reject(err);
+            }
+            const shipmentAddress = row.shipmentAddress;
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+            const buyer = await shipmentContract.getShipmentBuyer();
+            console.log(`[ rk-chainapi ] 🚚 Buyer of shipment ${shipmentId} : ${buyer}`);
+            resolve(buyer);
+        });
+    });
+} 
+
+// function to get shipment seller
+async function getShipmentSeller(shipmentId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
+            if(err){
+                reject(err);
+            }
+            const shipmentAddress = row.shipmentAddress;
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+            const seller = await shipmentContract.getShipmentSeller();
+            console.log(`[ rk-chainapi ] 🚚 Seller of shipment ${shipmentId} : ${seller}`);
+            resolve(seller);
+        });
+    });
+}
+
+// function to get shipment order
+async function getShipmentOrder(shipmentId){
+        db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
+            if(err){
+                console.error(err.message);
+            }
+            const shipmentAddress = row.shipmentAddress;
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+            const order = await shipmentContract.getShipmentOrder();
+            console.log(`[ rk-chainapi ] 🚚 Order of shipment ${shipmentId} : ${order}`);
+            //resolve(order);
+        });
+}
+
+// function to get shipment status
+async function getShipmentStatus(shipmentId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
+            if(err){
+                reject(err);
+            }
+            const shipmentAddress = row.shipmentAddress;
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+            const status = await shipmentContract.getShipmentStatus();
+            console.log(`[ rk-chainapi ] 🚚 Status of shipment ${shipmentId} : ${status}`);
+            resolve(status);
+        });
+    });
+}
+
+// functions that change the status of the shipment
+//==============================================================================
+// function to ship the shipment
+async function shipShipment(shipmentId){
+    // get the shipment contract address
+    db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
+        if(err){
+            console.error(err.message);
+        }
+        const shipmentAddress = row.shipmentAddress;
+        const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+        await shipmentContract.ship();
+        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} shipped at ${new Date(Date.now()).toISOString()}`);
+    });
+
+    // update the shippedDate field in the shipments table
+    db.run(`UPDATE shipments SET shippedDate = ? WHERE shipmentId = ?`,[Date.now(),shipmentId], (err) => {
+        if(err){
+            console.error(err.message);
+        }
+    });
+}
+
+// function to confirm the shipment
+async function confirmShipment(shipmentId){
+    // get the shipment contract address
+    db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
+        if(err){
+            console.error(err.message);
+        }
+        const shipmentAddress = row.shipmentAddress;
+        const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+        await shipmentContract.confirmDelivery();
+        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} confirmed at ${new Date(Date.now()).toISOString()}`);
+    });
+
+    // update the deliveredDate field in the shipments table
+    db.run(`UPDATE shipments SET deliveredDate = ? WHERE shipmentId = ?`,[Date.now(),shipmentId], (err) => {
+        if(err){
+            console.error(err.message);
+        }
+    });
+}
+
+// function to cancel the shipment
+async function cancelShipment(shipmentId){
+    // get the shipment contract address
+    db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
+        if(err){
+            console.error(err.message);
+        }
+        const shipmentAddress = row.shipmentAddress;
+        const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+        await shipmentContract.cancelShipment();
+        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} cancelled at ${new Date(Date.now()).toISOString()}`);
+    });
+}
+
+// function to return the shipment
+async function returnShipment(shipmentId){
+    // get the shipment contract address
+    db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
+        if(err){
+            console.error(err.message);
+        }
+        const shipmentAddress = row.shipmentAddress;
+        const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
+        await shipmentContract.returnShipment();
+        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} returned at ${new Date(Date.now()).toISOString()}`);
+    });
+}
+
 
 
 
 // Module exports
 module.exports = {
     createDatabases,
+    deleteTables,
     getWallets,
     createWallet,
     getWalletBalance,
@@ -438,5 +862,28 @@ module.exports = {
     deployOrderContract,
     confirmOrder,
     cancelOrder,
-    payOrder
+    payOrder,
+    getOrderPlacedDate,
+    getOrderConfirmedDate,
+    getOrderCancelledDate,
+    getOrderPaidDate,
+    getOrderRefundedDate,
+    getOrderProduct,
+    getOrderQuantity,
+    getOrderPrice,
+    getOrderTransaction,
+    
+    deployShipmentContract,
+    getShipmentDestination,
+    getShipmentSource,
+    getShipmentShippedDate,
+    getShipmentDeliveredDate,
+    getShipmentBuyer,
+    getShipmentSeller,
+    getShipmentOrder,
+    getShipmentStatus,
+    shipShipment,
+    confirmShipment,
+    cancelShipment,
+    returnShipment
 };

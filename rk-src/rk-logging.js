@@ -9,32 +9,16 @@ const { ethers } = require('hardhat');
 const crypto = require('crypto');
 const { resolve } = require('path');
 
-// setting up sqlite3 database
-// create new if not exists
-if(!fs.existsSync('./data/reachkart.db')){
-    fs.openSync('./data/reachkart.db', 'w');
-}
+// connecting to the sqlite3 database
 let db = new sqlite3.Database('./data/reachkart.db', (err) => {
     if(err){
         console.error(err.message);
     }
-    console.log('✅ Connected to the rk database');
+    console.log('[ rk-logging ] ✅ Connected to the rk database');
 });
 
 // secret key for signing jwt tokens
 const SECRET_KEY = process.env.SECRET_KEY || 'SuperSecretPassword';
-
-// create the users table if not exists
-
-db.run(` CREATE TABLE IF NOT EXISTS users (
-    wid string PRIMARY KEY,
-    pk string NOT NULL,
-    email string NOT NULL,
-    password string NOT NULL,
-    name string NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    account_type string DEFAULT 'user' NOT NULL)`
-);
 
 // create a new user
 // this function is called when a new user signs up
@@ -48,18 +32,32 @@ function createUser(email,password,name,accountType){
 
     // hash the password using SHA256
     const passHash = crypto.createHash('sha256').update(password).digest('hex');
-    db.run(`INSERT INTO users(wid,pk,email,password,name,account_type) VALUES(?,?,?,?,?,?)`,[wid,pk,email,passHash,name,accountType], (err) => {
+    db.run(`INSERT INTO users(wid,pk,email,password,name,created_at,account_type) VALUES(?,?,?,?,?,?,?)`,[wid,pk,email,passHash,name,Date.now(),accountType], (err) => {
         if(err){
             console.error(err.message);
         }
-        console.log(`✅ User ${name} created with wallet id ${wid}`);
+        console.log(`[ rk-logging ] 👤 User ${name} created with wallet id ${wid}`);
     });
     // also add entry in wallets table
     db.run(`INSERT INTO wallets(wid,pk,email) VALUES(?,?,?)`,[wid,pk,email], (err) => {
         if(err){
             console.error(err.message);
         }
-        console.log(`✅ Wallet ${wid} created for user ${name}`);
+        console.log(`[ rk-logging ] 👤 Wallet ${wid} created for user ${name}`);
+    });
+}
+
+// function to delete a user
+async function deleteUser(email){
+    return new Promise((resolve,reject) => {
+        db.run(`DELETE FROM users WHERE email = ?`,[email], (err) => {
+            if(err){
+                console.error(err.message);
+                reject(err);
+            }
+            console.log(`[ rk-logging ] 👤 User with email ${email} deleted`);
+            resolve(true);
+        });
     });
 }
 
@@ -82,11 +80,11 @@ async function generateToken(email){
                 const options = {
                     expiresIn: '1d'
                 };
-                console.log(`🔑 Generating token for user with email ${email}`);
+                console.log(`[ rk-logging ] 🔑 Generating token for user with email ${email}`);
                 return resolve(jwt.sign(payload,SECRET_KEY,options));
             }
             else {
-                console.log(`🤕 User with email ${email} not found`);
+                console.log(`[ rk-logging ] 🤕 User with email ${email} not found`);
                 return reject('User not found');
             }
         });
@@ -103,7 +101,7 @@ function verifyToken(token){
 function checkLogin(email,password) {
     return new Promise((resolve,reject) => {
         const passHash = crypto.createHash('sha256').update(password).digest('hex');
-        console.log(`🔍 Checking login for user with email ${email}`);
+        console.log(`[ rk-logging ] 🔍 Checking login for user with email ${email}`);
         //console.log(`🔍 Password hash is ${passHash}`);
         db.get(`SELECT * FROM users WHERE email = ?`,[email], (err,row) => {
             if(err){
@@ -112,15 +110,15 @@ function checkLogin(email,password) {
             }
             if(row){
                 if(passHash === row.password){
-                    console.log(`✅ User ${row.name} logged in with wallet id ${row.wid}`);
+                    console.log(`[rk-logging ] 👤 User ${row.name} logged in with wallet id ${row.wid}`);
                     return resolve(true);
                 }
                 else {
-                    console.log(`❌ Password mismatch for user with email ${email}`);
+                    console.log(`[ rk-logging ] ❌ Password mismatch for user with email ${email}`);
                     return resolve(false);
                 }
             }
-            console.log(`❌ User with email ${email} not found`);
+            console.log(`[ rk-logging ] ❌ User with email ${email} not found`);
             return resolve(false);
         });
     });
@@ -160,6 +158,7 @@ function getWalletId(email){
 
 module.exports = {
     createUser,
+    deleteUser,
     generateToken,
     verifyToken,
     checkLogin,
