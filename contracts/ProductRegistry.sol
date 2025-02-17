@@ -78,16 +78,15 @@ contract ProductRegistry {
 
 
     // functions to handle the product
-    function addProduct() public {
-        require(status == ProductStatus.SoldOut, "Product is not sold out");
+    function addProduct(uint qty) public {
 
-        product.quantity += 1;
+        product.quantity += qty;
         status = ProductStatus.Available;
 
         emit ProductAvailable(block.timestamp);
     }
 
-    function sellProduct() public {
+    function sellProduct(uint qty) public {
         require(status == ProductStatus.Available, "Product is not available");
 
         if(product.quantity == 0){
@@ -95,7 +94,7 @@ contract ProductRegistry {
             emit ProductSoldOut(block.timestamp);
         }
         else{
-            product.quantity -= 1;
+            product.quantity -= qty;
             if(product.quantity == 0){
                 status = ProductStatus.SoldOut;
                 emit ProductSoldOut(block.timestamp);

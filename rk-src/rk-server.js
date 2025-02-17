@@ -139,12 +139,15 @@ app.get('/order', loggedIn, (req, res) => {
 
 // these routes are provided by the chain api
 // app.post('/user/getProduct', (req, res) => {}
+
+//================================================
+// routes for order related operations
+//================================================
 // app.post('/user/placeOrder', (req, res) => {}
 // app.post('/user/cancelOrder', (req, res) => {}
 // app.post('/user/payOrder', (req, res) => {}
 // app.post('/user/confirmOrder', (req, res) => {}
 // app.post('/user/refundOrder', (req, res) => {}
-
 // app.get('/user/viewOrders', (req, res) => {}
 app.get('/users/viewOrders', loggedIn, async (req,res) => {
   const token = await loggingApi.verifyToken(req.cookies.jwt);
@@ -155,6 +158,7 @@ app.get('/users/viewOrders', loggedIn, async (req,res) => {
 
 // app.post('/user/viewOrder', (req, res) => {}
 // app.post('/user/getOrderBill', (req, res) => {}
+//================================================
 
 //==============================================================================
 
@@ -189,6 +193,9 @@ app.post('/common/signin', async (req, res) => {
   }
 });
 app.get('/common/signin', (req, res) => {
+  if(req.cookies.jwt){
+    res.redirect('/home');
+  }
     res.sendFile(path.join(__dirname, 'public/html/signin-page.html'));
 });
 
@@ -202,11 +209,14 @@ app.post('/common/signup', async (req, res) => {
     return res.status(401).json({message:'User already exists'});
   }
   else {
-    createUser(data.email,data.password,data.name,data.account_type);
+    loggingApi.createUser(data.email,data.password,data.name,data.account_type);
     return res.json({message:'User created'});
   }
 });
 app.get('/common/signup', (req, res) => {
+  if(req.cookies.jwt){
+    res.redirect('/home');
+  }
     res.sendFile(path.join(__dirname, 'public/html/signup-page.html'));
 });
 

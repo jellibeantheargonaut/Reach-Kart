@@ -864,16 +864,22 @@ async function getShipmentStatus(shipmentId){
 //==============================================================================
 // function to ship the shipment
 async function shipShipment(shipmentId){
-    return new Promise((resolve,reject) => async () => {
+    return new Promise(async (resolve,reject) =>  {
         // get the shipment contract address
         db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
             if(err){
                 console.error(err.message);
                 reject(err);
             }
+            // get the mail of the seller
+            const sellerMail = await getShipmentSeller(shipmentId);
+            // get the pkey of the seller from the wallets table
+            const sellerWid = await getWallets(sellerMail);
+            const seller = await new ethers.Wallet(sellerWid[0].pk,provider);
             const shipmentAddress = row.shipmentAddress;
-            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
-            await shipmentContract.ship();
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,seller);
+            let tx = await shipmentContract.ship();
+            await tx.wait();
             console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} shipped at ${new Date(Date.now()).toISOString()}`);
         });
 
@@ -893,22 +899,29 @@ async function shipShipment(shipmentId){
                 reject(err);
             }
         });
+        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} shipped at ${new Date(Date.now()).toISOString()}`);
         resolve();
     });
 }
 
 // function to confirm the shipment ( confirm delivery )
 async function confirmShipment(shipmentId){
-    return new Promise((resolve,reject) => {
+    return new Promise(async (resolve,reject) => {
         // get the shipment contract address
         db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
             if(err){
                 console.error(err.message);
                 reject(err);
             }
+            // get the mail of the seller
+            const buyerMail = await getShipmentBuyer(shipmentId);
+            // get the pkey of the seller from the wallets table
+            const buyerWid = await getWallets(buyerMail);
+            const buyer = await new ethers.Wallet(buyerWid[0].pk,provider);
             const shipmentAddress = row.shipmentAddress;
-            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
-            await shipmentContract.confirmDelivery();
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,buyer);
+            let tx = await shipmentContract.confirmDelivery();
+            await tx.wait();
             console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} confirmed at ${new Date(Date.now()).toISOString()}`);
         });
 
@@ -919,6 +932,7 @@ async function confirmShipment(shipmentId){
                 reject(err);
             }
         });
+        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} confirmed at ${new Date(Date.now()).toISOString()}`);
         resolve();
     });
 }
@@ -932,9 +946,15 @@ async function cancelShipment(shipmentId){
                 console.error(err.message);
                 reject(err);
             }
+            // get the mail of the buyer
+            const buyerMail = await getShipmentBuyer(shipmentId);
+            // get the pkey of the buyer from the wallets table
+            const buyerWid = await getWallets(buyerMail);
+            const buyer = await new ethers.Wallet(buyerWid[0].pk,provider);
             const shipmentAddress = row.shipmentAddress;
-            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
-            await shipmentContract.cancelShipment();
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,buyer);
+            let tx = await shipmentContract.cancelShipment();
+            await tx.wait();
             console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} cancelled at ${new Date(Date.now()).toISOString()}`);
         });
         resolve();
@@ -950,11 +970,18 @@ async function returnShipment(shipmentId){
                 console.error(err.message);
                 reject(err);
             }
+            // get the mail of the buyer
+            const buyerMail = await getShipmentBuyer(shipmentId);
+            // get the pkey of the buyer from the wallets table
+            const buyerWid = await getWallets(buyerMail);
+            const buyer = await new ethers.Wallet(buyerWid[0].pk,provider);
             const shipmentAddress = row.shipmentAddress;
-            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
-            await shipmentContract.returnShipment();
-            console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} returned at ${new Date(Date.now()).toISOString()}`);
+            const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,buyer);
+            let tx = await shipmentContract.returnShipment();
+            await tx.wait();
+            
         });
+        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} returned at ${new Date(Date.now()).toISOString()}`);
         resolve();
     });
 }

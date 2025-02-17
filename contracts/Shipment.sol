@@ -60,7 +60,7 @@ contract Shipment {
     }
 
     // setter functions
-    function ship() public {
+    function ship() public{
         require(
             status == ShipmentStatus.Pending,
             "Shipment is not pending"

@@ -167,37 +167,31 @@ async function generateBill(orderId){
 }
 
 // function to generate the shipment bill
-async function generateShipmentBill(orderId){
+async function generateShipmentBill(shipmentId){
     return new Promise(async (resolve, reject) => {
-        console.log(`[ rk-userops ] 🧾 Generating shipment bill for order ${orderId}`)
-        
-        // get shipmentId from shipments table using orderId
-        db.get(`SELECT shipmentId FROM shipments WHERE orderId = ?`, [orderId], async (err, row) => {
-            if(err){
-                console.error(err.message);
-                reject(row);
-            }
-            const shipmentId = row.shipmentId;
-            
-            // get the shipment details
-            const shipmentBuyer = await chainApi.getShipmentBuyer(shipmentId);
-            const shipmentSeller = await chainApi.getShipmentSeller(shipmentId);
-            const shipmentDeliveredDate = await chainApi.getShipmentDeliveredDate(shipmentId);
-            const shipmentSource = await chainApi.getShipmentSource(shipmentId);
-            const shipmentDestination = await chainApi.getShipmentDestination(shipmentId);
+        console.log(`[ rk-userops ] 🧾 Generating shipment bill for shipment ${shipmentId}`);   
+        // get the shipment buyer
+        const shipmentBuyer = await chainApi.getShipmentBuyer(shipmentId);
+        // get shipment seller
+        const shipmentSeller = await chainApi.getShipmentSeller(shipmentId);
+        // get the source address
+        const shipmentSource = await chainApi.getShipmentSource(shipmentId);
+        // get the destination address
+        const shipmentDestination = await chainApi.getShipmentDestination(shipmentId);
+        // get the shipment order
+        const shipmentOrder = await chainApi.getShipmentOrder(shipmentId);
 
-            // payload of the shipment bill
-            const bill = {
-                shipmentId: shipmentId,
-                orderId: orderId,
-                buyer: shipmentBuyer,
-                seller: shipmentSeller,
-                deliveredDate: shipmentDeliveredDate,
-                source: shipmentSource,
-                destination: shipmentDestination
-            }
-            resolve(bill);
-        });
+        // payload of the shipment bill
+        const shipmentBill = {
+            shipmentId: shipmentId,
+            buyer: shipmentBuyer,
+            seller: shipmentSeller,
+            source: shipmentSource,
+            destination: shipmentDestination,
+            order: shipmentOrder
+        }
+        resolve(shipmentBill);
+        
     });
 }
 

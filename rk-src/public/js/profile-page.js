@@ -53,12 +53,34 @@ async function showAccountDetails() {
 }
 
 //==============================================================================
-// function to show orders
+// function to show orders of the user
 async function showOrders() {
     blankDivs();
     const ordersDiv = document.querySelector('.orders-container');
     ordersDiv.style.display = 'flex';
-    const userInfo = await fetch('/common/getUserDetails').then(res => res.json());
+//    const orders = await fetch('/users/viewOrders');
+//    console.log(orders);
+//
+//    // show the orders in the div
+//    const ordersContainer = document.querySelector('.orders-container');
+//    ordersContainer.innerHTML = '';
+//    orders.forEach(order => {
+//        const orderContainer = document.createElement('div');
+//        orderContainer.classList.add('order-container');
+//
+//        const orderContainerHeader = document.createElement('div');
+//        orderContainerHeader.classList.add('order-container-header');
+//        const OrderContainerContent = document.createElement('div');
+//        OrderContainerContent.classList.add('order-container-content');
+//        OrderContainerContent.classList.add(order.orderId);
+//        const orderUUID = document.createElement('p');
+//        orderUUID.setAttribute('id', 'order-uuid');
+//        orderUUID.appendChild(document.createTextNode(order.orderId));
+//
+//        orderContainerHeader.appendChild(orderUUID);
+//        orderContainer.appendChild(orderContainerHeader);
+//        orderContainer.appendChild(OrderContainerContent);
+//    });
 }
 
 function logout() {
