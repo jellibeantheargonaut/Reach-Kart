@@ -49,7 +49,11 @@ async function showAccountDetails() {
     const accountDiv = document.querySelector('.account-container');
     accountDiv.style.display = 'flex';
 
+    const accountDetailsCard = document.querySelector('.account-details-card');
     const userInfo = await fetch('/common/getUserDetails').then(res => res.json());
+    console.log(userInfo.name);
+    accountDetailsCard.querySelector('#account-name').innerHTML = userInfo.name;
+    accountDetailsCard.querySelector('#account-email').innerHTML = userInfo.email;
 }
 
 //==============================================================================

@@ -13,6 +13,8 @@
         <script src="https://cdn.jsdelivr.net/npm/meilisearch@latest/dist/bundles/meilisearch.umd.js"></script>
     </head>
     <body>
+        <div class="message-overlay">
+        </div>
         <div class="top-nav-bar-container">
             <div class="menu-icon-container" onclick="toggleSidebar()">
                 <i class="fa-solid fa-bars fa-xl" id="menu-icon"></i>
@@ -39,7 +41,7 @@
                     <i class="fa-solid fa-user fa-xl"></i>
                 </div>
                 <div class="user-profile-dropdown-container" id="userDropdown">
-                    <div class="user-icon-dropdown-item">Profile</div>
+                    <div class="user-icon-dropdown-item" onclick="window.location.href='/profile'">Profile</div>
                     <div class="user-icon-dropdown-item">Orders</div>
                     <div class="user-icon-dropdown-item">Settings</div>
                     <div class="user-icon-dropdown-divider"></div>
@@ -51,6 +53,15 @@
             <div class="sidebar-menu-container" id="sidebar-menu-container">
             </div>
             <div class="main-content-page-area">
+
+                <!-- Div for product search listings -->
+                <div class="products-list-container"></div>
+
+                <!-- Div for product details (also known as products page )-->
+                <div class="product-details-container"></div>
+
+                <!-- Div for payments page -->
+                <div class="payments-container"></div>
             </div>
         </div>
     </body>

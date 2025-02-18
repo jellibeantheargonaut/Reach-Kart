@@ -14,6 +14,7 @@ const sqlite3  = require('sqlite3');
 const { v4: uuid } = require('uuid');
 const path = require('path');
 const chainApi = require('./rk-chainapi');
+const { get } = require('http');
 
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){
@@ -195,6 +196,43 @@ async function generateShipmentBill(shipmentId){
     });
 }
 
+//========================================================================================================
+// function to perform query on products table and return the results
+// this function is called from the server
+async function searchProducts(query){
+    return new Promise((resolve, reject) => {
+        db.all(`SELECT * FROM products WHERE name LIKE ? LIMIT 10`, ['%' + query + '%'], (err, rows) => {
+            if(err){
+                console.error(err.message);
+                reject(rows);
+            }
+            console.log(`[ rk-userops ] 🔍 Search results for ${query}`);
+            console.log(rows);
+            resolve(rows);
+        });
+    });
+}
+
+// function to get user account details
+async function getUserAccountDetails(email){
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM users WHERE email = ?`, [email], async (err, row) => {
+            if(err){
+                console.error(err.message);
+                reject(row);
+            }
+            const data = {
+                name: row.name,
+                email: row.email,
+                walletId: row.wid,
+                address: await getAddresses(email)
+            }
+            console.log(`[ rk-userops ] 📦 Account details of ${email}`);
+            resolve(data);
+        });
+    });
+}
+
 
 
 
@@ -202,6 +240,7 @@ async function generateShipmentBill(shipmentId){
 module.exports = {
     addAddress,
     getAddresses,
+    getUserAccountDetails,
     viewOrders,
     generateBill,
     generateShipmentBill

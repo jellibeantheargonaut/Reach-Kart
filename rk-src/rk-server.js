@@ -47,6 +47,8 @@ app.get('/order', loggedIn, (req, res) => {
 });
 
 //==============================================================================
+// Seller Endpoints and stuff
+//==============================================================================
 
 // middleware function to allow only seller accounts
 function sellerOnly(req, res, next){
@@ -54,7 +56,7 @@ function sellerOnly(req, res, next){
       const token = req.cookies.jwt;
       const status = loggingApi.verifyToken(token);
       if(status){
-        if(token.account_type === 'seller'){
+        if(status.account_type === 'seller'){
           next();
         }
         else {
@@ -70,28 +72,25 @@ function sellerOnly(req, res, next){
     }
 }
 // routes for seller accounts
+// main page
 app.get('/seller/home', sellerOnly,(req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/seller.html'));
-});
-
-app.get('/seller/shop', sellerOnly,(req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/shop.html'));
-});
-
-app.get('/seller/orders', sellerOnly,(req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/orders.html'));
+    res.sendFile(path.join(__dirname, 'public/html/seller/home.html'));
 });
 
 //==============================================================================
 
 // routes for functions to seller operations
 
-// these routes are provided by the chain api
+// these routes are provided by the chain api and the sellerops module
+
+// routes for shop page
+//--------------------------------------------------------------------------
+// app.get('/seller/availableProducts', sellerOnly,(req, res) => {}
+// app.get('/seller/viewProductDetails', sellerOnly,(req, res) => {}
 // app.post('/seller/uploadProduct', sellerOnly,(req, res) => {}
 // app.post('/seller/updateProduct', sellerOnly,(req, res) => {}
 // app.post('/seller/deleteProduct', sellerOnly,(req, res) => {}
 // app.post('/seller/shipProduct', sellerOnly,(req, res) => {}
-// app.post('/seller/sendRefund', sellerOnly,(req, res) => {}
 
 
 //==============================================================================
@@ -113,6 +112,10 @@ function loggedIn(req, res, next){
       res.redirect('/common/signin');
     }
 }
+
+// Route for product search endopoint
+//==============================================================================
+// app.get('/search', loggedIn, async (req, res) => {}
 
 // routes for user account static pages
 //==============================================================================
@@ -193,9 +196,6 @@ app.post('/common/signin', async (req, res) => {
   }
 });
 app.get('/common/signin', (req, res) => {
-  if(req.cookies.jwt){
-    res.redirect('/home');
-  }
     res.sendFile(path.join(__dirname, 'public/html/signin-page.html'));
 });
 
@@ -214,9 +214,6 @@ app.post('/common/signup', async (req, res) => {
   }
 });
 app.get('/common/signup', (req, res) => {
-  if(req.cookies.jwt){
-    res.redirect('/home');
-  }
     res.sendFile(path.join(__dirname, 'public/html/signup-page.html'));
 });
 
@@ -228,16 +225,11 @@ app.get('/common/logout', (req, res) => {
 });
 
 // app.get('/common/getUserDetails', loggedIn, (req, res) => {}
-app.get('/common/getUserDetails', loggedIn, (req, res) => {
+app.get('/common/getUserDetails', loggedIn, async (req, res) => {
   const token = req.cookies.jwt;
   const userDetails = loggingApi.verifyToken(token);
   if (userDetails) {
-    const details = {
-      name: userDetails.name,
-      email: userDetails.email,
-      account_type: userDetails.account_type,
-      walletId: userDetails.walletId
-    };
+    const details = await userOps.getUserAccountDetails(userDetails.email);
     return res.status(200).json(details);
   } else {
     return res.status(401).json({ message: 'Invalid token' });
@@ -274,7 +266,7 @@ app.get('/common/getAddresses', loggedIn, async (req,res) => {
 //==============================================================================
 // start the server
 app.listen(port, () => {
-  console.log(`🚀 RK server listening at http://localhost:${port}`);
+  console.log(`[ rk-server ] 🚀 RK server listening at http://localhost:${port}`);
 });
 // Start the server
 // deployment code for production

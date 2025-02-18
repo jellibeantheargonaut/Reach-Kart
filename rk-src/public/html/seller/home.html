@@ -1,0 +1,99 @@
+<!-- HTML page for profile of users -->
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/profile-page.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/home.css">
+
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/regular.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/solid.css">
+
+    <script defer src="/js/seller/home.js"></script>
+</head>
+<body>
+    <div class="sidebar-menu">
+        <div class="sidebar-menu-header">
+            <div class="profile-icon" onclick="window.history.back()">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+            <div class="profile-name">
+                John Doe
+            </div>
+        </div>
+        <div class="sidebar-menu-items">
+            <div class="sidebar-menu-item" onclick="showAccountDetails(this)">
+                <i class="fa-solid fa-user"></i> Account
+            </div>
+            <div class="sidebar-menu-item" onclick="showShop()">
+                <i class="fa-solid fa-shop"></i> Shop
+            </div>
+            <div class="sidebar-menu-item">
+                <i class="fa-solid fa-box"></i> Orders
+            </div>
+            <div class="sidebar-menu-item">
+                <i class="fa-solid fa-truck"></i> Shipments
+            </div>
+            <div class="sidebar-menu-item">
+                <i class="fa-solid fa-money-check-dollar"></i> Transactions
+            </div>
+            <div class="sidebar-menu-item">
+                <i class="fa-solid fa-wallet"></i> Wallets
+            </div>
+            <div class="sidebar-menu-item">
+                <i class="fa-solid fa-address-card"></i> Addresses
+            </div>
+        </div>
+        <div class="sidebar-menu-footer">
+            <div class="logout-button">
+                Logout
+            </div>
+        </div>
+    </div>
+    <div class="mainarea">
+        <div class="message-overlay">
+            <div class="message-container">
+                <span class="message-spinner"></span>
+                <div class="message-content">
+                    Hacking Nasa...
+                </div>
+            </div>
+            <div class="message-confirm">
+                <div class="message-text">
+                    Are you sure you want to hack Nasa?
+                </div>
+                <div class="message-buttons">
+                    <div class="message-button"> Yes </div>
+                    <div class="message-button"> No </div>
+                </div>
+            </div>
+        </div>
+        <div class="account-container">
+            <!-- Account details -->
+            <div class="account-details-card">
+                <p id="account-name">John Doe</p>
+                <p id="account-email">Email : john@gmail.com</p>
+                <p id="account-walletid">Wallet ID: 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C</p>
+                <p id="account-address">Address : 21, South Pole, Antarctica</p>
+            </div>
+        </div>
+        <div class="shop-container">
+            <!-- Shop details ( and other functions ) -->
+            <div class="products-container">
+                <!-- Products Listing available in the shop -->
+            </div>
+        </div>
+        <div class="orders-container">
+        </div>
+        <div class="shipments-container">
+        </div>
+        <div class="transactions-container">
+        </div>
+        <div class="wallets-container">
+        </div>
+        <div class="addresses-container">
+        </div>
+    </div>
+</body>
+</html>

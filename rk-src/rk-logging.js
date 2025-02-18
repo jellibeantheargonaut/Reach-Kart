@@ -23,27 +23,32 @@ const SECRET_KEY = process.env.SECRET_KEY || 'SuperSecretPassword';
 // create a new user
 // this function is called when a new user signs up
 function createUser(email,password,name,accountType){
-    const wallet = ethers.Wallet.createRandom();
-    const wid = wallet.address;
-    const pk = wallet.privateKey;
-    // join this wallet to reachkart hardhat network
-    //const provider = new ethers.JsonRpcProvider('http://localhost:8545');
-    //wid.connect(provider);
-
-    // hash the password using SHA256
-    const passHash = crypto.createHash('sha256').update(password).digest('hex');
-    db.run(`INSERT INTO users(wid,pk,email,password,name,created_at,account_type) VALUES(?,?,?,?,?,?,?)`,[wid,pk,email,passHash,name,Date.now(),accountType], (err) => {
-        if(err){
-            console.error(err.message);
-        }
-        console.log(`[ rk-logging ] 👤 User ${name} created with wallet id ${wid}`);
-    });
-    // also add entry in wallets table
-    db.run(`INSERT INTO wallets(wid,pk,email) VALUES(?,?,?)`,[wid,pk,email], (err) => {
-        if(err){
-            console.error(err.message);
-        }
-        console.log(`[ rk-logging ] 👤 Wallet ${wid} created for user ${name}`);
+    return new Promise((resolve,reject) => {
+        const wallet = ethers.Wallet.createRandom();
+        const wid = wallet.address;
+        const pk = wallet.privateKey;
+        // join this wallet to reachkart hardhat network
+        //const provider = new ethers.JsonRpcProvider('http://localhost:8545');
+        //wid.connect(provider);
+        
+        // hash the password using SHA256
+        const passHash = crypto.createHash('sha256').update(password).digest('hex');
+        db.run(`INSERT INTO users(wid,pk,email,password,name,created_at,account_type) VALUES(?,?,?,?,?,?,?)`,[wid,pk,email,passHash,name,Date.now(),accountType], (err) => {
+            if(err){
+                console.error(err.message);
+                reject(err);
+            }
+            console.log(`[ rk-logging ] 👤 User ${name} created with wallet id ${wid}`);
+        });
+        // also add entry in wallets table
+        db.run(`INSERT INTO wallets(wid,pk,email) VALUES(?,?,?)`,[wid,pk,email], (err) => {
+            if(err){
+                console.error(err.message);
+                reject(err);
+            }
+            console.log(`[ rk-logging ] 👤 Wallet ${wid} created for user ${name}`);
+        });
+        resolve(true);
     });
 }
 

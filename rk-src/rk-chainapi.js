@@ -87,66 +87,84 @@ const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 console.log('[ rk-chainapi ] 📶 Connected to the hardhat network');
 
 // function to create database and tables
-function createDatabases(){
+async function createDatabases(){
     // create the users table if not exists
-    db.run(` CREATE TABLE IF NOT EXISTS users (
-        wid string PRIMARY KEY,
-        pk string NOT NULL,
-        email string NOT NULL,
-        password string NOT NULL,
-        name string NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        account_type string DEFAULT 'user' NOT NULL)`
-    );
+    await new Promise(resolve => {
+        db.run(` CREATE TABLE IF NOT EXISTS users (
+            wid string PRIMARY KEY,
+            pk string NOT NULL,
+            email string NOT NULL,
+            password string NOT NULL,
+            name string NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            account_type string DEFAULT 'user' NOT NULL)`
+        );
+        resolve();
+    });
     console.log('[ rk-chainapi ] 👍🏻 Users table created');
 
     // create the orders table if not exists
-    db.run(`CREATE TABLE IF NOT EXISTS orders (
-        orderId string PRIMARY KEY,
-        orderAddress string NOT NULL,
-        productId string NOT NULL,
-        buyerAddress string NOT NULL,
-        transactionId string,
-        orderPlaced TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        orderConfirmed TIMESTAMP,
-        orderCancelled TIMESTAMP,
-        orderPaid TIMESTAMP,
-        orderRefunded TIMESTAMP)`
-    );
+    await new Promise(resolve => {
+        db.run(`CREATE TABLE IF NOT EXISTS orders (
+            orderId string PRIMARY KEY,
+            orderAddress string NOT NULL,
+            productId string NOT NULL,
+            buyerAddress string NOT NULL,
+            transactionId string,
+            orderPlaced TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            orderConfirmed TIMESTAMP,
+            orderCancelled TIMESTAMP,
+            orderPaid TIMESTAMP,
+            orderRefunded TIMESTAMP)`
+        );
+        resolve();
+    });
     console.log('[ rk-chainapi ] 👍🏻 Orders table created');
 
     // create the products table if not exists
-    db.run(`CREATE TABLE IF NOT EXISTS products (
-        productId string PRIMARY KEY,
-        productAddress string NOT NULL,
-        dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        dateUpdated TIMESTAMP)`
-    );
+    await new Promise(resolve => {
+        db.run(`CREATE TABLE IF NOT EXISTS products (
+            productId string PRIMARY KEY,
+            productAddress string NOT NULL,
+            dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            dateUpdated TIMESTAMP)`
+        );
+        resolve();
+    });
     console.log('[ rk-chainapi ] 👍🏻 Products table created');
 
     // create the wallets table if not exists
-    db.run(`CREATE TABLE IF NOT EXISTS wallets (
-        wid string PRIMARY KEY,
-        pk string NOT NULL,
-        email string NOT NULL)`
-    );
+    await new Promise(resolve => {
+        db.run(`CREATE TABLE IF NOT EXISTS wallets (
+            wid string PRIMARY KEY,
+            pk string NOT NULL,
+            email string NOT NULL)`
+        );
+        resolve();
+    });
     console.log('[ rk-chainapi ] 👍🏻 Wallets table created');
 
     // create the addresses table if not exists
-    db.run(`CREATE TABLE IF NOT EXISTS addresses (
-        email string PRIMARY KEY,
-        address string NOT NULL)`
-    );
+    await new Promise(resolve => {
+        db.run(`CREATE TABLE IF NOT EXISTS addresses (
+            email string PRIMARY KEY,
+            address string NOT NULL)`
+        );
+        resolve();
+    });
     console.log('[ rk-chainapi ] 👍🏻 Addresses table created');
 
     // create the shipments table if not exists
-    db.run(`CREATE TABLE IF NOT EXISTS shipments (
-        shipmentId string PRIMARY KEY,
-        shipmentAddress string NOT NULL,
-        orderId string,
-        shippedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        deliveredDate TIMESTAMP)`
-    );
+    await new Promise(resolve => {
+        db.run(`CREATE TABLE IF NOT EXISTS shipments (
+            shipmentId string PRIMARY KEY,
+            shipmentAddress string NOT NULL,
+            orderId string,
+            shippedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            deliveredDate TIMESTAMP)`
+        );
+        resolve();
+    });
     console.log('[ rk-chainapi ] 👍🏻 Shipments table created');
 
     console.log('[ rk-chainapi ] 👍🏻 Database and tables created');

@@ -108,8 +108,8 @@ body {
     align-items: center;
     width: 80%;
     height: 100%;
-    background-color: #f0f0f0;
-    color: black;
+    background-color: rgb(40, 40, 40);
+    color: white;
     /* border-radius: 10px; */
 }
 
@@ -133,7 +133,9 @@ body {
     height: fit-content;
     border-radius: 10px;
     font-family: 'Courier New', Courier, monospace;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    background-color: rgba(232, 232, 232, 0.169);
+    backdrop-filter: blur(2px);
+    box-shadow: rgba(65, 65, 65, 0.25) 0px 2px 5px -1px, rgba(66, 66, 66, 0.3) 0px 1px 3px -1px;
 }
 .account-details-card p{
     font-size: 20px;
@@ -169,6 +171,8 @@ body {
     height: fit-content;
     border-radius: 10px;
     gap: 10px;
+    background-color: rgba(232, 232, 232, 0.169);
+    backdrop-filter: blur(2px);
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 .order-container-header {
@@ -192,7 +196,9 @@ body {
 }
 .order-container-header:hover {
     cursor: pointer;
-    background-color: #f0f0f0;
+    background-color: #ffffff63;
+    color: black;
+    backdrop-filter: blur(2px);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 .order-container-content {
@@ -313,6 +319,8 @@ body {
     min-height: 50px;
     gap: 2px;
     border-radius: 10px;
+    background-color: #ffffff2c;
+    backdrop-filter: blur(2px);
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 .product-shipment-source p {
@@ -320,7 +328,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 80%;
-    background-color: #54bb73;
+    background-color: #107a30;
     color: white;
     font-size: 15px;
     border-radius: 10px;
@@ -335,6 +343,8 @@ body {
     min-height: 50px;
     gap: 2px;
     border-radius: 10px;
+    background-color: #ffffff2c;
+    backdrop-filter: blur(2px);
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 .product-shipment-destination p {
@@ -398,7 +408,9 @@ body {
     width: 80%;
     height: 30%;
     border-radius: 10px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    background-color: rgba(232, 232, 232, 0.22);
+    /*backdrop-filter: blur(2px);*/
+    box-shadow: rgba(60, 60, 60, 0.25) 0px 2px 5px -1px, rgba(255, 255, 255, 0.3) 0px 1px 3px -1px;
 }
 .wallet-container-header {
     display: flex;
