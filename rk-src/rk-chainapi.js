@@ -21,6 +21,7 @@
 // orderAddress - the address of the order contract
 // productId - the id of the product UUIDv4
 // buyerAddress - the address of the buyer (wallet address)
+// sellerAddress - the address of the seller (wallet address)
 // transactionId - the id of the transaction ( from the buyer to the seller)
 // shipmentId - the id of the shipment UUIDv4
 // orderPlaced - the time when the order was placed
@@ -110,6 +111,7 @@ async function createDatabases(){
             orderAddress string NOT NULL,
             productId string NOT NULL,
             buyerAddress string NOT NULL,
+            sellerAddress string NOT NULL,
             transactionId string,
             orderPlaced TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             orderConfirmed TIMESTAMP,
@@ -486,7 +488,7 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
             console.log(`[ rk-chainapi ] 👍🏻 Order contract deployed at ${orderContract.address}`);
 
             // insert the order into the orders table
-            db.run(`INSERT INTO orders(orderId,orderAddress,productId,buyerAddress,orderPlaced) VALUES(?,?,?,?,?)`,[orderId,await orderContract.getAddress(),productId,buyerAddress,Date.now()], (err) => {
+            db.run(`INSERT INTO orders(orderId,orderAddress,productId,buyerAddress,sellerAddress,orderPlaced) VALUES(?,?,?,?,?)`,[orderId,await orderContract.getAddress(),productId,buyerAddress,sellerAddress,Date.now()], (err) => {
                 if(err){
                     console.error(err.message);
                     reject(err);

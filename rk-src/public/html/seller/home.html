@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/css/profile-page.css">
     <link rel="stylesheet" type="text/css" href="/css/seller/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/orders-container.css">
 
     <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
     <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
@@ -26,10 +27,10 @@
             <div class="sidebar-menu-item" onclick="showAccountDetails(this)">
                 <i class="fa-solid fa-user"></i> Account
             </div>
-            <div class="sidebar-menu-item" onclick="showShop()">
+            <div class="sidebar-menu-item" onclick="showShop(this)">
                 <i class="fa-solid fa-shop"></i> Shop
             </div>
-            <div class="sidebar-menu-item">
+            <div class="sidebar-menu-item" onclick="showOrders(this)">
                 <i class="fa-solid fa-box"></i> Orders
             </div>
             <div class="sidebar-menu-item">
@@ -54,7 +55,9 @@
     <div class="mainarea">
         <div class="message-overlay">
             <div class="message-container">
-                <span class="message-spinner"></span>
+                <div class="message-spinner-container">
+                    <span class="message-spinner"></span>
+                </div>
                 <div class="message-content">
                     Hacking Nasa...
                 </div>
@@ -80,11 +83,98 @@
         </div>
         <div class="shop-container">
             <!-- Shop details ( and other functions ) -->
-            <div class="products-container">
+            <div class="shop-header">
+                <div class="shop-name">
+                    John's Shop
+                </div>
+            </div>
+            <div class="product-add-container">
+                <div class="product-add-button" onclick="closeAddProductCard()" style="display: none;">
+                    Cancel
+                </div>
+                <div class="product-add-button" onclick="openAddProductCard()">
+                    + Add
+                </div>
+            </div>
+            <div class="product-add-card">
+                <div class="product-add-card-header">
+                    Add Product to Shop
+                </div>
+                <div class="product-add-card-body">
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Name" id="product-name">
+                    </div>
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Description" id="product-description">
+                    </div>
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Price" id="product-price">
+                    </div>
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Quantity" id="product-quantity">
+                    </div>
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Image URL" id="product-image">
+                    </div>
+                </div>
+                <div class="product-add-card-footer">
+                    <div class="product-add-card-button">
+                        +Add
+                    </div>
+                    <p><i class="fa-solid fa-circle-info"></i> Adding a product will require some transaction fee. Make sure you have enough balance in your wallet.</p>
+                </div>
+            </div>
+            <div class="products-list-container">
                 <!-- Products Listing available in the shop -->
+                <div class="products-list-header">
+                    <!-- For the search bar and stuff -->
+                    <div class="products-list-search">
+                        <input type="text" placeholder="Search Products" id="product-search">
+                    </div>
+                </div>
+                <div class="products-list-body">
+                    <!-- Products listing -->
+                    <div class="product-list-card">
+                        <div class="product-list-card-header">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </div>
+                        <div class="product-list-card-image">
+                            <img src="https://media3.giphy.com/media/6BZaFXBVPBtok/giphy.gif?cid=6c09b952rjuqvisd6rgqk93j7goduey2yg4n9xyj4mrjsvcg&ep=v1_gifs_search&rid=giphy.gif&ct=g">
+                        </div>
+                        <div class="product-list-card-info">
+                            <p class="product-list-card-name"> Giphy </p>
+                            <p class="product-list-card-description"> Spanking Tom</p>
+                            <p class="product-list-card-price"> <i class="fa-brands fa-ethereum"></i> 1000 </p>
+                        </div>
+                    </div>
+                    <div class="product-list-card">
+                    </div>
+                    <div class="product-list-card">
+                    </div>
+                    <div class="product-list-card">
+                    </div>
+                </div>
+            </div>
+            <div class="products-overlay-view">
+                <!-- Product details view ovarley -->
             </div>
         </div>
         <div class="orders-container">
+            <div class="orders-list">
+                <div class="orders-list-item">
+                    <div class="orders-list-item-image">
+                        <img src="https://media3.giphy.com/media/6BZaFXBVPBtok/giphy.gif?cid=6c09b952rjuqvisd6rgqk93j7goduey2yg4n9xyj4mrjsvcg&ep=v1_gifs_search&rid=giphy.gif&ct=g">
+                    </div>
+                    <div class="orders-list-item-info">
+                        <p class="orders-list-item-name"> Dildo </p>
+                        <p class="orders-list-item-id"> 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                        <p class="orders-list-item-price"> <i class="fa-brands fa-ethereum"></i> 1000 </p>
+                        <p class="orders-list-item-date"> 19 February, 2025 at 1:48 PM </p>
+                    </div>
+                </div>
+            </div>
+            <div class="orders-overlay-view">
+            </div>
         </div>
         <div class="shipments-container">
         </div>

@@ -14,7 +14,6 @@ const sqlite3  = require('sqlite3');
 const { v4: uuid } = require('uuid');
 const path = require('path');
 const chainApi = require('./rk-chainapi');
-const { get } = require('http');
 
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){

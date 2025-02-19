@@ -1,0 +1,84 @@
+/* styles for orders-container div in home.html */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+    width: 100%;
+}
+.orders-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 60%;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.498);
+    backdrop-filter: blur(15px);
+    color: black;
+    border-radius: 15px;
+}
+.orders-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.871);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+.orders-list-item-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    height: 80%;
+    margin-left: 20px;
+}
+.orders-list-item-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    object-fit: cover;
+}
+.orders-list-item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 60%;
+    height: 80%;
+    margin-left: 20px;
+    gap: 10px;
+}
+.orders-list-item-info p {
+    padding: 0;
+    margin: 0;
+}
+.orders-list-item-name {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    height: fit-content;
+    width: fit-content;
+}
+.orders-list-item-id {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    background-color: rgb(73, 189, 89);
+    color: black;
+    padding: 5px;
+    border-radius: 10px;
+    height: fit-content;
+    width: fit-content;
+}
+.orders-list-item-price {
+    font-family:'Courier New', Courier, monospace;
+    font-size: 1.2rem;
+    height: fit-content;
+    width: fit-content;
+}
+.orders-list-item-date {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: black;
+}

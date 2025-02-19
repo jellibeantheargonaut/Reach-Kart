@@ -23,20 +23,97 @@ function selectButton(button){
 }
 
 //==============================================================================
+// function to handle overlay message box
+//==============================================================================
+function showOverlayMessage(message) {
+    const messageOverlay = document.querySelector('.message-overlay');
+    messageOverlay.style.display = 'flex';
+    const messageContainer = messageOverlay.querySelector('.message-container');
+    messageContainer.style.display = 'flex';
+    const messageContent = messageOverlay.querySelector('.message-content');
+    messageContent.innerHTML = message;
+}
+
+function closeOverlayMessage() {
+    const messageOverlay = document.querySelector('.message-overlay');
+    messageOverlay.style.display = 'none';
+    const messageContainer = messageOverlay.querySelector('.message-container');
+    messageContainer.style.display = 'none';
+}
+
+function showConfirmMessage(message, onConfirmMessage, onCancelMessage) {
+    const messageOverlay = document.querySelector('.message-overlay');
+    messageOverlay.style.display = 'flex';
+    const messageConfirmDiv = messageOverlay.querySelector('.message-confirm');
+    messageConfirmDiv.style.display = 'flex';
+    const confirmContent = messageConfirmDiv.querySelector('.message-text');
+    confirmContent.innerHTML = message;
+
+    // close when clicked outside
+    messageOverlay.addEventListener('click', (e) => {
+        if(e.target !== messageConfirmDiv){
+            closeConfirmMessage();
+        }
+    }
+    );
+
+    // message buttons
+    const messageButtons = messageConfirmDiv.querySelectorAll('.message-button');
+    messageButtons[0].addEventListener('click', () => {
+        closeConfirmMessage();
+        onConfirmMessage();
+    });
+    messageButtons[1].addEventListener('click', () => {
+        closeConfirmMessage();
+        onCancelMessage();
+    });
+
+}
+
+function closeConfirmMessage(){
+    const confirmOverlay = document.querySelector('.message-overlay');
+    confirmOverlay.style.display = 'none';
+    const messageConfirmDiv = confirmOverlay.querySelector('.message-confirm');
+    messageConfirmDiv.style.display = 'none';
+}
+
+//==============================================================================
 // functions for managing shop
 //==============================================================================
 async function showShop(element) {
     blankDivs();
-    selectButton(element)
+    selectButton(element);
+    await setShopName();
     const shopDiv = document.querySelector('.shop-container');
     shopDiv.style.display = 'flex';
+}
+
+async function openAddProductCard() {
+    
+    // disable the add product button
+    const addProductButton = document.querySelectorAll('.product-add-button');
+    addProductButton[0].style.display = 'flex';
+    addProductButton[1].style.display = 'none';
+
+    const addProductCard = document.querySelector('.product-add-card');
+    addProductCard.style.display = 'flex';
+}
+
+async function closeAddProductCard() {
+    const addProductButton = document.querySelectorAll('.product-add-button');
+    addProductButton[0].style.display = 'none';
+    addProductButton[1].style.display = 'flex';
+
+    const addProductCard = document.querySelector('.product-add-card');
+    addProductCard.style.display = 'none';
 }
 
 //==============================================================================
 // functions for managing orders
 //==============================================================================
-async function showOrders() {
+async function showOrders(element) {
     blankDivs();
+    selectButton(element);
     const ordersDiv = document.querySelector('.orders-container');
     ordersDiv.style.display = 'flex';
 }
@@ -44,8 +121,9 @@ async function showOrders() {
 //==============================================================================
 // functions for managing shipments
 //==============================================================================
-async function showShipments() {
+async function showShipments(element) {
     blankDivs();
+    selectButton(element);
     const shipmentsDiv = document.querySelector('.shipments-container');
     shipmentsDiv.style.display = 'flex';
 }
@@ -53,8 +131,9 @@ async function showShipments() {
 //==============================================================================
 // functions for managing transactions
 //==============================================================================
-async function showTransactions() {
+async function showTransactions(element) {
     blankDivs();
+    selectButton(element);
     const transactionsDiv = document.querySelector('.transactions-container');
     transactionsDiv.style.display = 'flex';
 }
@@ -92,6 +171,12 @@ async function setUserName() {
     nameDiv.appendChild(document.createTextNode(userInfo.name));
 }
 
+async function setShopName() {
+    const userName = await fetch('/common/getUserDetails').then(res => res.json());
+    const shopName = document.querySelector('.shop-name');
+    shopName.innerHTML = '';
+    shopName.appendChild(document.createTextNode(userName.name + "'s Shop"));
+}
 
 //==============================================================================
 // functions for managing addresses
