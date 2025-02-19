@@ -15,6 +15,7 @@ const { v4: uuid } = require('uuid');
 const path = require('path');
 const chainApi = require('./rk-chainapi');
 const loggingApi = require('./rk-logging');
+const { log } = require('console');
 
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){
@@ -32,7 +33,7 @@ const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (e
 //
 // function to get products availbale in the shop from the products table
 //
-export async function viewShop(email){
+async function viewShop(email){
     const wid = await loggingApi.getWalletId(email);
     let products = [];
     return new Promise((resolve,reject) => {
@@ -59,7 +60,7 @@ export async function viewShop(email){
 // function to get all the details of a product
 
 // function to upload a product to the shop
-export async function uploadProduct(email,productName,productDescription,productPrice,productQuantity){
+async function uploadProduct(email,productName,productDescription,productPrice,productQuantity){
     return new Promise(async (resolve,reject) => {
         const wid = await loggingApi.getWalletId(email);
         try {
@@ -78,7 +79,7 @@ export async function uploadProduct(email,productName,productDescription,product
 //
 // function to get orders from the shop from orders table
 //
-export async function viewOrders(email){
+async function viewOrders(email){
     const wid = await loggingApi.getWalletId(email);
     let orders = [];
     // get all the orders from the orders table
@@ -103,12 +104,48 @@ export async function viewOrders(email){
     })
 }
 
+async function viewOrder(orderId){
+    return new Promise(async (resolve,reject) => {
+        // get the email of the buyer details
+        const buyer = await loggingApi.getEmail(await chainApi.getOrderBuyer(orderId));
+        const quantity = await chainApi.getOrderQuantity(orderId);
+        const price = await chainApi.getOrderPrice(orderId);
+
+        // get the order dates
+        const orderPlacedDate = await chainApi.getOrderPlacedDate(orderId);
+        const orderConfirmedDate = await chainApi.getOrderConfirmedDate(orderId);
+        const orderPaidDate = await chainApi.getOrderPaidDate(orderId);
+
+        // get the chain details of the order
+        const orderAddress = await new Promise((resolve,reject) => {
+            db.get(`SELECT * FROM orders WHERE orderId = ?`, [orderId], (err,row) => {
+                if(err){
+                    reject(err);
+                }
+                resolve(row.orderAddress);
+            });
+        });
+        const orderProduct = await chainApi.getOrderProduct(orderId);
+        const details = {
+            buyer: buyer,
+            quantity: quantity,
+            price: price,
+            orderPlacedDate: orderPlacedDate,
+            orderConfirmedDate: orderConfirmedDate,
+            orderPaidDate: orderPaidDate,
+            orderAddress: orderAddress,
+            orderProduct: orderProduct
+        }
+        console.log(`[ rk-sellerops ] 📦 Order details of order ${orderId}`);
+        resolve(details);
+    });
+}
 //====================================================================================
 // functions related to Shipments from seller page
 //====================================================================================
 //
 // function to get shipments from the shop from shipments table
-export async function viewShipments(email){
+async function viewShipments(email){
     const wid = await loggingApi.getWalletId(email);
     let shipments = [];
     return new Promise((resolve,reject) => {
@@ -135,3 +172,14 @@ export async function viewShipments(email){
 //====================================================================================
 // functions related to Transactions from seller page
 //====================================================================================
+
+
+//====================================================================================
+//module exports
+module.exports = {
+    viewShop,
+    uploadProduct,
+    viewOrders,
+    viewOrder,
+    viewShipments
+}

@@ -118,6 +118,30 @@ async function showOrders(element) {
     ordersDiv.style.display = 'flex';
 }
 
+async function openOrderView(element){
+    // set the overlay view
+    const ordersOverlayView = document.querySelector('.orders-overlay-view');
+    ordersOverlayView.style.display = 'flex';
+
+    const orderId = element.querySelector('.orders-list-item-id').innerHTML;
+    //const orderDetails = await fetch(`/seller/viewOrder/${orderId}`).then(res => res.json());
+
+    const ordersOverlayContainer = ordersOverlayView.querySelector('.orders-overlay-container');
+    ordersOverlayView.addEventListener('click', (e) => {
+        if(e.target === ordersOverlayView){
+            closeOrderView();
+        }
+    });
+}
+
+async function setOrderView(orderDetails){
+}
+
+async function closeOrderView(){
+    const orderOverlayView = document.querySelector('.orders-overlay-view');
+    orderOverlayView.style.display = 'none';
+}
+
 //==============================================================================
 // functions for managing shipments
 //==============================================================================

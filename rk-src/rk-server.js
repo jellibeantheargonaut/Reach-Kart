@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cookieParser = require('cookie-parser');
-const { getWalletBalance } = require('./rk-chainapi');
 
 // Importing the required modules
 const loggingApi = require('./rk-logging');
@@ -92,6 +91,20 @@ app.get('/seller/home', sellerOnly,(req, res) => {
 // app.post('/seller/deleteProduct', sellerOnly,(req, res) => {}
 // app.post('/seller/shipProduct', sellerOnly,(req, res) => {}
 
+// routes for orders page
+//--------------------------------------------------------------------------
+// app.get('/seller/viewOrders', sellerOnly,(req, res) => {}
+// app.get('/seller/viewOrder/:orderId', sellerOnly,(req, res) => {} 
+app.get('/seller/viewOrder/:orderId', sellerOnly, async (req, res) => {
+    const orderId = req.params.orderId;
+    const orderDetails = {
+      email: 'john@gmail.com',
+      walletId: '0x1234567890',
+      quantity: 1,
+      price: 100
+    }
+    return res.status(200).json(orderDetails);
+});
 
 //==============================================================================
 

@@ -633,6 +633,16 @@ async function getOrderRefundedDate(orderId){
 }
 
 // function to get the buyer of the order
+async function getOrderBuyer(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT buyerAddress FROM orders WHERE orderId = ?`,[orderId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.buyerAddress);
+        });
+    });
+}
 // function to get the seller of the order
 
 // function to get the product of the order
