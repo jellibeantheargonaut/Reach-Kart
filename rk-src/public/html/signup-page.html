@@ -6,23 +6,37 @@
     </head>
     <body>
         <div class="form-container">
-            <div class="form-title">
-                Sign Up
+            <div class="form-container-header">
+                Create an account
             </div>
-            <div class="form-fields">
-                <input type="text" id="username" placeholder="Username">
-                <input type="text" id="email" placeholder="Email">
-                <input type="password" id="password" placeholder="Password">
-                <input type="password" id="confirm-password" placeholder="Confirm Password">
+            <div class="form-container-body">
+                <div class="form-container-input">
+                    <input type="text" id="signup-username" placeholder="Username">
+                </div>
+                <div class="form-container-input">
+                    <input type="text" id="signup-email" placeholder="Email">
+                </div>
+                <div class="form-container-input">
+                    <input type="password" id="signup-password" placeholder="Password">
+                </div>
+                <div class="form-container-input">
+                    <input type="password" id="signup-confirm-password" placeholder="Confirm Password">
+                </div>
+                <div class="form-container-input">
+                    <select id="signup-account-type">
+                        <option value="customer">Customer</option>
+                        <option value="seller">Seller</option>
+                        <option value="delivery">Delivery</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-buttons">
-                <button id="signin-button" onclick="signup()">Sign Up</button>
-            </div>
-            <div class="form-messages">
-                Passwords do not match
-            </div>
-            <div class="form-links">
-                Already have an account? <a href="/common/signin">Sign in</a>
+            <div class="form-container-footer">
+                <div class="form-container-footer-button" onclick="signup()">
+                    Sign Up
+                </div>
+                <div class="form-container-messages">
+                </div>
+                <p>Already have an account? <a href="/common/signin">Sign In</a></p>
             </div>
         </div>
     </body>

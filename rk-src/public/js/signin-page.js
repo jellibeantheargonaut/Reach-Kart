@@ -1,8 +1,8 @@
 // javascript for sign-in page
 
 function signin() {
-    let email = document.getElementById('email').value;
-    let password = document.getElementById('password').value;
+    let email = document.getElementById('signin-email').value;
+    let password = document.getElementById('signin-password').value;
 
     let data = {
         email: email,
@@ -20,27 +20,28 @@ function signin() {
             window.location.href = '/home';
         } else {
             response.json().then((data) => {
-                document.querySelector('.form-messages').textContent = data.message;
+                document.querySelector('.form-container-messages').textContent = data.message;
             });
         }
     });
 }
 
 function signup() {
-    let name = document.getElementById('username').value;
-    let email = document.getElementById('email').value;
-    let password = document.getElementById('password').value;
-    let confirmPassword = document.getElementById('confirm-password').value;
+    let name = document.getElementById('signup-username').value;
+    let email = document.getElementById('signup-email').value;
+    let password = document.getElementById('signup-password').value;
+    let confirmPassword = document.getElementById('signup-confirm-password').value;
+    let accountType = document.getElementById('signup-account-type').value;
     if (password !== confirmPassword) {
-        document.querySelector('.form-messages').textContent = 'Passwords do not match';
+        document.querySelector('.form-container-messages').textContent = 'Passwords do not match';
         return;
     }
-
+    
     let data = {
         name: name,
         email: email,
         password: password,
-        account_type: 'customer'
+        account_type: accountType
     }
 
     fetch('/common/signup', {
@@ -54,7 +55,7 @@ function signup() {
             window.location.href = '/home';
         } else {
             response.json().then((data) => {
-                document.querySelector('.form-messages').textContent = data.message;
+                document.querySelector('.form-container-messages').textContent = data.message;
             });
         }
     });

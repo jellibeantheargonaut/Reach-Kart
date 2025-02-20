@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="/css/profile-page.css">
     <link rel="stylesheet" type="text/css" href="/css/seller/home.css">
     <link rel="stylesheet" type="text/css" href="/css/seller/orders-container.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/shipments-container.css">
 
     <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
     <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
@@ -33,7 +34,7 @@
             <div class="sidebar-menu-item" onclick="showOrders(this)">
                 <i class="fa-solid fa-box"></i> Orders
             </div>
-            <div class="sidebar-menu-item">
+            <div class="sidebar-menu-item" onclick="showShipments(this)">
                 <i class="fa-solid fa-truck"></i> Shipments
             </div>
             <div class="sidebar-menu-item">
@@ -180,32 +181,158 @@
                     </div>
                     <div class="orders-view-details">
                         <div class="orders-view-details-buyer">
-                            <p class="orders-view-details-buyer-email"> email : john@gmail.com </p>
-                            <p class="orders-view-details-buyer-wallet"> wallet ID : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
-                            <p class="orders-view-details-buyer-quantity"> quantity : 1 </p>
-                            <p class="orders-view-details-buyer-price"> price : 1000 <i class="fa-brands fa-ethereum"></i></p>
+                            <p> email : john@gmail.com </p>
+                            <p> wallet ID : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                            <p> quantity : 1 </p>
+                            <p> price : 1000 <i class="fa-brands fa-ethereum"></i></p>
                         </div>
                         <div class="orders-view-details-timeline">
-                            <p class="orders-view-details-timeline-placed"> Order Placed : 19-02-2025 at 7:22 PM</p>
-                            <p class="orders-view-details-timeline-confirmed"> Order Confirmed : 19-02-2025 at 7:22 PM </p>
-                            <p class="orders-view-details-timeline-shipped"> Order Shipped : 19-02-2025 at 7:22 PM </p>
+                            <p> Order Placed : 19-02-2025 at 7:22 PM</p>
+                            <p> Order Confirmed : 19-02-2025 at 7:22 PM </p>
+                            <p> Order Shipped : 19-02-2025 at 7:22 PM </p>
                         </div>
                         <div class="orders-view-details-chain">
-                            <p class="orders-view-details-chain-order"> Order Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
-                            <p class="orders-view-details-chain-product"> Product Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
-                            <p class="orders-view-details-chain-id"> Order ID : 2cba052c-fe19-411b-bde2-55ee14cc36ac</p>
+                            <p> Order Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                            <p> Product Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                            <p> Order ID : 2cba052c-fe19-411b-bde2-55ee14cc36ac</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="shipments-container">
+            <div class="shipments-add-card-container">
+                <!-- Add shipment card for deploying a new shipment -->
+                <div class="shipments-add-card-buttons">
+                    <div class="shipments-add-card-button" onclick="closeAddShipmentCard()" style="display: none;">
+                        Cancel
+                    </div>
+                    <div class="shipments-add-card-button" onclick="openAddShipmentCard()">
+                        + New
+                    </div>
+                </div>
+                <div class="shipments-add-card">
+                    <div class="shipments-add-card-header">
+                        Deploy Shipment
+                    </div>
+                    <div class="shipments-add-card-body">
+                        <div class="shipments-add-card-input">
+                            <input type="text" placeholder="Buyer Email" id="shipment-buyer-email">
+                        </div>
+                        <div class="shipments-add-card-input">
+                            <input type="text" placeholder="Seller Email" id="shipment-seller-email">
+                        </div>
+                        <div class="shipments-add-card-input">
+                            <input type="text" placeholder="Shipment Order ID" id="shipment-order-id">
+                        </div>
+                    </div>
+                    <div class="shipments-add-card-footer">
+                        <div class="shipment-add-card-button">
+                            Ship
+                        </div>
+                        <p><i class="fa-solid fa-circle-info"></i> Deploying a shipment contract requires a fee. Make sure you have enough balance in your wallet.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- For viewing and managing shipments -->
+            <div class="shipments-list">
+                <!-- List of shpiments-->
+                <div class="shipments-list-item" onclick="openShipmentView(this)">
+                    <p class="shipments-list-item-id">
+                        75948023-363e-4c74-8740-be0de458ed37
+                    </p>
+                    <p class="shipments-list-item-date">
+                        🚚  19 Feb, 2025 at 1:48 PM
+                    </p>
+                </div>
+                <div class="shipments-list-item">
+
+                </div>
+                <div class="shipments-list-item">
+
+                </div>
+            </div>
+            <div class="shipments-overlay-view">
+                <!-- For viewing and controlling the shipment details -->
+                <div class="shipments-overlay-container">
+                    <div class="shipments-overlay-container-shipment">
+                        <!-- Shipment details -->
+                        <p class="shipments-overlay-container-shipment-id"> Shipment ID : 75948023-363e-4c74-8740-be0de458ed37 </p>
+                        <p class="shipments-overlay-container-shipment-order"> Order ID : 2cba052c-fe19-411b-bde2-55ee14cc36ac </p>
+                        <p class="shipments-overlay-container-shipment-price"> Price : 1000 <i class="fa-brands fa-ethereum"></i> </p>
+                        <p class="shipments-overlay-container-shipment-status"> Pending </p>
+                    </div>
+                    <div class="shipments-overlay-container-addresses">
+                        <!-- Address details -->
+                        <div class="shipments-overlay-container-addresses-source">
+                            <p>Source : </p>
+                            <p> John </p>
+                            <p> john@gmail.com </p>
+                            <p> 21, South Pole, Antarctica </p>
+                        </div>
+                        <div class="shipments-overlay-container-addresses-destination">
+                            <p>Destination : </p>
+                            <p> Jane </p>
+                            <p> jane@gmail.com </p>
+                            <p> 21, North Pole, Antarctica </p>
+                        </div>
+                    </div>
+                    <div class="shipments-overlay-container-timeline">
+                        <!-- Timeline details -->
+                        <div class="shipments-overlay-container-timeline-order">
+                            <p> Order : </p>
+                            <p>Placed:  19-02-2025 at 7:22 PM </p>
+                            <p>Confirmed:  19-02-2025 at 7:22 PM </p>
+                            <p>Paid:  19-02-2025 at 7:22 PM</p>
+                            <p>Cancelled:  19-02-2025 at 7:22 PM</p>
+                            <p>Refunded: 19-02-2025 at 7:22 PM</p>
+                        </div>
+                        <div class="shipments-overlay-container-timeline-shipment">
+                            <p> Shipment : </p>
+                            <p>Shipped:  19-02-2025 at 7:22 PM </p>
+                            <p>Delivered:  19-02-2025 at 7:22 PM </p>
+                            <p>Cancelled:  19-02-2025 at 7:22 PM</p>
+                            <p>Returned: 19-02-2025 at 7:22 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="transactions-container">
+            <!-- For viewing and managing transactions -->
+            <div class="transactions-list">
+                <!-- List of transactions -->
+            </div>
+            <div class="transactions-send-card">
+                <!-- Send transaction card for sending a new transaction -->
+            </div>
+            <div class="transactions-overlay-view">
+                <!-- For viewing and controlling the transaction details -->
+            </div>
         </div>
         <div class="wallets-container">
+            <!-- For viewing and managing wallets -->
+            <div class="wallets-list">
+                <!-- List of wallets -->
+            </div>
+            <div class="wallets-add-card">
+                <!-- Add wallet card for deploying a new wallet -->
+            </div>
+            <div class="wallets-overlay-view">
+                <!-- For viewing and controlling the wallet details -->
+            </div>
         </div>
         <div class="addresses-container">
+            <!-- For viewing and managing addresses -->
+            <div class="addresses-list">
+                <!-- List of addresses -->
+            </div>
+            <div class="addresses-add-card">
+                <!-- Add address card for deploying a new address -->
+            </div>
+            <div class="addresses-overlay-view">
+                <!-- For viewing and controlling the address details -->
+            </div>
         </div>
     </div>
 </body>

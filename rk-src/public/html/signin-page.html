@@ -6,20 +6,24 @@
     </head>
     <body>
         <div class="form-container">
-            <div class="form-title">
-                Sign In
+            <div class="form-container-header">
+                Sign In to your account
             </div>
-            <div class="form-fields">
-                <input type="text" id="email" placeholder="Email">
-                <input type="password" id="password" placeholder="Password">
+            <div class="form-container-body">
+                <div class="form-container-input">
+                    <input type="text" id="signin-email" placeholder="Email">
+                </div>
+                <div class="form-container-input">
+                    <input type="password" id="signin-password" placeholder="Password">
+                </div>
             </div>
-            <div class="form-buttons">
-                <button id="signin-button" onclick="signin()">Sign in</button>
-            </div>
-            <div class="form-messages">
-            </div>
-            <div class="form-links">
-                Don't have an account? <a href="/common/signup">Sign up</a>
+            <div class="form-container-footer">
+                <div class="form-container-footer-button" onclick="signin()">
+                    Sign In
+                </div>
+                <div class="form-container-messages">
+                </div>
+                <p>Don't have an account? <a href="/common/signup">Sign Up</a></p>
             </div>
         </div>
     </body>

@@ -151,6 +151,41 @@ async function showShipments(element) {
     const shipmentsDiv = document.querySelector('.shipments-container');
     shipmentsDiv.style.display = 'flex';
 }
+async function openShipmentView(element){
+    const shipmentOverlayView = document.querySelector('.shipments-overlay-view');
+    shipmentOverlayView.style.display = 'flex';
+
+    const shipmentId = element.querySelector('.shipments-list-item-id').innerHTML;
+    //const shipmentDetails = await fetch(`/seller/viewShipment/${shipmentId}`).then(res => res.json());
+
+    const shipmentOverlayContainer = shipmentOverlayView.querySelector('.shipments-overlay-container');
+    shipmentOverlayView.addEventListener('click', (e) => {
+        if(e.target === shipmentOverlayView){
+            closeShipmentView();
+        }
+    });
+}
+async function closeShipmentView(){
+    const shipmentOverlayView = document.querySelector('.shipments-overlay-view');
+    shipmentOverlayView.style.display = 'none';
+}
+
+async function openAddShipmentCard() {
+    const addShipmentButton = document.querySelectorAll('.shipments-add-card-button');
+    addShipmentButton[0].style.display = 'flex';
+    addShipmentButton[1].style.display = 'none';
+
+    const addShipmentCard = document.querySelector('.shipments-add-card');
+    addShipmentCard.style.display = 'flex';
+}
+async function closeAddShipmentCard() {
+    const addShipmentButton = document.querySelectorAll('.shipments-add-card-button');
+    addShipmentButton[0].style.display = 'none';
+    addShipmentButton[1].style.display = 'flex';
+
+    const addShipmentCard = document.querySelector('.shipments-add-card');
+    addShipmentCard.style.display = 'none';
+}
 
 //==============================================================================
 // functions for managing transactions
