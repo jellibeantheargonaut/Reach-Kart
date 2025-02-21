@@ -122,7 +122,6 @@ async function viewOrders(email){
                         reject(rows);
                     }
                     console.log(`[ rk-userops ] 📦 Orders of ${email}`);
-                    console.log(rows);
                     resolve(rows);
                 });
             }

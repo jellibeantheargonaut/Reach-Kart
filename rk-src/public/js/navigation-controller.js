@@ -74,24 +74,40 @@ async function openOrdersPage() {
     console.log('open orders page');
     closeMenuPage();
     openMenuPage();
+
+    // open the orders-page div
+    const ordersPage = document.querySelector('.orders-page');
+    ordersPage.style.display = 'flex';
 }
 
 async function openWalletsPage() {
     console.log('open wallets page');
     closeMenuPage();
     openMenuPage();
+
+    // open the wallets-page div
+    const walletsPage = document.querySelector('.wallets-page');
+    walletsPage.style.display = 'flex';
 }
 
 async function openTransactionsPage() {
     console.log('open transactions page');
     closeMenuPage();
     openMenuPage();
+
+    // open the transactions-page div
+    const transactionsPage = document.querySelector('.transactions-page');
+    transactionsPage.style.display = 'flex';
 }
 
 async function openSettingsPage() {
     console.log('open settings page');
     closeMenuPage();
     openMenuPage();
+
+    // open the settings-page div
+    const settingsPage = document.querySelector('.settings-page');
+    settingsPage.style.display = 'flex';
 }
 
 //==========================================================================

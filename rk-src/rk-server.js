@@ -113,7 +113,7 @@ function loggedIn(req, res, next){
 // routes for user account static pages
 //==============================================================================
 app.get('/', loggedIn,(req, res) => {
-  res.sendFile(path.join(__dirname, 'public/html/index.html'));
+  res.redirect('/home');
 });
 app.get('/home', loggedIn, async (req, res) => {
   const userDetails = loggingApi.verifyToken(req.cookies.jwt);
@@ -160,7 +160,43 @@ app.get('/users/viewOrders', loggedIn, async (req,res) => {
 
 // app.post('/user/viewOrder', (req, res) => {}
 // app.post('/user/getOrderBill', (req, res) => {}
+
+
 //================================================
+// routes for transaction related operations
+//================================================
+// app.get('/user/getTransactions', loggedIn, (req, res) => {}
+// app.get('/user/getTransactionDetails', loggedIn, (req, res) => {}
+// app.post('/user/transferMoney', loggedIn, (req, res) => {}
+
+//================================================
+// routes for address related operations
+//================================================
+// app.post('/user/addAddress', loggedIn, (req, res) => {}
+// app.post('/user/updateAddress', loggedIn, (req, res) => {}
+// app.get('/user/getAddresses', loggedIn, (req, res) => {}
+// app.post('/user/deleteAddress', loggedIn, (req, res) => {}
+// app.post('/user/setDefaultAddress', loggedIn, (req, res) => {}
+
+//================================================
+// routes for wallet related operations
+//================================================
+// app.get('/user/getWalletBalance', loggedIn, (req, res) => {}
+// app.get('/user/getWallets', loggedIn, (req, res) => {}
+// app.post('/user/createWallet', loggedIn, (req, res) => {}
+// app.post('/user/setDefaultWallet', loggedIn, (req, res) => {}
+// app.post('/user/deleteWallet', loggedIn, (req, res) => {}
+
+//================================================
+// routes for cart handling 
+//================================================
+// needs a cache to store the cart items
+// availble caching is redis
+// app.post('/user/addToCart', loggedIn, (req, res) => {}
+// app.post('/user/removeFromCart', loggedIn, (req, res) => {}
+// app.get('/user/viewCart', loggedIn, (req, res) => {}
+// app.post('/user/emptyCart', loggedIn, (req, res) => {}
+// app.post('/user/checkoutCart', loggedIn, (req, res) => {}
 
 //==============================================================================
 
