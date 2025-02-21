@@ -1,6 +1,22 @@
 // javascript for sign-in page
+async function blankSiginForm(){
+    const signinForm = document.querySelector('form-container');
+    const fields = signinForm.querySelectorAll('input');
+    fields.forEach(field => {
+        field.value = '';
+    });
+}
 
-function signin() {
+async function blankSignupForm(){
+    const signupForm = document.querySelector('form-container');
+    const fields = signupForm.querySelectorAll('input');
+    fields.forEach(field => {
+        field.value = '';
+    });
+}
+
+
+async function signin() {
     let email = document.getElementById('signin-email').value;
     let password = document.getElementById('signin-password').value;
 
@@ -34,6 +50,25 @@ function signup() {
     let accountType = document.getElementById('signup-account-type').value;
     if (password !== confirmPassword) {
         document.querySelector('.form-container-messages').textContent = 'Passwords do not match';
+        document.getElementById('signup-password').style.border = '1px solid red';
+        document.getElementById('signup-confirm-password').value = '';
+        return;
+    }
+
+    if(password.length < 8){
+        document.querySelector('.form-container-messages').textContent = 'Password must be at least 8 characters long';
+        document.getElementById('signup-password').value = '';
+        document.getElementById('signup-confirm-password').value = '';
+        return;
+    }
+
+    // regular expression to validate email
+    const emailRegex = /\S+@\S+\.\S+/;
+    if(!emailRegex.test(email)){
+        document.getElementById('signup-email').style.border = '1px solid red';
+        // also set focus on email field
+        document.getElementById('signup-email').focus();
+        document.querySelector('.form-container-messages').textContent = 'Invalid email';
         return;
     }
     
@@ -60,3 +95,15 @@ function signup() {
         }
     });
 }
+
+document.getElementById('signin-password').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        signin();
+    }
+});
+
+document.getElementById('signup-confirm-password').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        signup();
+    }
+});

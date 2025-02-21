@@ -5,6 +5,9 @@
     <link rel="stylesheet" type="text/css" href="/css/seller/home.css">
     <link rel="stylesheet" type="text/css" href="/css/seller/orders-container.css">
     <link rel="stylesheet" type="text/css" href="/css/seller/shipments-container.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/transactions-container.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/wallets-container.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/addresses-container.css">
 
     <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
     <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
@@ -37,18 +40,18 @@
             <div class="sidebar-menu-item" onclick="showShipments(this)">
                 <i class="fa-solid fa-truck"></i> Shipments
             </div>
-            <div class="sidebar-menu-item">
+            <div class="sidebar-menu-item" onclick="showTransactions(this)">
                 <i class="fa-solid fa-money-check-dollar"></i> Transactions
             </div>
-            <div class="sidebar-menu-item">
+            <div class="sidebar-menu-item" onclick="showWallets(this)">
                 <i class="fa-solid fa-wallet"></i> Wallets
             </div>
-            <div class="sidebar-menu-item">
+            <div class="sidebar-menu-item" onclick="showAddresses(this)">
                 <i class="fa-solid fa-address-card"></i> Addresses
             </div>
         </div>
         <div class="sidebar-menu-footer">
-            <div class="logout-button">
+            <div class="logout-button" onclick="logout()">
                 Logout
             </div>
         </div>
@@ -189,6 +192,7 @@
                         <div class="orders-view-details-timeline">
                             <p> Order Placed : 19-02-2025 at 7:22 PM</p>
                             <p> Order Confirmed : 19-02-2025 at 7:22 PM </p>
+                            <p> Order Paid : 19-02-2025 at 7:22 PM </p>
                             <p> Order Shipped : 19-02-2025 at 7:22 PM </p>
                         </div>
                         <div class="orders-view-details-chain">
@@ -302,18 +306,43 @@
             <!-- For viewing and managing transactions -->
             <div class="transactions-list">
                 <!-- List of transactions -->
+                <div class="transactions-list-item" onclick="openTransactionView(this)">
+                    <p> <i class="fa-solid fa-circle-user"></i> john@gmail.com : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                    <p> 1000 <i class="fa-brands fa-ethereum"></i> </p>
+                    <p> <i class="fa-solid fa-arrow-right-arrow-left"></i> 19 Feb, 2025 at 1:48 PM </p>
+                </div>
             </div>
             <div class="transactions-send-card">
                 <!-- Send transaction card for sending a new transaction -->
             </div>
             <div class="transactions-overlay-view">
                 <!-- For viewing and controlling the transaction details -->
+                <div class="transactions-overlay-container">
+                    <div class="transactions-overlay-container-body">
+                        <p> Transaction Hash : 0x5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060 </p>
+                        <p> From : John (john@gmail.com) : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                        <p> To : Jane (jane@gmail.com) : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                        <p> Amount : 1000 <i class="fa-brands fa-ethereum"></i> </p>
+                        <p> Date : 19 Feb, 2025 at 1:48 PM </p>
+                    </div>
+                    <div class="transactions-overlay-container-footer">
+                        <div class="transactions-overlay-container-button">
+                            <!-- Refunding function to be attached later -->
+                            <i class="fa-regular fa-paper-plane"></i> Refund
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="wallets-container">
             <!-- For viewing and managing wallets -->
+            <!-- Useless for now as no functionality to use other wallets  -->
             <div class="wallets-list">
                 <!-- List of wallets -->
+                <div class="wallets-list-item">
+                    <p> Wallet ID : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                    <p> Balance : 1000 <i class="fa-brands fa-ethereum"></i> </p>
+                </div>
             </div>
             <div class="wallets-add-card">
                 <!-- Add wallet card for deploying a new wallet -->
@@ -324,6 +353,7 @@
         </div>
         <div class="addresses-container">
             <!-- For viewing and managing addresses -->
+            <!-- Useless for now -->
             <div class="addresses-list">
                 <!-- List of addresses -->
             </div>

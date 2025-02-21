@@ -1,0 +1,108 @@
+/* javascript to handle navigation bar */
+
+async function showAccountDropdown() {
+    const accountIcon = document.querySelector('.navigation-bar-account');
+    const accountDropdown = document.querySelector('.account-drop-down');
+    if(accountDropdown.computedStyleMap().get('display').value === 'none'){ 
+        accountDropdown.style.display = 'flex'; 
+        accountIcon.style.backgroundColor = 'rgb(40,40,40)';
+        accountIcon.style.color = 'white';
+    }
+    else { 
+        accountDropdown.style.display = 'none';
+        accountIcon.style.backgroundColor = 'rgb(168, 168, 168)';
+        accountIcon.style.color = 'black';
+    }
+    
+    // when clicked outside the dropdown close the dropdown
+    document.addEventListener('click', function(event) {
+        if(!accountIcon.contains(event.target) && !accountDropdown.contains(event.target)) {
+            accountDropdown.style.display = 'none';
+            accountIcon.style.backgroundColor = 'rgb(168, 168, 168)';
+            accountIcon.style.color = 'black';
+        }
+    });
+}
+
+async function showOrdersDropdown(element) {
+    const ordersIcon = element;
+    const ordersDropdown = element.querySelector('.orders-dropdown');
+    if(ordersDropdown.computedStyleMap().get('display').value === 'none'){ 
+        ordersDropdown.style.display = 'flex'; 
+        ordersIcon.style.backgroundColor = 'rgb(40,40,40)';
+        ordersIcon.style.color = 'white';
+    }
+    else { 
+        ordersDropdown.style.display = 'none';
+        ordersIcon.style.backgroundColor = 'rgb(168, 168, 168)';
+        ordersIcon.style.color = 'black';
+    }
+    
+    // when clicked outside the dropdown close the dropdown
+    document.addEventListener('click', function(event) {
+        if(!ordersIcon.contains(event.target) && !ordersDropdown.contains(event.target)) {
+            ordersDropdown.style.display = 'none';
+            ordersIcon.style.backgroundColor = 'rgb(168, 168, 168)';
+            ordersIcon.style.color = 'black';
+        }
+    });
+}
+async function showCartDropdown(element) {
+    const cartIcon = element;
+    const cartDropdown = element.querySelector('.cart-dropdown');
+    if(cartDropdown.computedStyleMap().get('display').value === 'none'){ 
+        cartDropdown.style.display = 'flex'; 
+        cartIcon.style.backgroundColor = 'rgb(40,40,40)';
+        cartIcon.style.color = 'white';
+    }
+    else { 
+        cartDropdown.style.display = 'none';
+        cartIcon.style.backgroundColor = 'rgb(168, 168, 168)';
+        cartIcon.style.color = 'black';
+    }
+
+    // when clicked outside the dropdown close the dropdown
+    document.addEventListener('click', function(event) {
+        if(!cartIcon.contains(event.target) && !cartDropdown.contains(event.target)) {
+            cartDropdown.style.display = 'none';
+            cartIcon.style.backgroundColor = 'rgb(168, 168, 168)';
+            cartIcon.style.color = 'black';
+        }
+    });
+}
+
+async function setAccountName() {
+    const accountIcon = document.querySelector('.navigation-bar-account p');
+    const userDetails = await fetch('/common/getUserDetails', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const userDetailsJson = await userDetails.json();
+    const accountName = userDetailsJson.name;
+    accountIcon.innerHTML = accountName;
+}
+
+async function logout() {
+    const response = await fetch('/common/logout', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    if(response.status === 200) {
+        window.location.href = '/common/signin';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // navigation-bar active when searching 
+    const navBar = document.querySelector('.navigation-bar');
+    const searchInput = document.querySelector('.navigation-bar-search input');
+    searchInput.addEventListener('focus', function() {
+        navBar.classList.add('navigation-bar-active');
+    });
+
+    setAccountName();
+});

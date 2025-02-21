@@ -2,6 +2,9 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="/css/index.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/navigation-bar.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/cart-dropdown.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/orders-dropdown.css">
 
         <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
         <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
@@ -10,58 +13,125 @@
         <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/solid.css">
 
         <script src="/js/index.js" defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/meilisearch@latest/dist/bundles/meilisearch.umd.js"></script>
+        <script src="/js/navigation-controller.js" defer></script>
     </head>
     <body>
-        <div class="message-overlay">
+        <div class="navigation-bar">
+            <div class="navigation-bar-logo" onclick="window.location.href='/home'">
+                <p> Reachkart <i class="fa-solid fa-cart-shopping"></i></p>
+            </div>
+            <div class="navigation-bar-location">
+                <i class="fa-solid fa-location-dot"></i>
+                <p> Bangalore </p>
+            </div>
+            <div class="navigation-bar-search">
+                <input type="text" id="search-bar" placeholder="Search for products">
+                <div class="search-results-dropdown">
+                    <div class="search-results-dropdown-item">
+                        Product 1
+                    </div>
+                    <div class="search-results-dropdown-item">
+                        Product 2
+                    </div>
+                    <div class="search-results-dropdown-item">
+                        Product 3
+                    </div>
+                </div>
+            </div>
+            <div class="navigation-bar-menu-item">
+                <p> <i class="fa-solid fa-language"></i> en </p>
+                <!--<select>
+                    <option value="en"> English </option>
+                    <option value="hi"> Hindi </option>
+                    <option value="kn"> Telugu </option>
+                </select>-->
+            </div>
+            <div class="navigation-bar-menu-item" onclick="showOrdersDropdown(this)">
+                <p> Orders <i class="fa-solid fa-bag-shopping"></i> </p>
+                <div class="orders-dropdown">
+                    <!-- List orders by user -->
+                </div>
+            </div>
+            <div class="navigation-bar-menu-item" onclick="showCartDropdown(this)">
+                <p> Cart <i class="fa-solid fa-cart-shopping"></i> </p>
+                <div class="cart-dropdown">
+                    <!-- List of cart items by user -->
+                </div>   
+            </div>
+            <div class="navigation-bar-account" onclick="showAccountDropdown()">
+                <p> John Steiner </p>
+                <i class="fa-solid fa-circle-user"></i>
+                <div class="account-drop-down">
+                    <div class="account-drop-down-item">
+                        Account
+                    </div>
+                    <div class="account-drop-down-item">
+                        Orders
+                    </div>
+                    <div class="account-drop-down-item">
+                        Wallets
+                    </div>
+                    <div class="account-drop-down-item">
+                        Transactions
+                    </div>
+                    <div class="account-drop-down-item">
+                        Settings
+                    </div>
+                    <div class="account-drop-down-item" onclick="logout()">
+                        Sign Out
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="top-nav-bar-container">
-            <div class="menu-icon-container" onclick="toggleSidebar()">
-                <i class="fa-solid fa-bars fa-xl" id="menu-icon"></i>
+        <div class="site-mainarea">
+            <div class="landing-page">
+                <!-- The main landing page which contains banners and stuff -->
             </div>
-            <div class="logo-container" onclick="window.location.href='/'">
-                Reach <i class="fa-solid fa-cart-shopping"></i>
+            <div class="accounts-page">
+                <!-- The accounts page which contains user details and stuff -->
             </div>
-            <div class="overlay-container" id="overlay-container"></div>
-            <div class="search-bar-container">
-                <div class="search-bar-input-container">
-                    <input type="text" class="search-bar" id="searchInput" placeholder="books..">
-                </div>
-                <div class="search-bar-icon-container">
-                    <button><i class="fa-solid fa-search"></i></button>
-                </div>
-                <div id="searchResults" class="search-results-container">
-                </div>
+            <div class="orders-page">
+                <!-- The orders page which contains user orders and stuff -->
             </div>
-            <div class="navigation-menu-container">
-
+            <div class="wallets-page">
+                <!-- The wallets page which contains user wallets and stuff -->
             </div>
-            <div class="user-profile-container">
-                <div class="user-profile-icon-container" onclick="toggleUserAccountMenu()">
-                    <i class="fa-solid fa-user fa-xl"></i>
-                </div>
-                <div class="user-profile-dropdown-container" id="userDropdown">
-                    <div class="user-icon-dropdown-item" onclick="window.location.href='/profile'">Profile</div>
-                    <div class="user-icon-dropdown-item">Orders</div>
-                    <div class="user-icon-dropdown-item">Settings</div>
-                    <div class="user-icon-dropdown-divider"></div>
-                    <div class="user-icon-dropdown-item" onclick="logout()">Logout</div>
-                </div>
+            <div class="transactions-page">
+                <!-- The transactions page which contains user transactions and stuff -->
+            </div>
+            <div class="settings-page">
+                <!-- The settings page which contains user settings and stuff -->
             </div>
         </div>
-        <div class="main-content-area">
-            <div class="sidebar-menu-container" id="sidebar-menu-container">
+        <div class="site-footer">
+            <div class="footer-head">
+                <div>
+                    <p> Contact Us </p>
+                    <p> Customer Service </p>
+                    <p> Contact Desk </p>
+                    <p> Help Center </p>
+                </div>
+                <div>
+                    <p> Follow Us </p>
+                    <p> 
+                        <img src="/img/facebook.png">
+                        Facebook 
+                    </p>
+                    <p> 
+                        <img src="/img/twitter.png">
+                        Twitter 
+                    </p>
+                    <p> 
+                        <img src="/img/instagram.png">
+                        Instagram 
+                    </p>
+                </div>
+                <div>
+                    <p> Reachkart for Sellers </p>
+                </div>
             </div>
-            <div class="main-content-page-area">
-
-                <!-- Div for product search listings -->
-                <div class="products-list-container"></div>
-
-                <!-- Div for product details (also known as products page )-->
-                <div class="product-details-container"></div>
-
-                <!-- Div for payments page -->
-                <div class="payments-container"></div>
+            <div class="footer-logo">
+                <p> Reachkart <i class="fa-solid fa-cart-shopping"></i> </p>
             </div>
         </div>
     </body>

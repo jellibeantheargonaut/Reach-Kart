@@ -24,26 +24,6 @@ app.use(cookieParser());
 
 // session settings to be implemented later
 
-// Routes to serve the static pages
-//==============================================================================
-
-// landing pages when logged in
-app.get('/', loggedIn,(req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/index.html'));
-});
-app.get('/home', loggedIn, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/index.html'));
-});
-
-// account profile pages for users
-app.get('/profile', loggedIn, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/profile.html'));
-});
-
-// order confirmation page
-app.get('/order', loggedIn, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/order.html'));
-});
 
 //==============================================================================
 // Seller Endpoints and stuff
@@ -135,8 +115,14 @@ function loggedIn(req, res, next){
 app.get('/', loggedIn,(req, res) => {
   res.sendFile(path.join(__dirname, 'public/html/index.html'));
 });
-app.get('/home', loggedIn, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/html/index.html'));
+app.get('/home', loggedIn, async (req, res) => {
+  const userDetails = loggingApi.verifyToken(req.cookies.jwt);
+  if( userDetails && userDetails.account_type === 'seller'){
+    return res.redirect('/seller/home');
+  }
+  else {
+    res.sendFile(path.join(__dirname, 'public/html/index.html'));
+  }
 });
 
 // account profile pages for users

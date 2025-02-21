@@ -196,32 +196,34 @@ async function showTransactions(element) {
     const transactionsDiv = document.querySelector('.transactions-container');
     transactionsDiv.style.display = 'flex';
 }
+async function openTransactionView(element){
+    const transactionOverlayView = document.querySelector('.transactions-overlay-view');
+    transactionOverlayView.style.display = 'flex';
 
+    //const transactionDetails = await fetch(`/seller/viewTransaction/${transactionId}`).then(res => res.json());
+
+    const transactionOverlayContainer = transactionOverlayView.querySelector('.transactions-overlay-container');
+    transactionOverlayView.addEventListener('click', (e) => {
+        if(e.target === transactionOverlayView){
+            closeTransactionView();
+        }
+    });
+}
+async function closeTransactionView(){
+    const transactionOverlayView = document.querySelector('.transactions-overlay-view');
+    transactionOverlayView.style.display = 'none';
+}
 //==============================================================================
 // function to user wallet details
 //==============================================================================
-async function showWalletDetails() {
-
+async function showWallets(element) {
     blankDivs();
+    selectButton(element);
     const walletsDiv = document.querySelector('.wallets-container');
     walletsDiv.style.display = 'flex';
-    const addressDiv = document.querySelector('.wallet-address');
-    const balanceDiv = document.querySelector('.wallet-balance');
-    addressDiv.innerHTML = '';
-    balanceDiv.innerHTML = '';
-    const walletIcon = document.createElement('i');
-    const etherIcon = document.createElement('i');
-    walletIcon.classList.add('fa-solid', 'fa-wallet');
-    etherIcon.classList.add('fa-brands','fa-ethereum');
-
-    const userInfo = await fetch('/common/getUserDetails').then(res => res.json());
-    const walletBalance = await fetch('/common/getWalletBalance').then(res => res.json());
-    addressDiv.appendChild(walletIcon);
-    addressDiv.appendChild(document.createTextNode(userInfo.walletId));
-    balanceDiv.appendChild(etherIcon);
-    console.log(walletBalance);
-    balanceDiv.appendChild(document.createTextNode(walletBalance.balance));
 }
+
+//==============================================================================
 
 async function setUserName() {
     const nameDiv = document.querySelector('.profile-name');
@@ -240,8 +242,9 @@ async function setShopName() {
 //==============================================================================
 // functions for managing addresses
 //==============================================================================
-async function showAddresses() {
+async function showAddresses(element) {
     blankDivs();
+    selectButton(element);
     const addressesDiv = document.querySelector('.addresses-container');
     addressesDiv.style.display = 'flex';
 }
