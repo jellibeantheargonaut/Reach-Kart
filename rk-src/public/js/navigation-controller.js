@@ -1,5 +1,12 @@
 /* javascript to handle navigation bar */
 
+
+// functions to control and manage the account icon dropdown menu
+//==========================================================================
+// contents are displayed in a container with class 'account-menu-page'
+
+// function to show account dropdown
+//--------------------------------------------------------------------------
 async function showAccountDropdown() {
     const accountIcon = document.querySelector('.navigation-bar-account');
     const accountDropdown = document.querySelector('.account-drop-down');
@@ -23,6 +30,71 @@ async function showAccountDropdown() {
         }
     });
 }
+//--------------------------------------------------------------------------
+async function openMenuPage() {
+    const backgroundOverlay = document.querySelector('.background-overlay');
+    backgroundOverlay.style.display = 'flex';
+    const menuPage = document.querySelector('.account-menu-page');
+    menuPage.style.display = 'flex';
+
+    backgroundOverlay.addEventListener('click', (e) => {
+        if(e.target !== menuPage || e.target !== backgroundOverlay){
+            closeMenuPage();
+        }
+    })
+}
+async function closeMenuPage() {
+    const backgroundOverlay = document.querySelector('.background-overlay');
+    const menuPage = document.querySelector('.account-menu-page');
+    backgroundOverlay.style.display = 'none';
+    menuPage.style.display = 'none';
+
+    // close all the sub divs
+    const accountsPage = document.querySelector('.accounts-page');
+    const ordersPage = document.querySelector('.orders-page');
+    const transactionsPage = document.querySelector('.transactions-page');
+    const settingsPage = document.querySelector('.settings-page');
+    [ accountsPage, ordersPage, transactionsPage, settingsPage ].forEach(element => {
+        element.style.display = 'none';
+    })
+}
+//--------------------------------------------------------------------------
+// function to open account page 
+async function openAccountsPage() {
+    console.log('open account page');
+    closeMenuPage();
+    openMenuPage();
+
+    // open the accounts-page div
+    const accountsPage = document.querySelector('.accounts-page');
+    accountsPage.style.display = 'flex';
+}
+
+async function openOrdersPage() {
+    console.log('open orders page');
+    closeMenuPage();
+    openMenuPage();
+}
+
+async function openWalletsPage() {
+    console.log('open wallets page');
+    closeMenuPage();
+    openMenuPage();
+}
+
+async function openTransactionsPage() {
+    console.log('open transactions page');
+    closeMenuPage();
+    openMenuPage();
+}
+
+async function openSettingsPage() {
+    console.log('open settings page');
+    closeMenuPage();
+    openMenuPage();
+}
+
+//==========================================================================
 
 async function showOrdersDropdown(element) {
     const ordersIcon = element;

@@ -5,6 +5,7 @@
         <link rel="stylesheet" type="text/css" href="/css/customer/navigation-bar.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/cart-dropdown.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/orders-dropdown.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/account-menu-page.css">
 
         <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
         <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
@@ -62,19 +63,19 @@
                 <p> John Steiner </p>
                 <i class="fa-solid fa-circle-user"></i>
                 <div class="account-drop-down">
-                    <div class="account-drop-down-item">
+                    <div class="account-drop-down-item" onclick="openAccountsPage()">
                         Account
                     </div>
-                    <div class="account-drop-down-item">
+                    <div class="account-drop-down-item" onclick="openOrdersPage()">
                         Orders
                     </div>
-                    <div class="account-drop-down-item">
+                    <div class="account-drop-down-item" onclick="openWalletsPage()">
                         Wallets
                     </div>
-                    <div class="account-drop-down-item">
+                    <div class="account-drop-down-item" onclick="openTransactionsPage()">
                         Transactions
                     </div>
-                    <div class="account-drop-down-item">
+                    <div class="account-drop-down-item" onclick="openSettingsPage()">
                         Settings
                     </div>
                     <div class="account-drop-down-item" onclick="logout()">
@@ -83,12 +84,13 @@
                 </div>
             </div>
         </div>
-        <div class="site-mainarea">
-            <div class="landing-page">
-                <!-- The main landing page which contains banners and stuff -->
-            </div>
+        <div class="background-overlay">
+            <!-- Background overlay to blur the background -->
+        </div>
+        <div class="account-menu-page">
             <div class="accounts-page">
                 <!-- The accounts page which contains user details and stuff -->
+                 Something
             </div>
             <div class="orders-page">
                 <!-- The orders page which contains user orders and stuff -->
@@ -101,6 +103,13 @@
             </div>
             <div class="settings-page">
                 <!-- The settings page which contains user settings and stuff -->
+            </div>
+        </div>
+        <div class="site-mainarea">
+            
+            <div class="landing-page">
+                <!-- The main landing page which contains banners and stuff -->
+                Something here
             </div>
         </div>
         <div class="site-footer">
@@ -128,6 +137,9 @@
                 </div>
                 <div>
                     <p> Reachkart for Sellers </p>
+                    <p> Sell on Reachkart </p>
+                    <p> Advertise on Reachkart </p>
+                    <p> Reachkart Wholesale </p>
                 </div>
             </div>
             <div class="footer-logo">
