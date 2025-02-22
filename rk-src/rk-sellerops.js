@@ -15,13 +15,13 @@ const { v4: uuid } = require('uuid');
 const path = require('path');
 const chainApi = require('./rk-chainapi');
 const loggingApi = require('./rk-logging');
-const { log } = require('console');
+const { RKWriteLog } = require('./rk-logs');
 
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){
         console.error(err.message);
     }
-    console.log('[ rk-userops ] 📶 Connected to the rk database');
+    RKWriteLog('[ rk-userops ] 📶 Connected to the rk database','rk-sellerops');
 });
 
 // wrappers for the functions in rk-chainapi.js
@@ -51,7 +51,7 @@ async function viewShop(email){
                 }
                 products.push(data);
             })
-            console.log(`[ rk-sellerops ] 🛍️ Products in the shop of seller ${email}`);
+            RKWriteLog(`[ rk-sellerops ] 🛍️ Products in the shop of seller ${email}`,'rk-sellerops');
             resolve(products);
         });
     });
@@ -65,7 +65,7 @@ async function uploadProduct(email,productName,productDescription,productPrice,p
         const wid = await loggingApi.getWalletId(email);
         try {
             await chainApi.deployProductContract(wid,productName,productDescription,productPrice,productQuantity);
-            console.log(`[ rk-sellerops ] 📦 Product ${productName} uploaded by seller ${email}`);
+            RKWriteLog(`[ rk-sellerops ] 📦 Product ${productName} uploaded by seller ${email}`,'rk-sellerops');
             resolve(true);
         } catch (error) {
             reject(false);
@@ -98,7 +98,7 @@ async function viewOrders(email){
                 }
                 orders.push(data);
             });
-            console.log(`[ rk-sellerops ] 🛒 Orders to seller ${email}`);
+            RKWriteLog(`[ rk-sellerops ] 🛒 Orders to seller ${email}`,'rk-sellerops');
             resolve(orders);
         })
     })
@@ -136,7 +136,7 @@ async function viewOrder(orderId){
             orderAddress: orderAddress,
             orderProduct: orderProduct
         }
-        console.log(`[ rk-sellerops ] 📦 Order details of order ${orderId}`);
+        RKWriteLog(`[ rk-sellerops ] 📦 Order details of order ${orderId}`,'rk-sellerops');
         resolve(details);
     });
 }
@@ -163,7 +163,7 @@ async function viewShipments(email){
                 }
                 shipments.push(data);
             });
-            console.log(`[ rk-sellerops ] 🚚 Shipments from seller ${email}`);
+            RKWriteLog(`[ rk-sellerops ] 🚚 Shipments from seller ${email}`,'rk-sellerops');
             resolve(shipments);
         });
     });

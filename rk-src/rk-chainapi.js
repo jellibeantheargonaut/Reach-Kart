@@ -68,24 +68,25 @@ const fs = require('fs');
 const { ethers } = require('hardhat');
 const { v4: uuid } = require('uuid');
 const path = require('path');
+const { RKWriteLog } = require('./rk-logs');
 
 // setting up sqlite3 database
 // create new if not exists
 if(!fs.existsSync('./data/reachkart.db')){
-    console.log('[ rk-chainapi ] 📂 Database not found. Creating a new one');
+    RKWriteLog('[ rk-chainapi ] 📂 Database not found. Creating a new one','rk-chainapi');
     fs.openSync('./data/reachkart.db', 'w');
-    console.log('[ rk-chainapi ] 📂 Database created');
+    RKWriteLog('[ rk-chainapi ] 📂 Database created','rk-chainapi');
 }
 
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){
         console.error(err.message);
     }
-    console.log('[ rk-chainapi ] 📶 Connected to the rk database');
+    RKWriteLog('[ rk-chainapi ] 📶 Connected to the rk database','rk-chainapi');
 });
 
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
-console.log('[ rk-chainapi ] 📶 Connected to the hardhat network');
+RKWriteLog('[ rk-chainapi ] 📶 Connected to the hardhat network','rk-chainapi','rk-chainapi');
 
 // function to create database and tables
 async function createDatabases(){
@@ -102,7 +103,7 @@ async function createDatabases(){
         );
         resolve();
     });
-    console.log('[ rk-chainapi ] 👍🏻 Users table created');
+    RKWriteLog('[ rk-chainapi ] 👍🏻 Users table created','rk-chainapi');
 
     // create the orders table if not exists
     await new Promise(resolve => {
@@ -121,7 +122,7 @@ async function createDatabases(){
         );
         resolve();
     });
-    console.log('[ rk-chainapi ] 👍🏻 Orders table created');
+    RKWriteLog('[ rk-chainapi ] 👍🏻 Orders table created','rk-chainapi');
 
     // create the products table if not exists
     await new Promise(resolve => {
@@ -133,7 +134,7 @@ async function createDatabases(){
         );
         resolve();
     });
-    console.log('[ rk-chainapi ] 👍🏻 Products table created');
+    RKWriteLog('[ rk-chainapi ] 👍🏻 Products table created','rk-chainapi');
 
     // create the wallets table if not exists
     await new Promise(resolve => {
@@ -144,7 +145,7 @@ async function createDatabases(){
         );
         resolve();
     });
-    console.log('[ rk-chainapi ] 👍🏻 Wallets table created');
+    RKWriteLog('[ rk-chainapi ] 👍🏻 Wallets table created','rk-chainapi');
 
     // create the addresses table if not exists
     await new Promise(resolve => {
@@ -154,7 +155,7 @@ async function createDatabases(){
         );
         resolve();
     });
-    console.log('[ rk-chainapi ] 👍🏻 Addresses table created');
+    RKWriteLog('[ rk-chainapi ] 👍🏻 Addresses table created','rk-chainapi');
 
     // create the shipments table if not exists
     await new Promise(resolve => {
@@ -167,24 +168,24 @@ async function createDatabases(){
         );
         resolve();
     });
-    console.log('[ rk-chainapi ] 👍🏻 Shipments table created');
+    RKWriteLog('[ rk-chainapi ] 👍🏻 Shipments table created','rk-chainapi');
 
-    console.log('[ rk-chainapi ] 👍🏻 Database and tables created');
+    RKWriteLog('[ rk-chainapi ] 👍🏻 Database and tables created','rk-chainapi');
 }
 // function to delete tables in database
 function deleteTables(){
     db.run(`DROP TABLE IF EXISTS users`);
-    console.log('🪓 Users table deleted');
+    RKWriteLog('🪓 Users table deleted','rk-chainapi');
     db.run(`DROP TABLE IF EXISTS orders`);
-    console.log('🪓 Orders table deleted');
+    RKWriteLog('🪓 Orders table deleted','rk-chainapi');
     db.run(`DROP TABLE IF EXISTS products`);
-    console.log('🪓 Products table deleted');
+    RKWriteLog('🪓 Products table deleted','rk-chainapi');
     db.run(`DROP TABLE IF EXISTS wallets`);
-    console.log('🪓 Wallets table deleted');
+    RKWriteLog('🪓 Wallets table deleted','rk-chainapi');
     db.run(`DROP TABLE IF EXISTS addresses`);
-    console.log('🪓 Addresses table deleted');
+    RKWriteLog('🪓 Addresses table deleted','rk-chainapi');
     db.run(`DROP TABLE IF EXISTS shipments`);
-    console.log('🪓 Shipments table deleted');
+    RKWriteLog('🪓 Shipments table deleted','rk-chainapi');
 }
 
 // functions to handle wallet operations
@@ -212,9 +213,9 @@ async function createWallet(email){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-chainapi ] 💳 Wallet ${wid} created for user ${email}`);
+            RKWriteLog(`[ rk-chainapi ] 💳 Wallet ${wid} created for user ${email}`,'rk-chainapi');
         });
-        console.log(`[ rk-chainapi ] 💳 Wallet ${wid} connected to hardhat network`);
+        RKWriteLog(`[ rk-chainapi ] 💳 Wallet ${wid} connected to hardhat network`,'rk-chainapi');
         resolve(wid);
     });
 }
@@ -223,7 +224,7 @@ async function createWallet(email){
 async function getWalletBalance(wid){
     return new Promise(async (resolve,reject) => {
         const balance = await provider.getBalance(wid);
-        console.log(`[ rk-chainapi ] 💵 Balance of wallet ${wid} is ${ethers.formatEther(balance)}`);
+        RKWriteLog(`[ rk-chainapi ] 💵 Balance of wallet ${wid} is ${ethers.formatEther(balance)}`,'rk-chainapi');
         resolve(ethers.formatEther(balance));
     });
 }
@@ -249,7 +250,7 @@ async function fundWallet(wid,amount){
             value: ethers.parseEther(amount)
         });
         await tx.wait();
-        console.log(`[ rk-chainapi ] 🤑 Wallet ${wid} funded with ${amount} ETH`);
+        RKWriteLog(`[ rk-chainapi ] 🤑 Wallet ${wid} funded with ${amount} ETH`,'rk-chainapi');
         resolve(tx.hash);
     });
 }
@@ -263,7 +264,7 @@ async function transferFunds(buyerWid, sellerWid, amount){
             value: ethers.parseEther(amount.toString())
         });
         await tx.wait();
-        console.log(`[ rk-chainapi ] 💵 ${amount} ETH transferred from ${buyerWid} to ${sellerWid}`);
+        RKWriteLog(`[ rk-chainapi ] 💵 ${amount} ETH transferred from ${buyerWid} to ${sellerWid}`,'rk-chainapi');
 
         // return the transaction hash
         resolve(tx.hash);
@@ -308,9 +309,9 @@ async function deployProductContract(sellerAddress, productName, productDescript
         const Product = await ethers.getContractFactory('ProductRegistry',seller);
         const productId = uuid();
         const etherPrice = ethers.parseEther(productPrice);
-        console.log(`[ rk-chainapi ] 📦 Product ${productId} created by seller ${sellerAddress}`);
+        RKWriteLog(`[ rk-chainapi ] 📦 Product ${productId} created by seller ${sellerAddress}`,'rk-chainapi');
         const productContract = await Product.deploy(sellerAddress,productId,productName,productDescription,etherPrice,productQuantity);
-        console.log(`[ rk-chainapi ] 📦 Product contract deployed at ${productContract.address}`);
+        RKWriteLog(`[ rk-chainapi ] 📦 Product contract deployed at ${productContract.address}`,'rk-chainapi');
 
         // insert the product into the products table
         db.run(`INSERT INTO products(productId,productAddress,dateAdded) VALUES(?,?,?)`,[productId,await productContract.getAddress(),Date.now()], (err) => {
@@ -318,7 +319,7 @@ async function deployProductContract(sellerAddress, productName, productDescript
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-chainapi ] 📦 Product ${productId} entered in database table`);
+            RKWriteLog(`[ rk-chainapi ] 📦 Product ${productId} entered in database table`,'rk-chainapi');
         });
         resolve();
     });
@@ -336,7 +337,7 @@ async function setProductPrice(productId,productPrice){
             const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
             const etherPrice = ethers.parseEther(productPrice);
             await productContract.setProductPrice(etherPrice);
-            console.log(`[ rk-chainapi ] 📦 Product ${productId} price set to ${productPrice}`);
+            RKWriteLog(`[ rk-chainapi ] 📦 Product ${productId} price set to ${productPrice}`,'rk-chainapi');
         });
 
         // update the dateUpdated field in the products table
@@ -345,7 +346,7 @@ async function setProductPrice(productId,productPrice){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-chainapi ] 📦 Product ${productId} updated in database table`);
+            RKWriteLog(`[ rk-chainapi ] 📦 Product ${productId} updated in database table`,'rk-chainapi');
         });
         resolve();
     });
@@ -361,7 +362,7 @@ async function setProductQuantity(productId,productQuantity){
             const productAddress = row.productAddress;
             const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
             await productContract.setProductQuantity(productQuantity);
-            console.log(`[ rk-chainapi ] 📦 Product ${productId} quantity set to ${productQuantity}`);
+            RKWriteLog(`[ rk-chainapi ] 📦 Product ${productId} quantity set to ${productQuantity}`,'rk-chainapi');
         });
 
         // update the dateUpdated field in the products table
@@ -370,7 +371,7 @@ async function setProductQuantity(productId,productQuantity){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-chainapi ] 📦 Product ${productId} updated in database table`);
+            RKWriteLog(`[ rk-chainapi ] 📦 Product ${productId} updated in database table`,'rk-chainapi');
         });
         resolve();
     });
@@ -387,7 +388,7 @@ async function getProductPrice(productId){
             const productAddress = row.productAddress;
             const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
             const productPrice = await productContract.getProductPrice();
-            console.log(`[ rk-chainapi ] 💵 Price of product ${productId} is ${productPrice}`);
+            RKWriteLog(`[ rk-chainapi ] 💵 Price of product ${productId} is ${productPrice}`,'rk-chainapi');
             resolve(ethers.formatEther(productPrice));
         });
     });
@@ -401,7 +402,7 @@ async function getProductQuantity(productId){
         const productAddress = row.productAddress;
         const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
         const productQuantity = await productContract.getProductQuantity();
-        console.log(`[ rk-chainapi ] 📦 Quantity of product ${productId} is ${productQuantity}`);
+        RKWriteLog(`[ rk-chainapi ] 📦 Quantity of product ${productId} is ${productQuantity}`,'rk-chainapi');
         return productQuantity;
     });
 }
@@ -428,7 +429,7 @@ async function getProductName(productId){
             const productAddress = row.productAddress;
             const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
             const productName = await productContract.getProductName();
-            console.log(`[ rk-chainapi ] 📦 Name of product ${productId} : ${productName}`);
+            RKWriteLog(`[ rk-chainapi ] 📦 Name of product ${productId} : ${productName}`,'rk-chainapi');
             resolve(productName);
         });
     });
@@ -444,7 +445,7 @@ async function getProductDescription(productId){
             const productAddress = row.productAddress;
             const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
             const productDescription = await productContract.getProductDescription();
-            console.log(`[ rk-chainapi ] 📦 Description of product ${productId} : ${productDescription}`);
+            RKWriteLog(`[ rk-chainapi ] 📦 Description of product ${productId} : ${productDescription}`,'rk-chainapi');
             resolve(productDescription);
         });
     });
@@ -494,7 +495,7 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
             const productPrice = await productContract.getProductPrice();
             // calculate the total price
             let totalPrice = BigInt(productPrice) * BigInt(productQuantity);
-            console.log(`[ rk-chainapi ] 💵 Total price of order for product ${productId} is ${ethers.formatEther(totalPrice)}`);
+            RKWriteLog(`[ rk-chainapi ] 💵 Total price of order for product ${productId} is ${ethers.formatEther(totalPrice)}`,'rk-chainapi');
 
             // deploy the order contract
             // get buyer pkey
@@ -504,7 +505,7 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
             const Order = await ethers.getContractFactory('Order',buyer);
             const orderId = uuid();
             const orderContract = await Order.deploy(Date.now(),sellerAddress,buyerAddress,orderId,totalPrice,productQuantity);
-            console.log(`[ rk-chainapi ] 👍🏻 Order contract deployed at ${orderContract.address}`);
+            RKWriteLog(`[ rk-chainapi ] 👍🏻 Order contract deployed at ${orderContract.address}`,'rk-chainapi');
 
             // insert the order into the orders table
             db.run(`INSERT INTO orders(orderId,orderAddress,productId,buyerAddress,sellerAddress,orderPlaced) VALUES(?,?,?,?,?,?)`,[orderId,await orderContract.getAddress(),productId,buyerAddress,sellerAddress,Date.now()], (err) => {
@@ -512,7 +513,7 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
                     console.error(err.message);
                     reject(err);
                 }
-                console.log(`[ rk-chainapi ] 👍🏻 Order ${orderId} entered in database table for ${productId}`);
+                RKWriteLog(`[ rk-chainapi ] 👍🏻 Order ${orderId} entered in database table for ${productId}`,'rk-chainapi');
             });
         });
         resolve();
@@ -528,7 +529,7 @@ async function confirmOrder(orderId){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-chainapi ] 👍🏻 Order ${orderId} confirmed at ${new Date(Date.now()).toISOString()}`);
+            RKWriteLog(`[ rk-chainapi ] 👍🏻 Order ${orderId} confirmed at ${new Date(Date.now()).toISOString()}`,'rk-chainapi');
         });
         resolve();
     });
@@ -543,7 +544,7 @@ async function cancelOrder(orderId){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-chainapi ] 👎🏻 Order ${orderId} cancelled at ${new Date(Date.now()).toISOString()}`);
+            RKWriteLog(`[ rk-chainapi ] 👎🏻 Order ${orderId} cancelled at ${new Date(Date.now()).toISOString()}`,'rk-chainapi');
         });
         resolve();
     });
@@ -562,10 +563,10 @@ async function payOrder(orderId){
             const orderPrice = await orderContract.getOrderAmount();
             // get the buyer wallet address
             const buyerWid = await orderContract.getOrderBuyer();
-            console.log(`[ rk-chainapi ] 💳 Buyer: ${buyerWid}`)
+            RKWriteLog(`[ rk-chainapi ] 💳 Buyer: ${buyerWid}`,'rk-chainapi')
             // get the seller wallet address
             const sellerWid = await orderContract.getOrderSeller();
-            console.log(`[ rk-chainapi ] 💳 Seller: ${sellerWid}`);
+            RKWriteLog(`[ rk-chainapi ] 💳 Seller: ${sellerWid}`,'rk-chainapi');
 
             // transfer the funds from buyer to seller
             let txId = await transferFunds(buyerWid,sellerWid,ethers.formatEther(orderPrice));
@@ -575,7 +576,7 @@ async function payOrder(orderId){
                     console.error(err.message);
                     reject(err);
                 }
-                console.log(`[ rk-chainapi ] 👍🏻 Order ${orderId} transactionId updated to ${txId}`);
+                RKWriteLog(`[ rk-chainapi ] 👍🏻 Order ${orderId} transactionId updated to ${txId}`,'rk-chainapi');
             });
         });
         // update the orderPaid field in the orders table
@@ -584,7 +585,7 @@ async function payOrder(orderId){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-chainapi ] 👍🏻 Order ${orderId} paid at ${new Date(Date.now()).toISOString()}`);
+            RKWriteLog(`[ rk-chainapi ] 👍🏻 Order ${orderId} paid at ${new Date(Date.now()).toISOString()}`,'rk-chainapi');
         });
         resolve();
     });
@@ -760,7 +761,7 @@ async function deployShipmentContract(buyerMail, sellerMail, orderId){
         // deploy the shipment contract
         const Shipment = await ethers.getContractFactory('Shipment',seller);
         const shipmentContract = await Shipment.deploy(Date.now(),shipmentId,orderId,buyerMail,sellerMail);
-        console.log(`[ rk-chainapi ] 🚚 Shipment contract deployed at ${await shipmentContract.getAddress()}`);
+        RKWriteLog(`[ rk-chainapi ] 🚚 Shipment contract deployed at ${await shipmentContract.getAddress()}`,'rk-chainapi');
 
         // insert the shipment into the shipments table
         db.run(`INSERT INTO shipments(shipmentId,shipmentAddress,shippedDate) VALUES(?,?,?)`,[shipmentId,await shipmentContract.getAddress(),Date.now()], (err) => {
@@ -768,7 +769,7 @@ async function deployShipmentContract(buyerMail, sellerMail, orderId){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} entered in database table`);
+            RKWriteLog(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} entered in database table`,'rk-chainapi');
         });
         resolve();
     });
@@ -854,7 +855,7 @@ async function getShipmentBuyer(shipmentId){
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
             const buyer = await shipmentContract.getShipmentBuyer();
-            console.log(`[ rk-chainapi ] 🚚 Buyer of shipment ${shipmentId} : ${buyer}`);
+            RKWriteLog(`[ rk-chainapi ] 🚚 Buyer of shipment ${shipmentId} : ${buyer}`,'rk-chainapi');
             resolve(buyer);
         });
     });
@@ -870,7 +871,7 @@ async function getShipmentSeller(shipmentId){
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
             const seller = await shipmentContract.getShipmentSeller();
-            console.log(`[ rk-chainapi ] 🚚 Seller of shipment ${shipmentId} : ${seller}`);
+            RKWriteLog(`[ rk-chainapi ] 🚚 Seller of shipment ${shipmentId} : ${seller}`,'rk-chainapi');
             resolve(seller);
         });
     });
@@ -887,7 +888,7 @@ async function getShipmentOrder(shipmentId){
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
             const order = await shipmentContract.getShipmentOrder();
-            console.log(`[ rk-chainapi ] 🚚 Order of shipment ${shipmentId} : ${order}`);
+            RKWriteLog(`[ rk-chainapi ] 🚚 Order of shipment ${shipmentId} : ${order}`,'rk-chainapi');
             resolve(order);
         });
     });
@@ -903,7 +904,7 @@ async function getShipmentStatus(shipmentId){
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
             const status = await shipmentContract.getShipmentStatus();
-            console.log(`[ rk-chainapi ] 🚚 Status of shipment ${shipmentId} : ${status}`);
+            RKWriteLog(`[ rk-chainapi ] 🚚 Status of shipment ${shipmentId} : ${status}`,'rk-chainapi');
             resolve(status);
         });
     });
@@ -929,7 +930,7 @@ async function shipShipment(shipmentId){
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,seller);
             let tx = await shipmentContract.ship();
             await tx.wait();
-            console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} shipped at ${new Date(Date.now()).toISOString()}`);
+            RKWriteLog(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} shipped at ${new Date(Date.now()).toISOString()}`,'rk-chainapi');
         });
 
         // update the shippedDate field in the shipments table
@@ -948,7 +949,7 @@ async function shipShipment(shipmentId){
                 reject(err);
             }
         });
-        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} shipped at ${new Date(Date.now()).toISOString()}`);
+        RKWriteLog(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} shipped at ${new Date(Date.now()).toISOString()}`,'rk-chainapi');
         resolve();
     });
 }
@@ -971,7 +972,7 @@ async function confirmShipment(shipmentId){
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,buyer);
             let tx = await shipmentContract.confirmDelivery();
             await tx.wait();
-            console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} confirmed at ${new Date(Date.now()).toISOString()}`);
+            RKWriteLog(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} confirmed at ${new Date(Date.now()).toISOString()}`,'rk-chainapi');
         });
 
         // update the deliveredDate field in the shipments table
@@ -981,7 +982,7 @@ async function confirmShipment(shipmentId){
                 reject(err);
             }
         });
-        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} confirmed at ${new Date(Date.now()).toISOString()}`);
+        RKWriteLog(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} confirmed at ${new Date(Date.now()).toISOString()}`,'rk-chainapi');
         resolve();
     });
 }
@@ -1004,7 +1005,7 @@ async function cancelShipment(shipmentId){
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,buyer);
             let tx = await shipmentContract.cancelShipment();
             await tx.wait();
-            console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} cancelled at ${new Date(Date.now()).toISOString()}`);
+            RKWriteLog(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} cancelled at ${new Date(Date.now()).toISOString()}`,'rk-chainapi');
         });
         resolve();
     });
@@ -1030,7 +1031,7 @@ async function returnShipment(shipmentId){
             await tx.wait();
             
         });
-        console.log(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} returned at ${new Date(Date.now()).toISOString()}`);
+        RKWriteLog(`[ rk-chainapi ] 🚚 Shipment ${shipmentId} returned at ${new Date(Date.now()).toISOString()}`,'rk-chainapi');
         resolve();
     });
 }

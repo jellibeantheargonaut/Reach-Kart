@@ -14,12 +14,13 @@ const sqlite3  = require('sqlite3');
 const { v4: uuid } = require('uuid');
 const path = require('path');
 const chainApi = require('./rk-chainapi');
+const { RKWriteLog } = require('./rk-logs');
 
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){
         console.error(err.message);
     }
-    console.log('[ rk-userops ] 📶 Connected to the rk database');
+    RKWriteLog('[ rk-userops ] 📶 Connected to the rk database','rk-userops');
 });
 
 // function to place an order
@@ -79,7 +80,7 @@ async function addAddress(email, address){
         if(err){
             console.error(err.message);
         }
-        console.log('[ rk-userops ] 📫 Address added to the database');
+        RKWriteLog('[ rk-userops ] 📫 Address added to the database','rk-userops');
     });
 }
 
@@ -87,10 +88,9 @@ async function getAddresses(email){
     return new Promise((resolve,reject) => {
         db.get(`SELECT address FROM addresses WHERE email = ?`, [email], (err,rows) => {
             if(err){
-                console.log(err.message);
                 reject(rows);
             }
-            console.log(`[ rk-userops ] 📫 Addresses of ${email}`);
+            RKWriteLog(`[ rk-userops ] 📫 Addresses of ${email}`,'rk-userops');
             resolve(rows);
         });
     });
@@ -108,7 +108,7 @@ async function getWallets(email){
                 }
                 details.push(data);
             }
-            console.log(`[ rk-userops ] 💰 Wallets of ${email}`);
+            RKWriteLog(`[ rk-userops ] 💰 Wallets of ${email}`,'rk-userops');
             resolve(details);
         } catch (error) {
             console.error(error);
@@ -146,7 +146,7 @@ async function viewOrders(email){
                         console.error(err.message);
                         reject(rows);
                     }
-                    console.log(`[ rk-userops ] 📦 Orders of ${email}`);
+                    RKWriteLog(`[ rk-userops ] 📦 Orders of ${email}`,'rk-userops');
                     resolve(rows);
                 });
             }
@@ -158,7 +158,7 @@ async function viewOrders(email){
 async function generateBill(orderId){
 
     return new Promise(async (resolve, reject) => {
-        console.log(`[ rk-userops ] 🧾 Generating bill for order ${orderId}`)
+        RKWriteLog(`[ rk-userops ] 🧾 Generating bill for order ${orderId}`,'rk-userops')
         // get ordet placed date
         const orderPlaced = await chainApi.getOrderPlacedDate(orderId);
         // get order payment date
@@ -193,7 +193,7 @@ async function generateBill(orderId){
 // function to generate the shipment bill
 async function generateShipmentBill(shipmentId){
     return new Promise(async (resolve, reject) => {
-        console.log(`[ rk-userops ] 🧾 Generating shipment bill for shipment ${shipmentId}`);   
+        RKWriteLog(`[ rk-userops ] 🧾 Generating shipment bill for shipment ${shipmentId}`,'rk-userops');   
         // get the shipment buyer
         const shipmentBuyer = await chainApi.getShipmentBuyer(shipmentId);
         // get shipment seller
@@ -229,8 +229,7 @@ async function searchProducts(query){
                 console.error(err.message);
                 reject(rows);
             }
-            console.log(`[ rk-userops ] 🔍 Search results for ${query}`);
-            console.log(rows);
+            RKWriteLog(`[ rk-userops ] 🔍 Search results for ${query}`,'rk-userops');
             resolve(rows);
         });
     });
@@ -250,7 +249,7 @@ async function getUserAccountDetails(email){
                 walletId: row.wid,
                 address: await getAddresses(email)
             }
-            console.log(`[ rk-userops ] 📦 Account details of ${email}`);
+            RKWriteLog(`[ rk-userops ] 📦 Account details of ${email}`,'rk-userops');
             resolve(data);
         });
     });

@@ -39,7 +39,7 @@ function createUser(email,password,name,accountType){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-logging ] 👤 User ${name} created with wallet id ${wid}`);
+            RKWriteLog(`[ rk-logging ] 👤 User ${name} created with wallet id ${wid}`, 'rk-logging');
         });
         // also add entry in wallets table
         db.run(`INSERT INTO wallets(wid,pk,email) VALUES(?,?,?)`,[wid,pk,email], (err) => {
@@ -47,7 +47,7 @@ function createUser(email,password,name,accountType){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-logging ] 👤 Wallet ${wid} created for user ${name}`);
+            RKWriteLog(`[ rk-logging ] 👤 Wallet ${wid} created for user ${name}`, 'rk-logging');
         });
         resolve(true);
     });
@@ -61,7 +61,7 @@ async function deleteUser(email){
                 console.error(err.message);
                 reject(err);
             }
-            console.log(`[ rk-logging ] 👤 User with email ${email} deleted`);
+            RKWriteLog(`[ rk-logging ] 👤 User with email ${email} deleted`, 'rk-logging');
             resolve(true);
         });
     });
@@ -86,11 +86,11 @@ async function generateToken(email){
                 const options = {
                     expiresIn: '1d'
                 };
-                console.log(`[ rk-logging ] 🔑 Generating token for user with email ${email}`);
+                RKWriteLog(`[ rk-logging ] 🔑 Generating token for user with email ${email}`, 'rk-logging');
                 return resolve(jwt.sign(payload,SECRET_KEY,options));
             }
             else {
-                console.log(`[ rk-logging ] 🤕 User with email ${email} not found`);
+                RKWriteLog(`[ rk-logging ] 🤕 User with email ${email} not found`, 'rk-logging');
                 return reject('User not found');
             }
         });
@@ -107,8 +107,7 @@ function verifyToken(token){
 function checkLogin(email,password) {
     return new Promise((resolve,reject) => {
         const passHash = crypto.createHash('sha256').update(password).digest('hex');
-        console.log(`[ rk-logging ] 🔍 Checking login for user with email ${email}`);
-        //console.log(`🔍 Password hash is ${passHash}`);
+        RKWriteLog(`[ rk-logging ] 🔍 Checking login for user with email ${email}`, 'rk-logging');
         db.get(`SELECT * FROM users WHERE email = ?`,[email], (err,row) => {
             if(err){
                 console.error(err.message);
@@ -116,15 +115,15 @@ function checkLogin(email,password) {
             }
             if(row){
                 if(passHash === row.password){
-                    console.log(`[rk-logging ] 👤 User ${row.name} logged in with wallet id ${row.wid}`);
+                    RKWriteLog(`[rk-logging ] 👤 User ${row.name} logged in with wallet id ${row.wid}`, 'rk-logging');
                     return resolve(true);
                 }
                 else {
-                    console.log(`[ rk-logging ] ❌ Password mismatch for user with email ${email}`);
+                    RKWriteLog(`[ rk-logging ] ❌ Password mismatch for user with email ${email}`, 'rk-logging');
                     return resolve(false);
                 }
             }
-            console.log(`[ rk-logging ] ❌ User with email ${email} not found`);
+            RKWriteLog(`[ rk-logging ] ❌ User with email ${email} not found`, 'rk-logging');
             return resolve(false);
         });
     });

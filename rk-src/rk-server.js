@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cookieParser = require('cookie-parser');
+const Tail = require('tail').Tail;
 
 const { RKLogInit } = require('./rk-logs');
 RKLogInit();
@@ -27,6 +28,62 @@ app.use(cookieParser());
 
 // session settings to be implemented later
 
+
+//==============================================================================
+// Endpoints and function to deal with admins only
+//==============================================================================
+function adminOnly(req,res,next){
+  if(req.cookies.jwt){
+    const token = req.cookies.jwt;
+    const status = loggingApi.verifyToken(token);
+    if(status){
+      if(status.account_type === 'admin'){
+        next();
+      }
+      else {
+        res.status(403).send('Forbidden');
+      }
+    }
+    else {
+      res.status(403).send('Forbidden');
+    }
+  }
+  else {
+    res.redirect('/');
+  }
+}
+// app.get('/admin/home', adminOnly, (req,res) => {})
+app.get('/admin/home', adminOnly, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/html/admin/home.html'));
+});
+// app.get('/logs/:module', adminOnly, (req,res) => {})
+app.get('/logs/:module', adminOnly, async (req, res) => {
+  const module = req.params.module;
+  const logFile = path.join(__dirname, 'logs', `${module}.log`);
+
+  // set headers for Server Sent Events
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  // create a read stream for the log file
+  //const stream = fs.createReadStream(logFile);
+
+  //stream.on('data', (chunk) => {
+  //  res.write(`data: ${chunk.toString()}\n\n`);
+  //});
+  //stream.on('error', (err) => {
+  //  res.status(500).send('Error reading log file');
+  //});
+
+  const tail = new Tail(logFile);
+  tail.on('line', (data) => {
+    res.write(`data: ${data}\n\n`);
+  });
+  tail.on('error', (error) => {
+    res.status(500).send('Error reading log file');
+  });
+});
 
 //==============================================================================
 // Seller Endpoints and stuff
@@ -122,6 +179,9 @@ app.get('/home', loggedIn, async (req, res) => {
   const userDetails = loggingApi.verifyToken(req.cookies.jwt);
   if( userDetails && userDetails.account_type === 'seller'){
     return res.redirect('/seller/home');
+  }
+  else if( userDetails && userDetails.account_type === 'admin'){
+    return res.redirect('/admin/home');
   }
   else {
     res.sendFile(path.join(__dirname, 'public/html/index.html'));
