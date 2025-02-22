@@ -44,19 +44,20 @@ async function openMenuPage() {
     })
 }
 async function closeMenuPage() {
+    // close all the sub divs
+    const accountsPage = document.querySelector('.accounts-page');
+    const ordersPage = document.querySelector('.orders-page');
+    const walletsPage = document.querySelector('.wallets-page');
+    const transactionsPage = document.querySelector('.transactions-page');
+    const settingsPage = document.querySelector('.settings-page');
+    [ accountsPage, ordersPage, walletsPage, transactionsPage, settingsPage ].forEach(element => {
+        element.style.display = 'none';
+    });
     const backgroundOverlay = document.querySelector('.background-overlay');
     const menuPage = document.querySelector('.account-menu-page');
     backgroundOverlay.style.display = 'none';
     menuPage.style.display = 'none';
 
-    // close all the sub divs
-    const accountsPage = document.querySelector('.accounts-page');
-    const ordersPage = document.querySelector('.orders-page');
-    const transactionsPage = document.querySelector('.transactions-page');
-    const settingsPage = document.querySelector('.settings-page');
-    [ accountsPage, ordersPage, transactionsPage, settingsPage ].forEach(element => {
-        element.style.display = 'none';
-    })
 }
 //--------------------------------------------------------------------------
 // function to open account page 
@@ -78,6 +79,9 @@ async function openOrdersPage() {
     // open the orders-page div
     const ordersPage = document.querySelector('.orders-page');
     ordersPage.style.display = 'flex';
+
+    // get orders from server
+    getOrders();
 }
 
 async function openWalletsPage() {

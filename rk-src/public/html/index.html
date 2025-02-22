@@ -15,6 +15,8 @@
 
         <script src="/js/index.js" defer></script>
         <script src="/js/navigation-controller.js" defer></script>
+        <script src="/js/customer/transaction-handler.js" defer></script>
+        <script src="/js/customer/orders-handler.js" defer></script>
     </head>
     <body>
         <div class="navigation-bar">
@@ -40,7 +42,7 @@
                 </div>
             </div>
             <div class="navigation-bar-menu-item">
-                <p> <i class="fa-solid fa-language"></i> en </p>
+                <p> en <i class="fa-solid fa-language"></i></p>
                 <!--<select>
                     <option value="en"> English </option>
                     <option value="hi"> Hindi </option>
@@ -104,17 +106,71 @@
             <div class="orders-page">
                 <!-- The orders page which contains user orders and stuff -->
                 <div class="orders-list-container">
+                    <div class="orders-list-item">
+                        <div class="orders-item-thumbnail">
+                            <img src="/img/ether-coin.png">
+                            <div>
+                                <p> 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                                <p> 54.23 <i class="fa-brands fa-ethereum"></i> </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="wallets-page">
                 <!-- The wallets page which contains user wallets and stuff -->
                 <div class="wallets-list-container">
-                    
+                    <div class="wallets-list-item">
+                        <div class="wallets-item-thumbnail">
+                            <img src="/img/ether-wallet.png">
+                            <div>
+                                <p> 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                                <p> 54.23 <i class="fa-brands fa-ethereum"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-wallet-button" onclick="console.log('New Wallet')">
+                        New Wallet
+                    </div>
                 </div>
             </div>
             <div class="transactions-page">
                 <!-- The transactions page which contains user transactions and stuff -->
                 <div class="transactions-list-container">
+                    <div class="transactions-list-item">
+                        <div class="transactions-item-thumbnail" onclick="expandTransaction(this)">
+                            <img src="/img/ether-coin.png">
+                            <div>
+                                <p> 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                                <p> 
+                                    54.23 <i class="fa-brands fa-ethereum"></i>
+                                    at 2021-10-10 12:34:56
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transactions-item-details">
+                            <p> Sender : 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                            <p> Receiver : 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                            <p> Amount : 54.23 <i class="fa-brands fa-ethereum"></i> </p>
+                            <p> Date : 2021-10-10 12:34:56 </p>
+                            <p> Tx Hash : 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                        </div>
+                        <div class="transactions-item-footer">
+                            <div class="transactions-item-button" onclick="downloadInvoice()">
+                                <i class="fa-solid fa-download"></i> Invoice
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="new-transaction-container">
+                    <div class="new-transaction-header">
+                    </div>
+                    <div class="new-transaction-form">
+                        <div class="transaction-form-title">
+                        </div>
+                        <div class="transaction-form-fields">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="settings-page">
@@ -162,6 +218,25 @@
             </div>
             <div class="footer-logo">
                 <p> Reachkart <i class="fa-solid fa-cart-shopping"></i> </p>
+            </div>
+        </div>
+        <div class="message-overlay">
+            <div class="message-container">
+                <div class="message-spinner-container">
+                    <span class="message-spinner"></span>
+                </div>
+                <div class="message-content">
+                    Hacking Nasa...
+                </div>
+            </div>
+            <div class="message-confirm">
+                <div class="message-text">
+                    Are you sure you want to hack Nasa?
+                </div>
+                <div class="message-buttons">
+                    <div class="message-button"> Yes </div>
+                    <div class="message-button"> No </div>
+                </div>
             </div>
         </div>
     </body>

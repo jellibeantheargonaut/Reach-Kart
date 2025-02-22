@@ -152,7 +152,7 @@ app.get('/order', loggedIn, (req, res) => {
 // app.post('/user/refundOrder', (req, res) => {}
 // app.get('/user/viewOrders', (req, res) => {}
 app.get('/users/viewOrders', loggedIn, async (req,res) => {
-  const token = await loggingApi.verifyToken(req.cookies.jwt);
+  const token = loggingApi.verifyToken(req.cookies.jwt);
   const email = token.email;
   const orders = await userOps.viewOrders(email);
   return res.status(200).json(orders);
@@ -166,6 +166,12 @@ app.get('/users/viewOrders', loggedIn, async (req,res) => {
 // routes for transaction related operations
 //================================================
 // app.get('/user/getTransactions', loggedIn, (req, res) => {}
+app.get('/user/getTransactions', loggedIn, async (req,res) => {
+  const token = loggingApi.verifyToken(req.cookies.jwt);
+  const email = token.email;
+  const transactions = await userOps.getTransactions(email);
+  return res.status(200).json(transactions);
+});
 // app.get('/user/getTransactionDetails', loggedIn, (req, res) => {}
 // app.post('/user/transferMoney', loggedIn, (req, res) => {}
 

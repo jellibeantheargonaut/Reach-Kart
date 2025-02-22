@@ -96,6 +96,36 @@ async function getAddresses(email){
     });
 }
 
+// function to get transactions of a user
+async function getTransactions(email){
+    return new Promise((resolve,reject) => {
+        // get wid from the email from the users table
+        db.get(`SELECT wid FROM users WHERE email = ?`, [email], (err, row) => {
+            if(err){
+                console.error(err.message);
+                reject(row);
+            }
+            const wid = row.wid;
+            // get transactionId from the orders table
+            db.all(`SELECT transactionId FROM orders WHERE buyerAddress = ?`, [wid], (err, rows) => {
+                if(err){
+                    console.error(err.message);
+                    reject(rows);
+                }
+                console.log(`[ rk-userops ] 📦 Transactions of ${email}`);
+                let transactions;
+                rows.forEach(async (row) => {
+                    const data = await chainApi.getTransactionDetails(row.transactionId);
+                    console.log(data);
+                    transactions.push(data);
+                });
+                console.log(transactions);
+                resolve(transactions);
+            });
+        });
+    });
+}
+
 //========================================================================================================
 // Orders related functions
 //========================================================================================================
@@ -238,6 +268,7 @@ async function getUserAccountDetails(email){
 module.exports = {
     addAddress,
     getAddresses,
+    getTransactions,
     getUserAccountDetails,
     viewOrders,
     generateBill,

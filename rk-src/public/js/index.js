@@ -1,5 +1,4 @@
 /* functions to handle index page */
-
 async function blankPages() {
     const landingPage = document.querySelector('.landing-page');
     const accountsPage = document.querySelector('.accounts-page');
@@ -49,7 +48,61 @@ async function showSettingsPage() {
     settingsPage.style.display = 'flex';
 }
 
+//==============================================================================
+// function to handle overlay message box
+//==============================================================================
+function showOverlayMessage(message) {
+    const messageOverlay = document.querySelector('.message-overlay');
+    messageOverlay.style.display = 'flex';
+    const messageContainer = messageOverlay.querySelector('.message-container');
+    messageContainer.style.display = 'flex';
+    const messageContent = messageOverlay.querySelector('.message-content');
+    messageContent.innerHTML = message;
+}
 
+function closeOverlayMessage() {
+    const messageOverlay = document.querySelector('.message-overlay');
+    messageOverlay.style.display = 'none';
+    const messageContainer = messageOverlay.querySelector('.message-container');
+    messageContainer.style.display = 'none';
+}
+
+function showConfirmMessage(message, onConfirmMessage, onCancelMessage) {
+    const messageOverlay = document.querySelector('.message-overlay');
+    messageOverlay.style.display = 'flex';
+    const messageConfirmDiv = messageOverlay.querySelector('.message-confirm');
+    messageConfirmDiv.style.display = 'flex';
+    const confirmContent = messageConfirmDiv.querySelector('.message-text');
+    confirmContent.innerHTML = message;
+
+    // close when clicked outside
+    messageOverlay.addEventListener('click', (e) => {
+        if(e.target !== messageConfirmDiv){
+            closeConfirmMessage();
+        }
+    }
+    );
+
+    // message buttons
+    const messageButtons = messageConfirmDiv.querySelectorAll('.message-button');
+    messageButtons[0].addEventListener('click', () => {
+        closeConfirmMessage();
+        onConfirmMessage();
+    });
+    messageButtons[1].addEventListener('click', () => {
+        closeConfirmMessage();
+        onCancelMessage();
+    });
+
+}
+
+function closeConfirmMessage(){
+    const confirmOverlay = document.querySelector('.message-overlay');
+    confirmOverlay.style.display = 'none';
+    const messageConfirmDiv = confirmOverlay.querySelector('.message-confirm');
+    messageConfirmDiv.style.display = 'none';
+}
+//==============================================================================
 // Initially show the landing page
 document.addEventListener('DOMContentLoaded', async function() {
     await showLandingPage();

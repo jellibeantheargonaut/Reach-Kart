@@ -270,6 +270,25 @@ async function transferFunds(buyerWid, sellerWid, amount){
     });
 }
 
+// function to get the details of a transaction
+async function getTransactionDetails(txId){
+    return new Promise(async (resolve,reject) => {
+        const tx = await provider.getTransaction(txId);
+        const block = await provider.getBlock(tx.blockNumber);
+
+        const details = {
+            blockNumber: tx.blockNumber,
+            from: tx.from,
+            to: tx.to,
+            value: ethers.formatEther(tx.value),
+            gasPrice: ethers.formatEther(tx.gasPrice),
+            gasLimit: tx.gasLimit,
+            time: block.timestamp,
+        };
+        resolve(details);
+    });
+}
+
 
 //==================================================================================
 // Product Smart contract APIs (these are for the seller)
@@ -488,7 +507,7 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
             console.log(`[ rk-chainapi ] 👍🏻 Order contract deployed at ${orderContract.address}`);
 
             // insert the order into the orders table
-            db.run(`INSERT INTO orders(orderId,orderAddress,productId,buyerAddress,sellerAddress,orderPlaced) VALUES(?,?,?,?,?)`,[orderId,await orderContract.getAddress(),productId,buyerAddress,sellerAddress,Date.now()], (err) => {
+            db.run(`INSERT INTO orders(orderId,orderAddress,productId,buyerAddress,sellerAddress,orderPlaced) VALUES(?,?,?,?,?,?)`,[orderId,await orderContract.getAddress(),productId,buyerAddress,sellerAddress,Date.now()], (err) => {
                 if(err){
                     console.error(err.message);
                     reject(err);
@@ -1028,6 +1047,7 @@ module.exports = {
     getWalletBalance,
     fundWallet,
     transferFunds,
+    getTransactionDetails,
 
     deployProductContract,
     setProductPrice,
