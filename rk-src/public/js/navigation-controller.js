@@ -92,6 +92,9 @@ async function openWalletsPage() {
     // open the wallets-page div
     const walletsPage = document.querySelector('.wallets-page');
     walletsPage.style.display = 'flex';
+
+    // get wallets from server
+    getWallets();
 }
 
 async function openTransactionsPage() {

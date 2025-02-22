@@ -166,12 +166,7 @@ app.get('/users/viewOrders', loggedIn, async (req,res) => {
 // routes for transaction related operations
 //================================================
 // app.get('/user/getTransactions', loggedIn, (req, res) => {}
-app.get('/user/getTransactions', loggedIn, async (req,res) => {
-  const token = loggingApi.verifyToken(req.cookies.jwt);
-  const email = token.email;
-  const transactions = await userOps.getTransactions(email);
-  return res.status(200).json(transactions);
-});
+
 // app.get('/user/getTransactionDetails', loggedIn, (req, res) => {}
 // app.post('/user/transferMoney', loggedIn, (req, res) => {}
 
@@ -189,7 +184,29 @@ app.get('/user/getTransactions', loggedIn, async (req,res) => {
 //================================================
 // app.get('/user/getWalletBalance', loggedIn, (req, res) => {}
 // app.get('/user/getWallets', loggedIn, (req, res) => {}
+app.get('/user/getWallets', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  try {
+    const wallets = await userOps.getWallets(email);
+    res.status(200).json(wallets);
+  } catch (error) {
+    res.status(500).json({message:'Error fetching wallets'});
+  }
+});
+
 // app.post('/user/createWallet', loggedIn, (req, res) => {}
+app.post('/user/createWallet', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  try {
+    const wallet = await chainApi.createWallet(email);
+    res.status(200).json(wallet);
+  } catch (error) {
+    res.status(500).json({message:'Error creating wallet'});
+  }
+});
+
 // app.post('/user/setDefaultWallet', loggedIn, (req, res) => {}
 // app.post('/user/deleteWallet', loggedIn, (req, res) => {}
 

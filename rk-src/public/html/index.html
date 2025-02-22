@@ -17,6 +17,7 @@
         <script src="/js/navigation-controller.js" defer></script>
         <script src="/js/customer/transaction-handler.js" defer></script>
         <script src="/js/customer/orders-handler.js" defer></script>
+        <script src="/js/customer/wallets-handler.js" defer></script>
     </head>
     <body>
         <div class="navigation-bar">
@@ -129,9 +130,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="new-wallet-button" onclick="console.log('New Wallet')">
-                        New Wallet
-                    </div>
+                </div>
+                <div class="new-wallet-button" onclick="createWallet()">
+                    New Wallet
                 </div>
             </div>
             <div class="transactions-page">
