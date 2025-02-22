@@ -5,6 +5,9 @@ const path = require('path');
 const https = require('https');
 const cookieParser = require('cookie-parser');
 
+const { RKLogInit } = require('./rk-logs');
+RKLogInit();
+
 // Importing the required modules
 const loggingApi = require('./rk-logging');
 const userOps = require('./rk-userops');

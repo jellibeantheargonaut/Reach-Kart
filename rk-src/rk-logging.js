@@ -8,13 +8,14 @@ const fs = require('fs');
 const { ethers } = require('hardhat');
 const crypto = require('crypto');
 const { resolve } = require('path');
+const { RKWriteLog } = require('./rk-logs');
 
 // connecting to the sqlite3 database
 let db = new sqlite3.Database('./data/reachkart.db', (err) => {
     if(err){
         console.error(err.message);
     }
-    console.log('[ rk-logging ] ✅ Connected to the rk database');
+    RKWriteLog('[ rk-logging ] ✅ Connected to the rk database','rk-logging');
 });
 
 // secret key for signing jwt tokens
