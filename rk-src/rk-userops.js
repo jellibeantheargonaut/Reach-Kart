@@ -15,6 +15,20 @@ const { v4: uuid } = require('uuid');
 const path = require('path');
 const chainApi = require('./rk-chainapi');
 const { RKWriteLog } = require('./rk-logs');
+const { createClient } = require('redis');
+
+// connect to the redis server
+const redisClient = createClient({ url: 'redis://rkadmin:SuperSecretPassword@localhost:6379' })
+
+redisClient.on('error', (err) => {
+    RKWriteLog(`[ rk-userops ] ❌ Error connecting to redis server`,'rk-error');
+});
+redisClient.on('connect', () => {
+    RKWriteLog(`[ rk-userops ] ✅ Connected to redis server`,'rk-userops');
+});
+redisClient.connect().catch(err => {
+    RKWriteLog(`[ rk-userops ] ❌ Error connecting to redis server`,'rk-error');
+});
 
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (err) => {
     if(err){
@@ -256,6 +270,88 @@ async function getUserAccountDetails(email){
 }
 
 
+//========================================================================================================
+// Cart managing functions
+//========================================================================================================
+// function to add a product to cart
+async function addToCart(email,productId,quantity){
+    return new Promise(async (resolve,reject) => {
+        await redisClient.hSet(email, productId, quantity, (err) => {
+            if(err){
+                RKWriteLog(`[ rk-userops ] ❌ Error adding ${productId} to cart`,'rk-error');
+                reject(err);
+            }
+        });
+        RKWriteLog(`[ rk-userops ] 🛒 ${email} added ${quantity} items ${productId} to cart`,'rk-userops');
+        resolve();
+    });
+}
+
+// function to update the quantity of a product in cart
+async function updateCart(email,productId,quantity){
+    return new Promise(async (resolve,reject) => {
+        redisClient.hSet(email, productId, quantity, (err) => {
+            if(err){
+                RKWriteLog(`[ rk-userops ] ❌ Error updating ${productId} in cart`,'rk-error');
+                reject(err);
+            }
+        });
+        RKWriteLog(`[ rk-userops ] 🛒 ${email} updated ${quantity} items ${productId} in cart`,'rk-userops');
+        resolve();
+    });
+}
+
+// function to remove a product from cart
+async function removeFromCart(email,productId){
+    return new Promise(async (resolve,reject) => {
+        redisClient.hDel(email, productId, (err) => {
+            if(err){
+                RKWriteLog(`[ rk-userops ] ❌ Error removing ${productId} from cart`,'rk-error');
+                reject(err);
+            }
+        });
+        RKWriteLog(`[ rk-userops ] 🛒 ${email} removed ${productId} from cart`,'rk-userops');
+        resolve();
+    });
+}
+
+// function to view cart
+async function viewCart(email){
+    return new Promise(async (resolve,reject) => {
+        const data = await redisClient.hGetAll(email, (err) => {
+            if(err){
+                RKWriteLog(`[ rk-userops ] ❌ Error getting cart of ${email}`,'rk-error');
+                reject(err);
+            }
+        });
+        resolve(data);
+    });
+}
+
+// function to checkout cart
+// function to empty cart
+async function emptyCart(email){
+    return new Promise(async (resolve,reject) => {
+        const fields = await redisClient.hKeys(email, (err) => {
+            if(err){
+                RKWriteLog(`[ rk-userops ] ❌ Error getting cart of ${email}`,'rk-error');
+                reject(err);
+            }
+        });
+        if(fields.length > 0){
+            for(const field of fields){
+                redisClient.hDel(email, field, (err) => {
+                    if(err){
+                        RKWriteLog(`[ rk-userops ] ❌ Error emptying cart of ${email}`,'rk-error');
+                        reject(err);
+                    }
+                });
+            }
+        }
+        RKWriteLog(`[ rk-userops ] 🛒 ${email} cart emptied`,'rk-userops');
+        resolve();
+    });
+}
 
 
 // module to export the functions
@@ -267,5 +363,11 @@ module.exports = {
     getUserAccountDetails,
     viewOrders,
     generateBill,
-    generateShipmentBill
+    generateShipmentBill,
+
+    addToCart,
+    updateCart,
+    viewCart,
+    emptyCart,
+    removeFromCart,
 }

@@ -4,7 +4,10 @@
   "description": "eCommerce Web App",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "repository": {
     "type": "git",
@@ -22,8 +25,11 @@
     "express": "^4.21.2",
     "hardhat": "^2.22.18",
     "jsonwebtoken": "^9.0.2",
+    "redis": "^4.7.0",
     "sqlite3": "^5.1.7",
     "tail": "^2.2.6",
+    "valkey": "^0.0.3",
+    "vitepress": "^1.6.3",
     "web3": "^4.16.0"
   },
   "devDependencies": {
