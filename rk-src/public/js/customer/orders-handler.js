@@ -43,7 +43,7 @@ async function getOrders() {
     ordersContainer.innerHTML = '';
 
     // get orders from server
-    const orders = await fetch('/users/viewOrders', {
+    const orders = await fetch('/user/viewOrders', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

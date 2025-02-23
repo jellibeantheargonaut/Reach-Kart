@@ -121,49 +121,57 @@ async function openSettingsPage() {
 
 async function showOrdersDropdown(element) {
     const ordersIcon = element;
-    const ordersDropdown = element.querySelector('.orders-dropdown');
+    const ordersDropdown = document.querySelector('.orders-dropdown');
+    const backgroundOverlay = document.querySelector('.background-overlay');
     if(ordersDropdown.computedStyleMap().get('display').value === 'none'){ 
         ordersDropdown.style.display = 'flex'; 
         ordersIcon.style.backgroundColor = 'rgb(40,40,40)';
         ordersIcon.style.color = 'white';
+        backgroundOverlay.style.display = 'flex';
     }
     else { 
         ordersDropdown.style.display = 'none';
         ordersIcon.style.backgroundColor = 'rgb(168, 168, 168)';
         ordersIcon.style.color = 'black';
+        backgroundOverlay.style.display = 'none';
     }
     
     // when clicked outside the dropdown close the dropdown
-    document.addEventListener('click', function(event) {
-        if(!ordersIcon.contains(event.target) && !ordersDropdown.contains(event.target)) {
+    backgroundOverlay.addEventListener('click', function(event) {
+        if( event.target !== ordersDropdown && event.target !== ordersIcon) {
             ordersDropdown.style.display = 'none';
             ordersIcon.style.backgroundColor = 'rgb(168, 168, 168)';
             ordersIcon.style.color = 'black';
+            backgroundOverlay.style.display = 'none';
         }
     });
 }
 async function showCartDropdown(element) {
     const cartIcon = element;
-    const cartDropdown = element.querySelector('.cart-dropdown');
+    const cartDropdown = document.querySelector('.cart-dropdown');
+    const backgroundOverlay = document.querySelector('.background-overlay');
     if(cartDropdown.computedStyleMap().get('display').value === 'none'){ 
         cartDropdown.style.display = 'flex'; 
         cartIcon.style.backgroundColor = 'rgb(40,40,40)';
         cartIcon.style.color = 'white';
+        backgroundOverlay.style.display = 'flex';
     }
     else { 
         cartDropdown.style.display = 'none';
         cartIcon.style.backgroundColor = 'rgb(168, 168, 168)';
         cartIcon.style.color = 'black';
+        backgroundOverlay.style.display = 'none';
     }
-
+    
     // when clicked outside the dropdown close the dropdown
-    document.addEventListener('click', function(event) {
-        if(!cartIcon.contains(event.target) && !cartDropdown.contains(event.target)) {
+    backgroundOverlay.addEventListener('click', function(event) {
+        if( event.target !== cartDropdown && event.target !== cartIcon) {
             cartDropdown.style.display = 'none';
             cartIcon.style.backgroundColor = 'rgb(168, 168, 168)';
             cartIcon.style.color = 'black';
+            backgroundOverlay.style.display = 'none';
         }
-    });
+    }); 
 }
 
 async function setAccountName() {

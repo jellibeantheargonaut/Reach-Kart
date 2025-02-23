@@ -69,4 +69,13 @@ contract Order {
     function getOrderQuantity() public view returns(uint) {
         return orderQuantity;
     }
+
+    // setter function to change the buyer or seller
+    function updateBuyer(address payable _buyer) public {
+        buyer = _buyer;
+    }
+
+    function updateSeller(address payable _seller) public {
+        seller = _seller;
+    }
 }

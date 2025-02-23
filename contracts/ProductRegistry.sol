@@ -60,6 +60,9 @@ contract ProductRegistry {
     }
 
     // setter functions
+    function setProductSeller(address payable _seller) public {
+        seller = _seller;
+    }
     function setProductName(string memory _name) public {
         product.name = _name;
     }

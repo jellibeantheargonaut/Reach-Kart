@@ -220,6 +220,34 @@ async function createWallet(email){
     });
 }
 
+// function to delete a wallet
+async function deleteWallet(wid){
+    return new Promise((resolve,reject) => {
+        db.run(`DELETE FROM wallets WHERE wid = ?`,[wid], (err) => {
+            if(err){
+                RKWriteLog(`[ rk-chainapi ] 🪓 Error deleting wallet`,'rk-error');
+                reject(err);
+            }
+            RKWriteLog(`[ rk-chainapi ] 🪓 Wallet ${wid} deleted`,'rk-chainapi');
+        });
+        resolve();
+    });
+}
+
+// function to set the primary wallet of a user
+async function setPrimaryWallet(email,wid){
+    return new Promise(async (resolve,reject) => {
+        db.run(`UPDATE users SET wid = ?, pk = ? WHERE email = ?`,[wid,await getWalletPrivateKey(wid),email], (err) => {
+            if(err){
+                console.error(err.message);
+                reject(err);
+            }
+            RKWriteLog(`[ rk-chainapi ] 💳 Primary wallet set to ${wid} for user ${email}`,'rk-chainapi');
+        });
+        resolve();
+    });
+}
+
 // function to get the balance of a wallet
 async function getWalletBalance(wid){
     return new Promise(async (resolve,reject) => {
@@ -374,6 +402,23 @@ async function setProductQuantity(productId,productQuantity){
             RKWriteLog(`[ rk-chainapi ] 📦 Product ${productId} updated in database table`,'rk-chainapi');
         });
         resolve();
+    });
+}
+
+// function to get the seller address from the product
+async function getProductSeller(productId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT productAddress FROM products WHERE productId = ?`,[productId], async (err,row) => {
+            if(err){
+                RKWriteLog(`[ rk-chainapi ] 📦 Error: ${err}`,'rk-error');
+                reject(err);
+            }
+            const productAddress = row.productAddress;
+            const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
+            const seller = await productContract.getProductSeller();
+            RKWriteLog(`[ rk-chainapi ] 📦 Seller of product ${productId} : ${seller}`,'rk-chainapi');
+            resolve(seller);
+        });
     });
 }
 
@@ -563,10 +608,10 @@ async function payOrder(orderId){
             const orderPrice = await orderContract.getOrderAmount();
             // get the buyer wallet address
             const buyerWid = await orderContract.getOrderBuyer();
-            RKWriteLog(`[ rk-chainapi ] 💳 Buyer: ${buyerWid}`,'rk-chainapi')
+            RKWriteLog(`[ rk-chainapi ] 💳 Buyer: ${buyerWid} for Order : ${orderId}`,'rk-chainapi')
             // get the seller wallet address
             const sellerWid = await orderContract.getOrderSeller();
-            RKWriteLog(`[ rk-chainapi ] 💳 Seller: ${sellerWid}`,'rk-chainapi');
+            RKWriteLog(`[ rk-chainapi ] 💳 Seller: ${sellerWid} for Order : ${orderId}`,'rk-chainapi');
 
             // transfer the funds from buyer to seller
             let txId = await transferFunds(buyerWid,sellerWid,ethers.formatEther(orderPrice));
@@ -603,6 +648,35 @@ async function getOrderPlacedDate(orderId){
         });
     });
 }
+
+// function to update the buyer of the order
+async function updateOrderBuyer(orderId,buyerAddress){
+    return new Promise(async (resolve,reject) => {
+        const buyerPkey = await getWalletPrivateKey(buyerAddress);
+        const buyer = await new ethers.Wallet(buyerPkey,provider);
+        // update the buyer address in the order contract
+        db.get(`SELECT orderAddress FROM orders WHERE orderId = ?`,[orderId], async (err,row) => {
+            if(err){
+                RKWriteLog(`[ rk-chainapi ] 📦 Error: updateOrderBuyer`,'rk-error');
+                reject(err);
+            }
+            const orderAddress = row.orderAddress;
+            const orderContract = await ethers.getContractAt('Order',orderAddress,buyer);
+            let tx = await orderContract.updateBuyer(buyerAddress);
+            await tx.wait();
+        });
+        // update the buyer address in the orders table
+        db.run(`UPDATE orders SET buyerAddress = ? WHERE orderId = ?`,[buyerAddress,orderId], (err) => {
+            if(err){
+                reject(err);
+            }
+        });
+        RKWriteLog(`[ rk-chainapi ] 📦 Buyer of order ${orderId} updated to ${buyerAddress}`,'rk-chainapi');
+        resolve();
+    });
+}
+
+// function to update the seller of the order
 
 // function to get the date when the order was confirmed
 async function getOrderConfirmedDate(orderId){
@@ -1044,7 +1118,10 @@ module.exports = {
     createDatabases,
     deleteTables,
     getWallets,
+    getWalletPrivateKey,
     createWallet,
+    deleteWallet,
+    setPrimaryWallet,
     getWalletBalance,
     fundWallet,
     transferFunds,
@@ -1056,6 +1133,7 @@ module.exports = {
     getProductQuantity,
     getProductPrice,
     getProductName,
+    getProductSeller,
     getProductDescription,
     getProductAddress,
     getProductDateAdded,
@@ -1066,6 +1144,7 @@ module.exports = {
     confirmOrder,
     cancelOrder,
     payOrder,
+    updateOrderBuyer,
     getOrderPlacedDate,
     getOrderConfirmedDate,
     getOrderCancelledDate,

@@ -20,12 +20,6 @@ const { createClient } = require('redis');
 // connect to the redis server
 const redisClient = createClient({ url: 'redis://rkadmin:SuperSecretPassword@localhost:6379' })
 
-redisClient.on('error', (err) => {
-    RKWriteLog(`[ rk-userops ] ❌ Error connecting to redis server`,'rk-error');
-});
-redisClient.on('connect', () => {
-    RKWriteLog(`[ rk-userops ] ✅ Connected to redis server`,'rk-userops');
-});
 redisClient.connect().catch(err => {
     RKWriteLog(`[ rk-userops ] ❌ Error connecting to redis server`,'rk-error');
 });
@@ -89,12 +83,30 @@ const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (e
 
 // function to add the address of user to the database
 async function addAddress(email, address){
-    const query = `INSERT INTO addresses (email, address) VALUES (?, ?)`;
-    db.run(query, [email, address], (err) => {
-        if(err){
-            console.error(err.message);
-        }
-        RKWriteLog('[ rk-userops ] 📫 Address added to the database','rk-userops');
+    return new Promise((resolve,reject) => {
+        const query = `INSERT INTO addresses (email, address) VALUES (?, ?)`;
+        db.run(query, [email, address], (err) => {
+            if(err){
+                reject(err);
+                console.error(err.message);
+            }
+            RKWriteLog('[ rk-userops ] 📫 Address added to the database','rk-userops');
+            resolve();
+        });
+    });
+}
+
+async function updateAddress(email, address){
+    return new Promise((resolve,reject) => {
+        const query = `UPDATE addresses SET address = ? WHERE email = ?`;
+        db.run(query, [address, email], (err) => {
+            if(err){
+                reject(err);
+                console.error(err.message);
+            }
+            RKWriteLog(`[ rk-userops ] 📫 Address updated for ${email} in the database`,'rk-userops');
+            resolve();
+        });
     });
 }
 
@@ -139,9 +151,60 @@ async function getWallets(email){
 // Orders related functions
 //========================================================================================================
 // function to place an order
+async function placeOrder(wid, productId, quantity){
+    return new Promise(async (resolve,reject) => {
+        const sellerWid = await chainApi.getProductSeller(productId);
+        const buyerWid = wid;
+        await chainApi.deployOrderContract(buyerWid, sellerWid, productId, quantity).catch(err => {
+            RKWriteLog(`[ rk-userops ] ❌ Error placing order for ${productId}`,'rk-error');
+            reject(err);
+        });
+        RKWriteLog(`[ rk-userops ] 📦 Order placed for ${productId} by user ${wid}`,'rk-userops');
+        resolve();
+    });
+}
+
 // function to confirm the order
+async function confirmOrder(orderId){
+    // binding for the confirmOrder function in rk-chainapi
+    return new Promise(async (resolve,reject) => {
+        await chainApi.confirmOrder(orderId).catch(err => {
+            RKWriteLog(`[ rk-userops ] ❌ Error confirming order ${orderId}`,'rk-error');
+            reject(err);
+        });
+        RKWriteLog(`[ rk-userops ] 📦 Order ${orderId} confirmed`,'rk-userops');
+        resolve();
+    });
+}
+
 // function to cancel and order
+async function cancelOrder(orderId){
+    // binding for the cancelOrder function in rk-chainapi
+    return new Promise(async (resolve,reject) => {
+        await chainApi.cancelOrder(orderId).catch(err => {
+            RKWriteLog(`[ rk-userops ] ❌ Error cancelling order ${orderId}`,'rk-error');
+            reject(err);
+        });
+        RKWriteLog(`[ rk-userops ] 📦 Order ${orderId} cancelled`,'rk-userops');
+        resolve();
+    });
+}
+
 // function to pay for an order
+async function payForOrder(orderId){
+    // binding for the payOrder function in rk-chainapi
+    return new Promise(async (resolve,reject) => {
+        await chainApi.payOrder(orderId).catch(err => {
+            RKWriteLog(`[ rk-userops ] ❌ Error paying for order ${orderId}`,'rk-error');
+            reject(err);
+        });
+        RKWriteLog(`[ rk-userops ] 💸 Order ${orderId} paid for`,'rk-userops');
+        resolve();
+    });
+
+    // sometimes the wid used for deploying order contract is different from the one used for paying
+    // implementation to use alternate wid for paying
+}
 
 // function to view orders
 async function viewOrders(email){
@@ -357,6 +420,7 @@ async function emptyCart(email){
 // module to export the functions
 module.exports = {
     addAddress,
+    updateAddress,
     getAddresses,
     //getTransactions,
     getWallets,

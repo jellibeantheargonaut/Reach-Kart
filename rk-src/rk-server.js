@@ -214,7 +214,7 @@ app.get('/order', loggedIn, (req, res) => {
 // app.post('/user/confirmOrder', (req, res) => {}
 // app.post('/user/refundOrder', (req, res) => {}
 // app.get('/user/viewOrders', (req, res) => {}
-app.get('/users/viewOrders', loggedIn, async (req,res) => {
+app.get('/user/viewOrders', loggedIn, async (req,res) => {
   const token = loggingApi.verifyToken(req.cookies.jwt);
   const email = token.email;
   const orders = await userOps.viewOrders(email);
@@ -237,8 +237,39 @@ app.get('/users/viewOrders', loggedIn, async (req,res) => {
 // routes for address related operations
 //================================================
 // app.post('/user/addAddress', loggedIn, (req, res) => {}
+app.post('/user/addAddress', loggedIn, async (req, res) => {
+  const token = loggingApi.verifyToken(req.cookies.jwt);
+  const email = token.email;
+  const data = req.body;
+  try {
+    await userOps.addAddress(email, data);
+    return res.status(200).json({message:'Address added'});
+  } catch (error) {
+    return res.status(500).json({message:'Error adding address'});
+  }
+});
+
 // app.post('/user/updateAddress', loggedIn, (req, res) => {}
+app.post('/user/updateAddress', loggedIn, async (req, res) => {
+  const token = loggingApi.verifyToken(req.cookies.jwt);
+  const email = token.email;
+  const data = req.body;
+  try {
+    await userOps.updateAddress(email, data.address);
+    return res.status(200).json({message:'Address updated'});
+  } catch (error) {
+    return res.status(500).json({message:'Error updating address'});
+  }
+});
+
 // app.get('/user/getAddresses', loggedIn, (req, res) => {}
+app.get('/user/getAddresses', loggedIn, async (req,res) => {
+  const token = loggingApi.verifyToken(req.cookies.jwt);
+  const email = token.email;
+  const addresses = await userOps.getAddresses(email);
+  return res.status(200).json(addresses);
+});
+
 // app.post('/user/deleteAddress', loggedIn, (req, res) => {}
 // app.post('/user/setDefaultAddress', loggedIn, (req, res) => {}
 
@@ -271,7 +302,30 @@ app.post('/user/createWallet', loggedIn, async (req, res) => {
 });
 
 // app.post('/user/setDefaultWallet', loggedIn, (req, res) => {}
+app.post('/user/setDefaultWallet', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  const walletId = req.body.walletId;
+  try {
+    await chainApi.setPrimaryWallet(email,walletId);
+    res.status(200).json({message:'Default wallet set'});
+  } catch (error) {
+    res.status(500).json({message:'Error setting default wallet'});
+  }
+});
+
 // app.post('/user/deleteWallet', loggedIn, (req, res) => {}
+app.post('/user/deleteWallet', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  const walletId = req.body.walletId;
+  try {
+    await chainApi.deleteWallet(walletId);
+    res.status(200).json({message:'Wallet deleted'});
+  } catch (error) {
+    res.status(500).json({message:'Error deleting wallet'});
+  }
+});
 
 //================================================
 // routes for cart handling 

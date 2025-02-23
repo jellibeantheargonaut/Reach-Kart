@@ -16,7 +16,6 @@ async function getWallets() {
         walletsContainer.innerHTML = '<h2>No wallets found</h2>';
         return;
     }
-    console.log(wallets);
 
     wallets.forEach((wallet) => {
         const walletListItem = document.createElement('div');
@@ -44,12 +43,12 @@ async function createWallet() {
     });
     if (response.status === 200) {
         showOverlayMessage('Wallet created successfully');
-        getWallets();
     } else {
         showOverlayMessage(`${response.json().then((res) => res.message)}`);
     }
     
     setTimeout(() => {
         closeOverlayMessage();
+        getWallets();
     }, 2000);
 }
