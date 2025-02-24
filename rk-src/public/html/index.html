@@ -145,11 +145,19 @@
                 <!-- The wallets page which contains user wallets and stuff -->
                 <div class="wallets-list-container">
                     <div class="wallets-list-item">
-                        <div class="wallets-item-thumbnail">
+                        <div class="wallets-item-thumbnail" onclick="expandWallet(this)">
                             <img src="/img/ether-wallet.png">
                             <div>
                                 <p> 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
                                 <p> 54.23 <i class="fa-brands fa-ethereum"></i></p>
+                            </div>
+                        </div>
+                        <div class="wallets-item-controls">
+                            <div class="wallets-item-control-button">
+                                Delete 
+                            </div>
+                            <div class="wallets-item-control-button">
+                                Set primary
                             </div>
                         </div>
                     </div>
