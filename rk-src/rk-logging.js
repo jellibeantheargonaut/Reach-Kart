@@ -161,6 +161,20 @@ function getWalletId(email){
     });
 }
 
+function getEmail(wid){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT * FROM wallets WHERE wid = ?`,[wid], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            if(row){
+                resolve(row.email);
+            }
+            resolve(null);
+        });
+    });
+}
+
 module.exports = {
     createUser,
     deleteUser,
@@ -168,5 +182,6 @@ module.exports = {
     verifyToken,
     checkLogin,
     userExists,
-    getWalletId
+    getWalletId,
+    getEmail
 };

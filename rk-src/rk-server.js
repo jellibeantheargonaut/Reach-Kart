@@ -14,6 +14,7 @@ const loggingApi = require('./rk-logging');
 const userOps = require('./rk-userops');
 const sellerOps = require('./rk-sellerops');
 const chainApi = require('./rk-chainapi');
+const e = require('express');
 
 // Express js settings
 const app = express();
@@ -84,6 +85,8 @@ app.get('/logs/:module', adminOnly, async (req, res) => {
     res.status(500).send('Error reading log file');
   });
 });
+
+
 
 //==============================================================================
 // Seller Endpoints and stuff
@@ -159,16 +162,26 @@ app.post('/seller/uploadProduct', sellerOnly, async (req, res) => {
 // routes for orders page
 //--------------------------------------------------------------------------
 // app.get('/seller/viewOrders', sellerOnly,(req, res) => {}
+app.get('/seller/viewOrders', sellerOnly, async (req, res) => {
+    const token = req.cookies.jwt;
+    const email = loggingApi.verifyToken(token).email;
+    try {
+      const orders = await sellerOps.viewOrders(email);
+      return res.status(200).json(orders);
+    } catch (error) {
+      return res.status(500).json({message:'Error fetching orders'});
+    }
+});
+
 // app.get('/seller/viewOrder/:orderId', sellerOnly,(req, res) => {} 
 app.get('/seller/viewOrder/:orderId', sellerOnly, async (req, res) => {
     const orderId = req.params.orderId;
-    const orderDetails = {
-      email: 'john@gmail.com',
-      walletId: '0x1234567890',
-      quantity: 1,
-      price: 100
+    try {
+      const order = await sellerOps.viewOrder(orderId);
+      return res.status(200).json(order);
+    } catch (error) {
+      return res.status(500).json({message:'Error fetching order'});
     }
-    return res.status(200).json(orderDetails);
 });
 
 //==============================================================================

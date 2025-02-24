@@ -142,10 +142,21 @@ async function getWallets(email){
         }
     });
 }
+
 // function to get transactions of a user
-//async function getTransactions(email){
-//    // need new implementation
-//}
+// from orders table if transactionId is not null
+async function getTransactions(wid){
+    return new Promise((resolve,reject) => {
+        db.all(`SELECT * FROM orders WHERE transactionId IS NOT NULL AND buyerAddress = ?`, [wid], (err, rows) => {
+            if(err){
+                console.error(err.message);
+                reject(rows);
+            }
+            RKWriteLog(`[ rk-userops ] 💸 Transactions of ${wid}`,'rk-userops');
+            resolve(rows);
+        });
+    });
+}
 
 //========================================================================================================
 // Orders related functions
@@ -194,12 +205,12 @@ async function cancelOrder(orderId){
 async function payForOrder(orderId){
     // binding for the payOrder function in rk-chainapi
     return new Promise(async (resolve,reject) => {
-        await chainApi.payOrder(orderId).catch(err => {
+        const tx = await chainApi.payOrder(orderId).catch(err => {
             RKWriteLog(`[ rk-userops ] ❌ Error paying for order ${orderId}`,'rk-error');
             reject(err);
         });
         RKWriteLog(`[ rk-userops ] 💸 Order ${orderId} paid for`,'rk-userops');
-        resolve();
+        resolve(tx.hash);
     });
 
     // sometimes the wid used for deploying order contract is different from the one used for paying
@@ -434,7 +445,7 @@ module.exports = {
     addAddress,
     updateAddress,
     getAddresses,
-    //getTransactions,
+    getTransactions,
     getWallets,
     getUserAccountDetails,
     viewOrders,

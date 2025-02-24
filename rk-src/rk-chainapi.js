@@ -564,8 +564,8 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
                 }
                 RKWriteLog(`[ rk-chainapi ] 👍🏻 Order ${orderId} entered in database table for ${productId}`,'rk-chainapi');
             });
+            resolve(orderId);
         });
-        resolve();
     });
 }
 
@@ -742,6 +742,16 @@ async function getOrderBuyer(orderId){
     });
 }
 // function to get the seller of the order
+async function getOrderSeller(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT sellerAddress FROM orders WHERE orderId = ?`,[orderId], (err,row) => {
+            if(err){
+                reject(err);
+            }
+            resolve(row.sellerAddress);
+        });
+    });
+}
 
 // function to get the product of the order
 async function getOrderProduct(orderId){
@@ -1149,6 +1159,8 @@ module.exports = {
     cancelOrder,
     payOrder,
     updateOrderBuyer,
+    getOrderSeller,
+    getOrderBuyer,
     getOrderPlacedDate,
     getOrderConfirmedDate,
     getOrderCancelledDate,

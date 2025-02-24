@@ -86,20 +86,20 @@ async function viewOrders(email){
     let orders = [];
     // get all the orders from the orders table
     return new Promise((resolve,reject) => {
-        db.get(`SELECT * FROM orders WHERE sellerAddress = ?`, [wid], (err,rows) => {
+        db.all(`SELECT * FROM orders WHERE sellerAddress = ?`, [wid], async (err,rows) => {
             if(err){
                 reject(err);
             }
-            rows.forEach(async (row) => {
+            for(const row of rows){
                 const data = {
                     orderName: await chainApi.getProductName(row.productId),
-                    orderID: row.orderId,
+                    orderId: row.orderId,
                     orderPrice: await chainApi.getOrderPrice(row.orderId),
                     orderBuyer: row.buyerAddress,
                     orderPlacedDate: await chainApi.getOrderPlacedDate(row.orderId),
                 }
                 orders.push(data);
-            });
+            }
             RKWriteLog(`[ rk-sellerops ] 🛒 Orders to seller ${email}`,'rk-sellerops');
             resolve(orders);
         })
@@ -129,12 +129,13 @@ async function viewOrder(orderId){
         });
         const orderProduct = await chainApi.getOrderProduct(orderId);
         const details = {
-            buyer: buyer,
-            quantity: quantity,
-            price: price,
-            orderPlacedDate: orderPlacedDate,
-            orderConfirmedDate: orderConfirmedDate,
-            orderPaidDate: orderPaidDate,
+            orderBuyer: buyer,
+            orderBuyerAddress: await chainApi.getOrderBuyer(orderId),
+            orderQuantity: quantity,
+            orderPrice: price,
+            orderPlacedDate: orderPlacedDate === null ? 'NA' : orderPlacedDate,
+            orderConfirmedDate: orderConfirmedDate === null ? 'NA' : orderConfirmedDate,
+            orderPaidDate: orderPaidDate === null ? 'NA' : orderPaidDate,
             orderAddress: orderAddress,
             orderProduct: orderProduct
         }
@@ -174,7 +175,43 @@ async function viewShipments(email){
 //====================================================================================
 // functions related to Transactions from seller page
 //====================================================================================
+async function getTransactions(wid){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT * FROM orders WHERE transactionId IS NOT NULL AND sellerAddress = ?`, [wid], (err,rows) => {
+            if(err){
+                reject(err);
+            }
+            resolve(rows);
+        });
+    });  
+}
 
+async function refundAmount(orderId){
+    return new Promise(async (resolve,reject) => {
+        // get the order paid date for order
+        const orderPaidDate = await chainApi.getOrderPaidDate(orderId);
+        // if order is paid then refund the amount
+        if(orderPaidDate){
+            const refundAmount = await chainApi.getOrderPrice(orderId);
+            const transaction = await chainApi.getOrderTransaction(orderId);
+            const sellerWid = transaction.to;
+            const buyerWid = transaction.from;
+            try {
+                let tx = await chainApi.transferFunds(sellerWid,buyerWid,refundAmount);
+                await tx.wait();
+                RKWriteLog(`[ rk-sellerops ] 💸 Refunded amount for order ${orderId}`,'rk-sellerops');
+                // delete the order from the orders table
+                db.run(`DELETE FROM orders WHERE orderId = ?`, [orderId]);
+                resolve(tx.hash);
+            } catch (error) {
+                reject(error);
+            }
+        }
+        else {
+            reject('Order not paid');
+        }
+    });
+}
 
 //====================================================================================
 //module exports
@@ -183,5 +220,7 @@ module.exports = {
     uploadProduct,
     viewOrders,
     viewOrder,
-    viewShipments
+    viewShipments,
+    getTransactions,
+    refundAmount
 }

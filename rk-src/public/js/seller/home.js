@@ -1,4 +1,18 @@
+function formatDate(timestamp){
+    const date = new Date(timestamp);
 
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12 || 12; // Convert 0 to 12 for AM format
+
+    return `${year}-${month}-${day} at ${hours}:${minutes} ${ampm}`;
+}
 // function to blank some divs
 function blankDivs() {
     const accountDiv = document.querySelector('.account-container');
@@ -196,17 +210,47 @@ async function showOrders(element) {
     selectButton(element);
     const ordersDiv = document.querySelector('.orders-container');
     ordersDiv.style.display = 'flex';
+
+    viewOrders();
 }
 
 async function openOrderView(element){
     // set the overlay view
     const ordersOverlayView = document.querySelector('.orders-overlay-view');
     ordersOverlayView.style.display = 'flex';
+    ordersOverlayView.innerHTML = '';
 
     const orderId = element.querySelector('.orders-list-item-id').innerHTML;
-    //const orderDetails = await fetch(`/seller/viewOrder/${orderId}`).then(res => res.json());
+    const orderDetails = await fetch(`/seller/viewOrder/${orderId}`).then(res => res.json());
 
-    const ordersOverlayContainer = ordersOverlayView.querySelector('.orders-overlay-container');
+    const ordersOverlayContainer = document.createElement('div');
+    ordersOverlayContainer.classList.add('orders-overlay-container');
+    ordersOverlayContainer.innerHTML = `
+        <div class="orders-view-image">
+            <img src="https://media3.giphy.com/media/6BZaFXBVPBtok/giphy.gif?cid=6c09b952rjuqvisd6rgqk93j7goduey2yg4n9xyj4mrjsvcg&ep=v1_gifs_search&rid=giphy.gif&ct=g">
+        </div>
+        <div class="orders-view-details">
+            <div class="orders-view-details-buyer">
+                <p> Buyer : ${orderDetails.orderBuyer} </p>
+                <p> wallet ID : ${orderDetails.orderBuyerAddress} </p>
+                <p> Quantity : ${orderDetails.orderQuantity} </p>
+                <p> Price : ${orderDetails.orderPrice} <i class="fa-brands fa-ethereum"></i></p>
+            </div>
+            <div class="orders-view-details-timeline">
+                <p> Order Placed : ${formatDate(orderDetails.orderPlacedDate)}</p>
+                <p> Order Confirmed : ${ orderDetails.orderConfirmedDate !== 'NA' ? formatDate(orderDetails.orderConfirmedDate) : orderDetails.orderConfirmedDate} </p>
+                <p> Order Paid : ${ orderDetails.orderPaidDate !== 'NA' ? formatDate(orderDetails.orderPaidDate) : orderDetails.orderPaidDate}</p>
+                <p> Order Shipped : NA </p>
+            </div>
+            <div class="orders-view-details-chain">
+                <p> Order Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                <p> Product Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                <p> Order ID : 2cba052c-fe19-411b-bde2-55ee14cc36ac</p>
+            </div>
+        </div>
+        `;
+    ordersOverlayView.appendChild(ordersOverlayContainer);
+
     ordersOverlayView.addEventListener('click', (e) => {
         if(e.target === ordersOverlayView){
             closeOrderView();
@@ -220,6 +264,32 @@ async function setOrderView(orderDetails){
 async function closeOrderView(){
     const orderOverlayView = document.querySelector('.orders-overlay-view');
     orderOverlayView.style.display = 'none';
+}
+
+async function viewOrders() {
+    const ordersList = document.querySelector('.orders-list');
+    ordersList.innerHTML = '';
+    const orders = await fetch('/seller/viewOrders').then(res => res.json());
+
+    orders.forEach(order => {
+        const orderItem = document.createElement('div');
+        orderItem.classList.add('orders-list-item');
+        orderItem.innerHTML = `
+        <div class="orders-list-item-image">
+            <img src="https://media3.giphy.com/media/6BZaFXBVPBtok/giphy.gif?cid=6c09b952rjuqvisd6rgqk93j7goduey2yg4n9xyj4mrjsvcg&ep=v1_gifs_search&rid=giphy.gif&ct=g">
+        </div>
+        <div class="orders-list-item-info">
+            <p class="orders-list-item-name"> ${order.orderName} </p>
+            <p class="orders-list-item-id">${order.orderId}</p>
+            <p class="orders-list-item-price"> <i class="fa-brands fa-ethereum"></i> ${order.orderPrice} </p>
+            <p class="orders-list-item-date"> ${formatDate(order.orderPlacedDate)} </p>
+        </div>
+        `;
+        orderItem.addEventListener('click', () => {
+            openOrderView(orderItem);
+        });
+        ordersList.appendChild(orderItem);
+    });
 }
 
 //==============================================================================

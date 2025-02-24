@@ -12,7 +12,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    width: 60%;
+    width: fit-content;
     height: 200px;
     background-color: rgba(255, 255, 255, 0.498);
     backdrop-filter: blur(15px);
@@ -50,7 +50,7 @@
     gap: 10px;
 }
 .orders-list-item-info p {
-    padding: 0;
+    padding: 5px;
     margin: 0;
 }
 .orders-list-item-name {
@@ -103,7 +103,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 80%;
+    width: fit-content;
     height: 60%;
     background-color: rgba(255, 255, 255, 0.718);
     backdrop-filter: blur(15px);
@@ -148,7 +148,7 @@
     justify-content: center;
     align-items: flex-start;
     width: 90%;
-    height: 30%;
+    height: fit-content;
     gap: 5px;
     border: 1px black solid;
     border-radius: 10px;
@@ -159,7 +159,7 @@
     justify-content: center;
     align-items: flex-start;
     width: 90%;
-    height: 30%;
+    height: fit-content;
     gap: 5px;
     border: 1px black solid;
     border-radius: 10px;
@@ -170,7 +170,7 @@
     justify-content: center;
     align-items: flex-start;
     width: 90%;
-    height: 30%;
+    height: fit-content;
     gap: 5px;
     border: 1px black solid;
     border-radius: 10px;
