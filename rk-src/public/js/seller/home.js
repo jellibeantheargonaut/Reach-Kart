@@ -1,3 +1,4 @@
+
 // function to blank some divs
 function blankDivs() {
     const accountDiv = document.querySelector('.account-container');
@@ -86,6 +87,8 @@ async function showShop(element) {
     await setShopName();
     const shopDiv = document.querySelector('.shop-container');
     shopDiv.style.display = 'flex';
+
+    viewAvailableProducts();
 }
 
 async function openAddProductCard() {
@@ -97,6 +100,19 @@ async function openAddProductCard() {
 
     const addProductCard = document.querySelector('.product-add-card');
     addProductCard.style.display = 'flex';
+
+    // get wallets from the user
+    const wallets = await fetch('/user/getWallets').then(res => res.json());
+    //set the wallets in the dropdown
+    const walletDropdown = document.getElementById('wallet-select');
+    walletDropdown.innerHTML = '';
+    
+    wallets.forEach(wallet => {
+        const option = document.createElement('option');
+        option.value = wallet.walletId;
+        option.innerHTML = wallet.walletId;
+        walletDropdown.appendChild(option);
+    });
 }
 
 async function closeAddProductCard() {
@@ -108,6 +124,70 @@ async function closeAddProductCard() {
     addProductCard.style.display = 'none';
 }
 
+async function uploadProduct(element) {
+    const productForm = element.parentElement.parentElement;
+    const productName = productForm.querySelector('#product-name').value;
+    const productDescription = productForm.querySelector('#product-description').value;
+    const productPrice = productForm.querySelector('#product-price').value;
+    const productQuantity = productForm.querySelector('#product-quantity').value;
+    const walletId = productForm.querySelector('#wallet-select').value;
+
+    const params = {
+        productName: productName,
+        productDescription: productDescription,
+        productPrice: productPrice,
+        productQuantity: productQuantity,
+        walletId: walletId,
+    }
+
+    // upload the product
+    const response = await fetch('/seller/uploadProduct', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params),
+    }).then(res => res.json());
+    setTimeout(() => {
+        showOverlayMessage('Product is being uploaded');
+    }, 2000);
+    if(response.status === 200){
+        showOverlayMessage(`${response.message}`);
+    }
+    else{
+        showOverlayMessage(`${response.message}`);
+    }
+    setTimeout(() => {
+        closeOverlayMessage();
+        closeAddProductCard();
+    }, 2000);
+}
+
+async function viewAvailableProducts() {
+    const shopList = document.querySelector('.products-list-body');
+    shopList.innerHTML = '';
+
+    const products = await fetch('/seller/availableProducts').then(res => res.json());
+
+    products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-list-card');
+        productCard.innerHTML = `
+            <div class="product-list-card-header">
+                <i class="fa-solid fa-ellipsis"></i>
+            </div>
+            <div class="product-list-card-image">
+                <img src="https://media3.giphy.com/media/6BZaFXBVPBtok/giphy.gif?cid=6c09b952rjuqvisd6rgqk93j7goduey2yg4n9xyj4mrjsvcg&ep=v1_gifs_search&rid=giphy.gif&ct=g">
+            </div>
+            <div class="product-list-card-info">
+                <p class="product-list-card-name"> ${product.productName} </p>
+                <p class="product-list-card-description">${product.productDescription}</p>
+                <p class="product-list-card-price"> <i class="fa-brands fa-ethereum"></i> ${product.productPrice} </p>
+            </div>
+        `;
+        shopList.appendChild(productCard);
+    });
+}
 //==============================================================================
 // functions for managing orders
 //==============================================================================
@@ -221,7 +301,41 @@ async function showWallets(element) {
     selectButton(element);
     const walletsDiv = document.querySelector('.wallets-container');
     walletsDiv.style.display = 'flex';
+
+    const walletsList = document.querySelector('.wallets-list');
+    walletsList.innerHTML = '';
+    const wallets = await fetch('/user/getWallets').then(res => res.json());
+
+    wallets.forEach(wallet => {
+        const walletItem = document.createElement('div');
+        walletItem.classList.add('wallets-list-item');
+        walletItem.innerHTML = `
+        <p>Wallet ID : ${wallet.walletId}</p>
+        <p>Balance : ${wallet.balance} <i class="fa-brands fa-ethereum"></i></p>
+        `;
+        walletsList.appendChild(walletItem);
+    });
 }
+
+async function createWallet() {
+    const response = await fetch('/user/createWallet', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    if (response.status === 200) {
+        showOverlayMessage('Wallet created successfully');
+    } else {
+        showOverlayMessage(`${response.json().then((res) => res.message)}`);
+    }
+    
+    setTimeout(() => {
+        closeOverlayMessage();
+        showWallets(document.querySelector('.sidebar-menu-item.wallets'));
+    }, 2000);
+}
+
 
 //==============================================================================
 

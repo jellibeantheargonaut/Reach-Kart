@@ -125,8 +125,33 @@ app.get('/seller/home', sellerOnly,(req, res) => {
 // routes for shop page
 //--------------------------------------------------------------------------
 // app.get('/seller/availableProducts', sellerOnly,(req, res) => {}
+app.get('/seller/availableProducts', sellerOnly, async (req, res) => {
+    const token = req.cookies.jwt;
+    const email = loggingApi.verifyToken(token).email;
+    try {
+      const products = await sellerOps.viewShop(email);
+      return res.status(200).json(products);
+    } catch (error) {
+      return res.status(500).json({message:'Error fetching products'});
+    }
+});
+
 // app.get('/seller/viewProductDetails', sellerOnly,(req, res) => {}
+
 // app.post('/seller/uploadProduct', sellerOnly,(req, res) => {}
+app.post('/seller/uploadProduct', sellerOnly, async (req, res) => {
+    const token = req.cookies.jwt;
+    const email = loggingApi.verifyToken(token).email;
+    const data = req.body;
+    try {
+      const pId = await sellerOps.uploadProduct(email,data.walletId, data.productName, data.productDescription, data.productPrice, data.productQuantity);
+      return res.status(200).json({message:`Product ${pId} uploaded to shop`});
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({message:'Error uploading product'});
+    }
+});
+
 // app.post('/seller/updateProduct', sellerOnly,(req, res) => {}
 // app.post('/seller/deleteProduct', sellerOnly,(req, res) => {}
 // app.post('/seller/shipProduct', sellerOnly,(req, res) => {}

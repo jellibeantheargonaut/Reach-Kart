@@ -36,6 +36,7 @@
 // schema of the products table
 // productId - the id of the product UUIDv4
 // productAddress - the address of the product contract
+// sellerMail - the address of the seller
 // dateAdded - the time when the product was added
 // dateUpdated - the time when the product was updated
 
@@ -129,6 +130,7 @@ async function createDatabases(){
         db.run(`CREATE TABLE IF NOT EXISTS products (
             productId string PRIMARY KEY,
             productAddress string NOT NULL,
+            sellerMail string NOT NULL,
             dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             dateUpdated TIMESTAMP)`
         );
@@ -324,7 +326,7 @@ async function getTransactionDetails(txId){
 //==================================================================================
 
 // deploy the product contract
-async function deployProductContract(sellerAddress, productName, productDescription, productPrice, productQuantity)
+async function deployProductContract(sellerMail,sellerAddress, productName, productDescription, productPrice, productQuantity)
 {
 
     return new Promise(async (resolve,reject) => {
@@ -342,14 +344,14 @@ async function deployProductContract(sellerAddress, productName, productDescript
         RKWriteLog(`[ rk-chainapi ] 📦 Product contract deployed at ${productContract.address}`,'rk-chainapi');
 
         // insert the product into the products table
-        db.run(`INSERT INTO products(productId,productAddress,dateAdded) VALUES(?,?,?)`,[productId,await productContract.getAddress(),Date.now()], (err) => {
+        db.run(`INSERT INTO products(productId,productAddress,sellerMail,dateAdded) VALUES(?,?,?,?)`,[productId,await productContract.getAddress(),sellerMail,Date.now()], (err) => {
             if(err){
                 console.error(err.message);
                 reject(err);
             }
             RKWriteLog(`[ rk-chainapi ] 📦 Product ${productId} entered in database table`,'rk-chainapi');
         });
-        resolve();
+        resolve(productId);
     });
 }
 
@@ -440,15 +442,17 @@ async function getProductPrice(productId){
 }
 // function to get the quantity of the product
 async function getProductQuantity(productId){
-    db.get(`SELECT productAddress FROM products WHERE productId = ?`,[productId], async (err,row) => {
-        if(err){
-            console.error(err.message);
-        }
-        const productAddress = row.productAddress;
-        const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
-        const productQuantity = await productContract.getProductQuantity();
-        RKWriteLog(`[ rk-chainapi ] 📦 Quantity of product ${productId} is ${productQuantity}`,'rk-chainapi');
-        return productQuantity;
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT productAddress FROM products WHERE productId = ?`,[productId], async (err,row) => {
+            if(err){
+                console.error(err.message);
+            }
+            const productAddress = row.productAddress;
+            const productContract = await ethers.getContractAt('ProductRegistry',productAddress,provider);
+            const productQuantity = await productContract.getProductQuantity();
+            RKWriteLog(`[ rk-chainapi ] 📦 Quantity of product ${productId} is ${productQuantity}`,'rk-chainapi');
+            resolve(productQuantity.toString());
+        });
     });
 }
 

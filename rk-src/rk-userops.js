@@ -18,7 +18,7 @@ const { RKWriteLog } = require('./rk-logs');
 const { createClient } = require('redis');
 
 // connect to the redis server
-const redisClient = createClient({ url: 'redis://rkadmin:SuperSecretPassword@localhost:6379' })
+const redisClient = createClient({ url: 'redis://localhost:6379' });
 
 redisClient.connect().catch(err => {
     RKWriteLog(`[ rk-userops ] ❌ Error connecting to redis server`,'rk-error');
@@ -387,7 +387,19 @@ async function viewCart(email){
                 reject(err);
             }
         });
-        resolve(data);
+        const keys = Object.keys(data);
+        let cart = [];
+        for (const key of keys){
+            const product = {
+                productId: key,
+                productName: (await chainApi.getProductName(key)),
+                quantity: data[key],
+                price: (await chainApi.getProductPrice(key))*data[key]
+            }
+            cart.push(product);
+        }
+        RKWriteLog(`[ rk-userops ] 🛒 ${email} cart viewed`,'rk-userops');
+        resolve(cart);
     });
 }
 

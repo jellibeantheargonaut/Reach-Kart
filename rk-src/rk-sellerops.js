@@ -33,26 +33,29 @@ const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (e
 //
 // function to get products availbale in the shop from the products table
 //
-async function viewShop(email){
-    const wid = await loggingApi.getWalletId(email);
+async function viewShop(email) {
     let products = [];
-    return new Promise((resolve,reject) => {
-        db.get(`SELECT * FROM products WHERE sellerAddress = ?`, [wid], (err,rows) => {
-            if(err){
-                reject(err);
+    return new Promise((resolve, reject) => {
+        db.all(`SELECT * FROM products WHERE sellerMail = ?`, [email], async (err, rows) => {
+            if (err) {
+                return reject(err);
             }
-            rows.forEach(async (row) => {
-                const data = {
-                    productName: row.productName,
-                    productID: row.productId,
-                    productPrice: await chainApi.getProductPrice(row.productId),
-                    productQuantity: await chainApi.getProductQuantity(row.productId),
-                    productDescription: row.productDescription,
+            try {
+                for (const row of rows) {
+                    const data = {
+                        productId: row.productId,
+                        productName: await chainApi.getProductName(row.productId),
+                        productPrice: await chainApi.getProductPrice(row.productId),
+                        productQuantity: await chainApi.getProductQuantity(row.productId),
+                        productDescription: await chainApi.getProductDescription(row.productId),
+                    };
+                    products.push(data);
                 }
-                products.push(data);
-            })
-            RKWriteLog(`[ rk-sellerops ] 🛍️ Products in the shop of seller ${email}`,'rk-sellerops');
-            resolve(products);
+                RKWriteLog(`[ rk-sellerops ] 🛍️ Products in the shop of seller ${email}`, 'rk-sellerops');
+                resolve(products);
+            } catch (error) {
+                reject(error);
+            }
         });
     });
 }
@@ -60,15 +63,14 @@ async function viewShop(email){
 // function to get all the details of a product
 
 // function to upload a product to the shop
-async function uploadProduct(email,productName,productDescription,productPrice,productQuantity){
+async function uploadProduct(email,wid,productName,productDescription,productPrice,productQuantity){
     return new Promise(async (resolve,reject) => {
-        const wid = await loggingApi.getWalletId(email);
         try {
-            await chainApi.deployProductContract(wid,productName,productDescription,productPrice,productQuantity);
-            RKWriteLog(`[ rk-sellerops ] 📦 Product ${productName} uploaded by seller ${email}`,'rk-sellerops');
-            resolve(true);
+            const pId = await chainApi.deployProductContract(email,wid,productName,productDescription,productPrice,productQuantity);
+            RKWriteLog(`[ rk-sellerops ] 📦 Product ${productName} uploaded by seller ${wid}`,'rk-sellerops');
+            resolve(pId);
         } catch (error) {
-            reject(false);
+            reject(error);
         }
     });
 }

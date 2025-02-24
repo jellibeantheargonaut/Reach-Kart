@@ -120,9 +120,14 @@
                     <div class="product-add-card-input">
                         <input type="text" placeholder="Product Image URL" id="product-image">
                     </div>
+                    <div class="product-add-card-input">
+                        <select id="wallet-select">
+                            <option value="0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C">0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="product-add-card-footer">
-                    <div class="product-add-card-button">
+                    <div class="product-add-card-button" onclick="uploadProduct(this)">
                         +Add
                     </div>
                     <p><i class="fa-solid fa-circle-info"></i> Adding a product will require some transaction fee. Make sure you have enough balance in your wallet.</p>
@@ -346,6 +351,9 @@
             </div>
             <div class="wallets-add-card">
                 <!-- Add wallet card for deploying a new wallet -->
+                <div class="wallet-add-button" onclick="createWallet()">
+                    + New Wallet
+                </div>
             </div>
             <div class="wallets-overlay-view">
                 <!-- For viewing and controlling the wallet details -->
