@@ -102,7 +102,7 @@ async function showShop(element) {
     const shopDiv = document.querySelector('.shop-container');
     shopDiv.style.display = 'flex';
 
-    viewAvailableProducts();
+    //viewAvailableProducts();
 }
 
 async function openAddProductCard() {
@@ -211,45 +211,45 @@ async function showOrders(element) {
     const ordersDiv = document.querySelector('.orders-container');
     ordersDiv.style.display = 'flex';
 
-    viewOrders();
+    //viewOrders();
 }
 
 async function openOrderView(element){
     // set the overlay view
     const ordersOverlayView = document.querySelector('.orders-overlay-view');
     ordersOverlayView.style.display = 'flex';
-    ordersOverlayView.innerHTML = '';
-
-    const orderId = element.querySelector('.orders-list-item-id').innerHTML;
-    const orderDetails = await fetch(`/seller/viewOrder/${orderId}`).then(res => res.json());
-
-    const ordersOverlayContainer = document.createElement('div');
-    ordersOverlayContainer.classList.add('orders-overlay-container');
-    ordersOverlayContainer.innerHTML = `
-        <div class="orders-view-image">
-            <img src="https://media3.giphy.com/media/6BZaFXBVPBtok/giphy.gif?cid=6c09b952rjuqvisd6rgqk93j7goduey2yg4n9xyj4mrjsvcg&ep=v1_gifs_search&rid=giphy.gif&ct=g">
-        </div>
-        <div class="orders-view-details">
-            <div class="orders-view-details-buyer">
-                <p> Buyer : ${orderDetails.orderBuyer} </p>
-                <p> wallet ID : ${orderDetails.orderBuyerAddress} </p>
-                <p> Quantity : ${orderDetails.orderQuantity} </p>
-                <p> Price : ${orderDetails.orderPrice} <i class="fa-brands fa-ethereum"></i></p>
-            </div>
-            <div class="orders-view-details-timeline">
-                <p> Order Placed : ${formatDate(orderDetails.orderPlacedDate)}</p>
-                <p> Order Confirmed : ${ orderDetails.orderConfirmedDate !== 'NA' ? formatDate(orderDetails.orderConfirmedDate) : orderDetails.orderConfirmedDate} </p>
-                <p> Order Paid : ${ orderDetails.orderPaidDate !== 'NA' ? formatDate(orderDetails.orderPaidDate) : orderDetails.orderPaidDate}</p>
-                <p> Order Shipped : NA </p>
-            </div>
-            <div class="orders-view-details-chain">
-                <p> Order Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
-                <p> Product Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
-                <p> Order ID : 2cba052c-fe19-411b-bde2-55ee14cc36ac</p>
-            </div>
-        </div>
-        `;
-    ordersOverlayView.appendChild(ordersOverlayContainer);
+    //ordersOverlayView.innerHTML = '';
+//
+    //const orderId = element.querySelector('.orders-list-item-id').innerHTML;
+    //const orderDetails = await fetch(`/seller/viewOrder/${orderId}`).then(res => res.json());
+//
+    //const ordersOverlayContainer = document.createElement('div');
+    //ordersOverlayContainer.classList.add('orders-overlay-container');
+    //ordersOverlayContainer.innerHTML = `
+    //    <div class="orders-view-image">
+    //        <img src="https://media3.giphy.com/media/6BZaFXBVPBtok/giphy.gif?cid=6c09b952rjuqvisd6rgqk93j7goduey2yg4n9xyj4mrjsvcg&ep=v1_gifs_search&rid=giphy.gif&ct=g">
+    //    </div>
+    //    <div class="orders-view-details">
+    //        <div class="orders-view-details-buyer">
+    //            <p> Buyer : ${orderDetails.orderBuyer} </p>
+    //            <p> wallet ID : ${orderDetails.orderBuyerAddress} </p>
+    //            <p> Quantity : ${orderDetails.orderQuantity} </p>
+    //            <p> Price : ${orderDetails.orderPrice} <i class="fa-brands fa-ethereum"></i></p>
+    //        </div>
+    //        <div class="orders-view-details-timeline">
+    //            <p> Order Placed : ${formatDate(orderDetails.orderPlacedDate)}</p>
+    //            <p> Order Confirmed : ${ orderDetails.orderConfirmedDate !== 'NA' ? formatDate(orderDetails.orderConfirmedDate) : orderDetails.orderConfirmedDate} </p>
+    //            <p> Order Paid : ${ orderDetails.orderPaidDate !== 'NA' ? formatDate(orderDetails.orderPaidDate) : orderDetails.orderPaidDate}</p>
+    //            <p> Order Shipped : NA </p>
+    //        </div>
+    //        <div class="orders-view-details-chain">
+    //            <p> Order Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+    //            <p> Product Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+    //            <p> Order ID : 2cba052c-fe19-411b-bde2-55ee14cc36ac</p>
+    //        </div>
+    //    </div>
+    //    `;
+    //ordersOverlayView.appendChild(ordersOverlayContainer);
 
     ordersOverlayView.addEventListener('click', (e) => {
         if(e.target === ordersOverlayView){

@@ -145,17 +145,29 @@ async function getWallets(email){
 
 // function to get transactions of a user
 // from orders table if transactionId is not null
-async function getTransactions(wid){
+async function getTransactions(email){
+    const wallets = (await chainApi.getWallets(email)).map(wallet => `'${wallet.wid}'`).join(',');
+    let transactions = [];
     return new Promise((resolve,reject) => {
-        db.all(`SELECT * FROM orders WHERE transactionId IS NOT NULL AND buyerAddress = ?`, [wid], (err, rows) => {
+        db.all(`SELECT * FROM orders WHERE buyerAddress IN (${wallets}) AND transactionId IS NOT NULL`, async (err,rows) => {
             if(err){
-                console.error(err.message);
-                reject(rows);
+                reject(err);
             }
-            RKWriteLog(`[ rk-userops ] 💸 Transactions of ${wid}`,'rk-userops');
-            resolve(rows);
+            for(const row of rows){
+                console.log(row);
+                const data = {
+                    transactionId: row.transactionId,
+                    transactionFrom: row.buyerAddress,
+                    transactionTo: row.sellerAddress,
+                    transactionAmount: await chainApi.getOrderPrice(row.orderId),
+                    transactionDate: await chainApi.getOrderPaidDate(row.orderId),
+                }
+                transactions.push(data);
+            }
+            RKWriteLog(`[ rk-sellerops ] 📈 Transactions to seller ${email}`,'rk-sellerops');
+            resolve(transactions);
         });
-    });
+    });  
 }
 
 //========================================================================================================

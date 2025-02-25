@@ -82,15 +82,16 @@ async function uploadProduct(email,wid,productName,productDescription,productPri
 // function to get orders from the shop from orders table
 //
 async function viewOrders(email){
-    const wid = await loggingApi.getWalletId(email);
+    const wallets = (await chainApi.getWallets(email)).map(wallet => `'${wallet.wid}'`).join(',');
     let orders = [];
     // get all the orders from the orders table
     return new Promise((resolve,reject) => {
-        db.all(`SELECT * FROM orders WHERE sellerAddress = ?`, [wid], async (err,rows) => {
+        db.all(`SELECT * FROM orders WHERE sellerAddress IN (${wallets})`, async (err,rows) => {
             if(err){
                 reject(err);
             }
             for(const row of rows){
+                console.log(row);
                 const data = {
                     orderName: await chainApi.getProductName(row.productId),
                     orderId: row.orderId,
@@ -172,16 +173,54 @@ async function viewShipments(email){
     });
 }
 
-//====================================================================================
-// functions related to Transactions from seller page
-//====================================================================================
-async function getTransactions(wid){
+async function ordersToShip(email){
+    const wallets = (await chainApi.getWallets(email)).map(wallet => `'${wallet.wid}'`).join(',');
+    let orders = [];
+    // get orders from orders table where sellerAddress is in wallets and trnasactionId is not null
     return new Promise((resolve,reject) => {
-        db.get(`SELECT * FROM orders WHERE transactionId IS NOT NULL AND sellerAddress = ?`, [wid], (err,rows) => {
+        db.all(`SELECT * FROM orders WHERE sellerAddress IN (${wallets}) AND transactionId IS NOT NULL`, async (err,rows) => {
             if(err){
                 reject(err);
             }
-            resolve(rows);
+            for(const row of rows){
+                const data = {
+                    orderName: await chainApi.getProductName(row.productId),
+                    orderId: row.orderId,
+                    orderPrice: await chainApi.getOrderPrice(row.orderId),
+                    orderBuyer: row.buyerAddress,
+                    orderPlacedDate: await chainApi.getOrderPlacedDate(row.orderId),
+                }
+                orders.push(data);
+            }
+            RKWriteLog(`[ rk-sellerops ] 🛒 Orders to seller ${email}`,'rk-sellerops');
+            resolve(orders);
+        });
+    });
+}
+//====================================================================================
+// functions related to Transactions from seller page
+//====================================================================================
+async function getTransactions(email){
+    const wallets = (await chainApi.getWallets(email)).map(wallet => `'${wallet.wid}'`).join(',');
+    let transactions = [];
+    return new Promise((resolve,reject) => {
+        db.all(`SELECT * FROM orders WHERE sellerAddress IN (${wallets}) AND transactionId IS NOT NULL`, async (err,rows) => {
+            if(err){
+                reject(err);
+            }
+            for(const row of rows){
+                console.log(row);
+                const data = {
+                    transactionId: row.transactionId,
+                    transactionFrom: row.buyerAddress,
+                    transactionTo: row.sellerAddress,
+                    transactionAmount: await chainApi.getOrderPrice(row.orderId),
+                    transactionDate: await chainApi.getOrderPaidDate(row.orderId),
+                }
+                transactions.push(data);
+            }
+            RKWriteLog(`[ rk-sellerops ] 📈 Transactions to seller ${email}`,'rk-sellerops');
+            resolve(transactions);
         });
     });  
 }
@@ -221,6 +260,7 @@ module.exports = {
     viewOrders,
     viewOrder,
     viewShipments,
+    ordersToShip,
     getTransactions,
     refundAmount
 }
