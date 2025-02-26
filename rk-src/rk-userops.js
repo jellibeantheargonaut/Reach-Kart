@@ -84,36 +84,23 @@ const db = new sqlite3.Database(path.join(__dirname, 'data', 'reachkart.db'), (e
 // function to add the address of user to the database
 async function addAddress(email, address){
     return new Promise((resolve,reject) => {
-        const query = `INSERT INTO addresses (email, address) VALUES (?, ?)`;
-        db.run(query, [email, address], (err) => {
+        const addressId = uuid();
+        db.run(`INSERT INTO addresses (addressId, email, addressValue) VALUES (?,?,?)`, [addressId, email, address], (err) => {
             if(err){
+                RKWriteLog(`[ rk-userops ] ❌ Error adding address for ${email} in the database`,'rk-error');
                 reject(err);
-                console.error(err.message);
             }
-            RKWriteLog('[ rk-userops ] 📫 Address added to the database','rk-userops');
-            resolve();
-        });
-    });
-}
-
-async function updateAddress(email, address){
-    return new Promise((resolve,reject) => {
-        const query = `UPDATE addresses SET address = ? WHERE email = ?`;
-        db.run(query, [address, email], (err) => {
-            if(err){
-                reject(err);
-                console.error(err.message);
-            }
-            RKWriteLog(`[ rk-userops ] 📫 Address updated for ${email} in the database`,'rk-userops');
-            resolve();
+            RKWriteLog(`[ rk-userops ] 📫 Address added for ${email} in the database`,'rk-userops');
+            resolve(addressId);
         });
     });
 }
 
 async function getAddresses(email){
     return new Promise((resolve,reject) => {
-        db.get(`SELECT address FROM addresses WHERE email = ?`, [email], (err,rows) => {
+        db.get(`SELECT * FROM addresses WHERE email = ?`, [email], (err,rows) => {
             if(err){
+                RKWriteLog(`[ rk-userops ] ❌ Error getting addresses of ${email}`,'rk-error');
                 reject(rows);
             }
             RKWriteLog(`[ rk-userops ] 📫 Addresses of ${email}`,'rk-userops');
@@ -455,7 +442,6 @@ async function emptyCart(email){
 // module to export the functions
 module.exports = {
     addAddress,
-    updateAddress,
     getAddresses,
     getTransactions,
     getWallets,

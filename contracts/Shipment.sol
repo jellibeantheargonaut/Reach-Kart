@@ -11,6 +11,8 @@ contract Shipment {
     string public orderId; // uuid for database reference
     string public buyerMail;
     string public sellerMail;
+    string public sourceAddress;
+    string public destinationAddress;
 
     enum ShipmentStatus { Pending, Shipped, Delivered, Cancelled, Returned }
     ShipmentStatus public status;
@@ -18,7 +20,7 @@ contract Shipment {
     mapping(ShipmentStatus => string) public statusMessages;
 
     // constuctor to create the shipment
-    constructor(uint _shipmentTime, string memory _shipmentId, string memory _orderId, string memory _buyerMail, string memory _sellerMail) {
+    constructor(uint _shipmentTime, string memory _shipmentId, string memory _orderId, string memory _buyerMail, string memory _sellerMail, string memory _sourceAddress, string memory _destinationAddress) {
         require(
             block.timestamp < _shipmentTime,
             "Shipment time should be in the future"
@@ -29,6 +31,8 @@ contract Shipment {
         orderId = _orderId;
         buyerMail = _buyerMail;
         sellerMail = _sellerMail;
+        sourceAddress = _sourceAddress;
+        destinationAddress = _destinationAddress;
         status = ShipmentStatus.Pending;
 
         statusMessages[ShipmentStatus.Pending] = "Pending";
@@ -53,6 +57,14 @@ contract Shipment {
 
     function getShipmentSeller() public view returns(string memory) {
         return sellerMail;
+    }
+
+    function getShipmentSource() public view returns(string memory) {
+        return sourceAddress;
+    }
+
+    function getShipmentDestination() public view returns(string memory) {
+        return destinationAddress;
     }
 
     function getShipmentStatus() public view returns(string memory) {

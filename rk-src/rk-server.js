@@ -5,6 +5,7 @@ const path = require('path');
 const https = require('https');
 const cookieParser = require('cookie-parser');
 const Tail = require('tail').Tail;
+const morgan = require('morgan');
 
 const { RKLogInit } = require('./rk-logs');
 RKLogInit();
@@ -26,6 +27,11 @@ const port = 3000;
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
+
+// Middleware to log requests using morgan
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs', 'access.log'), { flags: 'a' });
+app.use(morgan('combined', { stream: accessLogStream }));
+app.use(morgan('dev'));
 
 // session settings to be implemented later
 
@@ -371,9 +377,55 @@ app.post('/user/deleteWallet', loggedIn, async (req, res) => {
 // needs a cache to store the cart items
 // availble caching is redis
 // app.post('/user/addToCart', loggedIn, (req, res) => {}
-// app.post('/user/removeFromCart', loggedIn, (req, res) => {}
+app.post('/user/addToCart/:id', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  const productId = req.params.id;
+  try {
+    await userOps.addToCart(email,productId);
+    res.status(200).json({message:'Product added to cart'});
+  } catch (error) {
+    res.status(500).json({message:'Error adding product to cart'});
+  }
+});
+
+// app.post('/user/removeFromCart/:id', loggedIn, (req, res) => {}
+app.post('/user/removeFromCart/:id', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  const productId = req.params.id;
+  try {
+    await userOps.removeFromCart(email,productId);
+    res.status(200).json({message:'Product removed from cart'});
+  } catch (error) {
+    res.status(500).json({message:'Error removing product from cart'});
+  }
+});
+
 // app.get('/user/viewCart', loggedIn, (req, res) => {}
+app.get('/user/viewCart', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  try {
+    const cart = await userOps.viewCart(email);
+    res.status(200).json(cart);
+  } catch (error) {
+    res.status(500).json({message:'Error fetching cart'});
+  }
+});
+
 // app.post('/user/emptyCart', loggedIn, (req, res) => {}
+app.post('/user/emptyCart', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  try {
+    await userOps.emptyCart(email);
+    res.status(200).json({message:'Cart emptied'});
+  } catch (error) {
+    res.status(500).json({message:'Error emptying cart'});
+  }
+});
+
 // app.post('/user/checkoutCart', loggedIn, (req, res) => {}
 
 //==============================================================================

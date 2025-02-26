@@ -175,6 +175,21 @@ function getEmail(wid){
     });
 }
 
+function getAddress(addressId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT addressValue FROM addresses WHERE addressId = ?`,[addressId], (err,row) => {
+            if(err){
+                RKWriteLog(`[ rk-logging ] ❌ Error getting address with id ${addressId}`, 'rk-logging');
+                reject(err);
+            }
+            if(row){
+                resolve(row.addressValue);
+            }
+            resolve(null);
+        });
+    });
+}
+
 module.exports = {
     createUser,
     deleteUser,
@@ -183,5 +198,6 @@ module.exports = {
     checkLogin,
     userExists,
     getWalletId,
-    getEmail
+    getEmail,
+    getAddress
 };

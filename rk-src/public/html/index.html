@@ -6,6 +6,8 @@
         <link rel="stylesheet" type="text/css" href="/css/customer/cart-dropdown.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/orders-dropdown.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/account-menu-page.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/site-mainarea.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/landing-page.css">
 
         <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
         <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
@@ -90,22 +92,22 @@
                 <i class="fa-solid fa-circle-user"></i>
                 <div class="account-drop-down">
                     <div class="account-drop-down-item" onclick="openAccountsPage()">
-                        Account
+                        <i class="fa-solid fa-user"></i>  Account
                     </div>
                     <div class="account-drop-down-item" onclick="openOrdersPage()">
-                        Orders
+                        <i class="fa-solid fa-cube"></i>  Orders
                     </div>
                     <div class="account-drop-down-item" onclick="openWalletsPage()">
-                        Wallets
+                        <i class="fa-solid fa-wallet"></i> Wallets
                     </div>
                     <div class="account-drop-down-item" onclick="openTransactionsPage()">
-                        Transactions
+                        <i class="fa-solid fa-right-left"></i> Transactions
                     </div>
                     <div class="account-drop-down-item" onclick="openSettingsPage()">
-                        Settings
+                        <i class="fa-solid fa-gear"></i> Settings
                     </div>
                     <div class="account-drop-down-item" onclick="logout()">
-                        Sign Out
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
                     </div>
                 </div>
             </div>
@@ -215,7 +217,50 @@
             
             <div class="landing-page">
                 <!-- The main landing page which contains banners and stuff -->
-                Something here
+                <div class="landing-page-banner">
+                    <p> Welcome to Reachkart  </p>
+                    <p> An online shopping website that runs ethereum network</p>
+                </div>
+                <div class="landing-page-content">
+                    <div class="landing-page-content-header">
+                        <p> Explore our shop </p>
+                    </div>
+                    <div class="landing-page-content-body">
+                        <p> Groceries </p>
+                        <div>
+                            <img src="/img/site-images/Bun.jpg">
+                            <img src="/img/site-images/Yougurt.jpeg">
+                            <img src="/img/site-images/Rin Soap.jpeg">
+                            <img src="/img/site-images/Coconut.jpeg">
+                            <img src="/img/site-images/Salt.jpg">
+
+                        </div>
+                    </div>
+                    <div class="landing-page-content-body">
+                        <p> Kitchen & Home </p>
+                        <div>
+                            <img style="width: 100%; height: 150px;padding: 0;margin:0" src="https://5.imimg.com/data5/SELLER/Default/2022/3/MM/JY/NK/146681207/kitchen-accessories-jpg-500x500.jpg">
+                        </div>
+                    </div>
+                    <div class="landing-page-content-body">
+                        <p> Electronics </p>
+                        <div>
+                            <img style="width: 100%; height: 150px;padding: 0;margin:0" src="https://channelx.world/wp-content/uploads/2024/03/Amazon-Consumer-Electronics-shortened-Returns-window-shutterstock_738107467.jpg">
+                        </div>
+                    </div>
+                    <div class="landing-page-content-body">
+                        <p> Fashion </p>
+                        <div>
+                            <img style="width: 100%; height: 150px;padding: 0;margin:0" src="https://m.media-amazon.com/images/I/71oAN+CKKxL._AC_UF1000,1000_QL80_.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-page">
+                <!-- The product details page with all the rest -->
+            </div>
+            <div class="product-checkout-page">
+                <!-- The product checkout page with all the rest -->
             </div>
         </div>
         <div class="site-footer">

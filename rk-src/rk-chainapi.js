@@ -52,7 +52,8 @@
 //
 // schema of the addresses table
 // email - the email of the user
-// address - the physical address of the user
+// addressId - the id of the address UUIDv4
+// addressValue - the address of the user
 //
 // Shipments are stored in the shipments table in the database
 //
@@ -70,6 +71,7 @@ const { ethers } = require('hardhat');
 const { v4: uuid } = require('uuid');
 const path = require('path');
 const { RKWriteLog } = require('./rk-logs');
+const { get } = require('http');
 
 // setting up sqlite3 database
 // create new if not exists
@@ -152,8 +154,9 @@ async function createDatabases(){
     // create the addresses table if not exists
     await new Promise(resolve => {
         db.run(`CREATE TABLE IF NOT EXISTS addresses (
-            email string PRIMARY KEY,
-            address string NOT NULL)`
+            addressId string PRIMARY KEY,
+            email string NOT NULL,
+            addressValue string NOT NULL)`
         );
         resolve();
     });
@@ -317,6 +320,21 @@ async function getTransactionDetails(txId){
             time: block.timestamp,
         };
         resolve(details);
+    });
+}
+
+function getAddress(addressId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT addressValue FROM addresses WHERE addressId = ?`,[addressId], (err,row) => {
+            if(err){
+                RKWriteLog(`[ rk-logging ] ❌ Error getting address with id ${addressId}`, 'rk-logging');
+                reject(err);
+            }
+            if(row){
+                resolve(row.addressValue);
+            }
+            resolve(null);
+        });
     });
 }
 
@@ -529,7 +547,7 @@ async function getProductDateUpdated(productId){
 //==================================================================================
 
 // deploy the order contract
-async function deployOrderContract(buyerAddress, sellerAddress, productId, productQuantity){
+async function deployOrderContract(buyerAddress, sellerAddress, productId, productQuantity, deliveryAddress){
 
     return new Promise((resolve,reject) => {
 
@@ -546,6 +564,8 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
             let totalPrice = BigInt(productPrice) * BigInt(productQuantity);
             RKWriteLog(`[ rk-chainapi ] 💵 Total price of order for product ${productId} is ${ethers.formatEther(totalPrice)}`,'rk-chainapi');
 
+            // get the delivery address
+            const deliveryAddressId = await getAddress(deliveryAddress);
             // deploy the order contract
             // get buyer pkey
             const buyerPkey = await getWalletPrivateKey(buyerAddress);
@@ -553,7 +573,7 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
             const buyer = await new ethers.Wallet(buyerPkey,provider);
             const Order = await ethers.getContractFactory('Order',buyer);
             const orderId = uuid();
-            const orderContract = await Order.deploy(Date.now(),sellerAddress,buyerAddress,orderId,totalPrice,productQuantity);
+            const orderContract = await Order.deploy(Date.now(),sellerAddress,buyerAddress,orderId,totalPrice,productQuantity, deliveryAddressId);
             RKWriteLog(`[ rk-chainapi ] 👍🏻 Order contract deployed at ${orderContract.address}`,'rk-chainapi');
 
             // insert the order into the orders table
@@ -796,6 +816,23 @@ async function getOrderPrice(orderId){
     });
 }
 
+// function to get the order delivery address
+async function getOrderDeliveryAddress(orderId){
+    return new Promise((resolve,reject) => {
+        db.get(`SELECT orderAddress FROM orders WHERE orderId = ?`,[orderId], async (err,row) => {
+            if(err){
+                RKWriteLog(`[ rk-chainapi ] 🚚 Error: ${err}`,'rk-error');
+                reject(err);
+            }
+            const orderAddress = row.orderAddress;
+            const orderContract = await ethers.getContractAt('Order',orderAddress,provider);
+            const deliveryAddress = await orderContract.getOrderDeliveryAddress();
+            RKWriteLog(`[ rk-chainapi ] 🚚 Delivery address of order ${orderId} : ${deliveryAddress}`,'rk-chainapi');
+            resolve(await getAddress(deliveryAddress));
+        });
+    });
+}
+
 // function to get the transaction details of the order
 async function getOrderTransaction(orderId){
     return new Promise((resolve,reject) => {
@@ -836,19 +873,23 @@ async function getOrderTransaction(orderId){
 //==================================================================================
 
 // deploy the shipment contract
-async function deployShipmentContract(buyerMail, sellerMail, orderId){
+async function deployShipmentContract(buyerMail, sellerMail, orderId, srcId, dstId, sellerWid){
     
     return new Promise(async (resolve,reject) => {
         // generate the shipment id
         const shipmentId = uuid();
 
         // get the seller wallet address
-        const sellerWid = await getWallets(sellerMail);
-        const seller = await new ethers.Wallet(sellerWid[0].pk,provider);
+        const sellerPkey = await getWalletPrivateKey(sellerWid);
+        const seller = await new ethers.Wallet(sellerPkey,provider);
+
+        // addressses
+        const shipmentSource = await getAddress(srcId);
+        const shipmentDestination = await getAddress(dstId);
 
         // deploy the shipment contract
         const Shipment = await ethers.getContractFactory('Shipment',seller);
-        const shipmentContract = await Shipment.deploy(Date.now(),shipmentId,orderId,buyerMail,sellerMail);
+        const shipmentContract = await Shipment.deploy(Date.now(),shipmentId,orderId,buyerMail,sellerMail, shipmentSource, shipmentDestination);
         RKWriteLog(`[ rk-chainapi ] 🚚 Shipment contract deployed at ${await shipmentContract.getAddress()}`,'rk-chainapi');
 
         // insert the shipment into the shipments table
@@ -873,14 +914,16 @@ async function getShipmentDestination(shipmentId){
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
 
-            // buyer mail is the destination address
-            const destination = await shipmentContract.getShipmentBuyer();
+            // shipmentDestination is the buyer addressId
+            const destination = await shipmentContract.getShipmentDestination();
             // get the address of the buyer from the addresses table
-            db.get(`SELECT address FROM addresses WHERE email = ?`,[destination], (err,row) => {
+            db.get(`SELECT addressValue FROM addresses WHERE addressId = ?`,[destination], (err,row) => {
                 if(err){
+                    RKWriteLog(`[ rk-chainapi ] 🚚 Error: ${err}`,'rk-error');
                     reject(err);
                 }
-                resolve(row.address);
+                RKWriteLog(`[ rk-chainapi ] 🚚 Destination of shipment ${shipmentId} : ${row.addressValue}`,'rk-chainapi');
+                resolve(row.addressValue);
             });
         });
     });
@@ -896,14 +939,16 @@ async function getShipmentSource(shipmentId){
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,provider);
 
-            // seller mail is the source address
-            const source = await shipmentContract.getShipmentSeller();
+            // shipmentSource is the seller addressId
+            const source = await shipmentContract.getShipmentSource();
             // get the address of the seller from the addresses table
-            db.get(`SELECT address FROM addresses WHERE email = ?`,[source], (err,row) => {
+            db.get(`SELECT addressValue FROM addresses WHERE addressId = ?`,[source], (err,row) => {
                 if(err){
+                    RKWriteLog(`[ rk-chainapi ] 🚚 Error: ${err}`,'rk-error');
                     reject(err);
                 }
-                resolve(row.address);
+                RKWriteLog(`[ rk-chainapi ] 🚚 Source of shipment ${shipmentId} : ${row.addressValue}`,'rk-chainapi');
+                resolve(row.addressValue);
             });
         });
     });
@@ -1001,7 +1046,7 @@ async function getShipmentStatus(shipmentId){
 // functions that change the status of the shipment
 //==============================================================================
 // function to ship the shipment
-async function shipShipment(shipmentId){
+async function shipShipment(shipmentId,wid){
     return new Promise(async (resolve,reject) =>  {
         // get the shipment contract address
         db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
@@ -1012,8 +1057,8 @@ async function shipShipment(shipmentId){
             // get the mail of the seller
             const sellerMail = await getShipmentSeller(shipmentId);
             // get the pkey of the seller from the wallets table
-            const sellerWid = await getWallets(sellerMail);
-            const seller = await new ethers.Wallet(sellerWid[0].pk,provider);
+            const sellerPkey = await getWalletPrivateKey(wid);
+            const seller = await new ethers.Wallet(sellerPkey,provider);
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,seller);
             let tx = await shipmentContract.ship();
@@ -1043,7 +1088,7 @@ async function shipShipment(shipmentId){
 }
 
 // function to confirm the shipment ( confirm delivery )
-async function confirmShipment(shipmentId){
+async function confirmShipment(shipmentId,wid){
     return new Promise(async (resolve,reject) => {
         // get the shipment contract address
         db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
@@ -1054,8 +1099,8 @@ async function confirmShipment(shipmentId){
             // get the mail of the seller
             const buyerMail = await getShipmentBuyer(shipmentId);
             // get the pkey of the seller from the wallets table
-            const buyerWid = await getWallets(buyerMail);
-            const buyer = await new ethers.Wallet(buyerWid[0].pk,provider);
+            const buyerPkey = await getWalletPrivateKey(wid);
+            const buyer = await new ethers.Wallet(buyerPkey,provider);
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,buyer);
             let tx = await shipmentContract.confirmDelivery();
@@ -1076,7 +1121,7 @@ async function confirmShipment(shipmentId){
 }
 
 // function to cancel the shipment
-async function cancelShipment(shipmentId){
+async function cancelShipment(shipmentId, wid){
     return new Promise((resolve,reject) => {
         // get the shipment contract address
         db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
@@ -1087,8 +1132,8 @@ async function cancelShipment(shipmentId){
             // get the mail of the buyer
             const buyerMail = await getShipmentBuyer(shipmentId);
             // get the pkey of the buyer from the wallets table
-            const buyerWid = await getWallets(buyerMail);
-            const buyer = await new ethers.Wallet(buyerWid[0].pk,provider);
+            const buyerPkey = await getWalletPrivateKey(wid);
+            const buyer = await new ethers.Wallet(buyerPkey,provider);
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,buyer);
             let tx = await shipmentContract.cancelShipment();
@@ -1100,7 +1145,7 @@ async function cancelShipment(shipmentId){
 }
 
 // function to return the shipment
-async function returnShipment(shipmentId){
+async function returnShipment(shipmentId,wid){
     return new Promise(async (resolve,reject) => {
         // get the shipment contract address
         db.get(`SELECT shipmentAddress FROM shipments WHERE shipmentId = ?`, [shipmentId], async (err,row) => {
@@ -1111,8 +1156,8 @@ async function returnShipment(shipmentId){
             // get the mail of the buyer
             const buyerMail = await getShipmentBuyer(shipmentId);
             // get the pkey of the buyer from the wallets table
-            const buyerWid = await getWallets(buyerMail);
-            const buyer = await new ethers.Wallet(buyerWid[0].pk,provider);
+            const buyerPkey = await getWalletPrivateKey(wid);
+            const buyer = await new ethers.Wallet(buyerPkey,provider);
             const shipmentAddress = row.shipmentAddress;
             const shipmentContract = await ethers.getContractAt('Shipment',shipmentAddress,buyer);
             let tx = await shipmentContract.returnShipment();
@@ -1140,6 +1185,7 @@ module.exports = {
     fundWallet,
     transferFunds,
     getTransactionDetails,
+    getAddress,
 
     deployProductContract,
     setProductPrice,
@@ -1168,6 +1214,7 @@ module.exports = {
     getOrderRefundedDate,
     getOrderProduct,
     getOrderQuantity,
+    getOrderDeliveryAddress,
     getOrderPrice,
     getOrderTransaction,
     

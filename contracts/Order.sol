@@ -12,6 +12,7 @@ contract Order {
     string public orderId; // uuid for database reference
     uint public orderAmount;
     uint public orderQuantity;
+    string public orderDeliveryAddress; // address uuid of the buyer for delivery
 
     // enum to represent the status of the order
     enum OrderStatus { Placed, Pending, Paid, Shipped, Delivered, Cancelled, Refunded, Returned }
@@ -29,7 +30,9 @@ contract Order {
     event OrderReturned(uint timestamp);
 
     // constructor to create the order
-    constructor(uint _orderTime, address payable _seller, address payable _buyer,string memory _orderId, uint _orderAmount, uint _orderQuantity) payable {
+    constructor(uint _orderTime, address payable _seller, 
+                address payable _buyer,string memory _orderId, uint _orderAmount, 
+                uint _orderQuantity, string memory _orderDeliveryAddress) payable {
         require(
             block.timestamp < _orderTime,
             "Order time should be in the future"
@@ -42,6 +45,8 @@ contract Order {
         orderQuantity = _orderQuantity;
         orderId = _orderId;
         status = OrderStatus.Placed;
+        orderDeliveryAddress = _orderDeliveryAddress;
+
 
         statusMessages[OrderStatus.Placed] = "Placed";
         statusMessages[OrderStatus.Pending] = "Pending";
@@ -68,6 +73,10 @@ contract Order {
     
     function getOrderQuantity() public view returns(uint) {
         return orderQuantity;
+    }
+
+    function getOrderDeliveryAddress() public view returns(string memory) {
+        return orderDeliveryAddress;
     }
 
     // setter function to change the buyer or seller

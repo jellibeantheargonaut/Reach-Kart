@@ -327,6 +327,19 @@ async function openAddShipmentCard() {
 
     const addShipmentCard = document.querySelector('.shipments-add-card');
     addShipmentCard.style.display = 'flex';
+
+    // get wallets from the user
+    const wallets = await fetch('/user/getWallets').then(res => res.json());
+    //set the wallets in the dropdown
+    const walletDropdown = document.getElementById('shipment-wallet-select');
+    walletDropdown.innerHTML = '';
+    
+    wallets.forEach(wallet => {
+        const option = document.createElement('option');
+        option.value = wallet.walletId;
+        option.innerHTML = wallet.walletId;
+        walletDropdown.appendChild(option);
+    });
 }
 async function closeAddShipmentCard() {
     const addShipmentButton = document.querySelectorAll('.shipments-add-card-button');
