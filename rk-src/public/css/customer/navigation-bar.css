@@ -9,6 +9,7 @@
     background-color: rgba(255, 255, 255, 0.954);
     color: black;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    font-family: Arial, Helvetica, sans-serif;
     border-radius: 10px;
     position: fixed;
     top: 10px;
@@ -112,11 +113,13 @@
     align-items: center;
     width: 400px;
     height: fit-content;
-    max-height: 180px;
+    min-height: 200px;
+    max-height: 400px;
     position: fixed;
     top: 70px;
-    left: 27%;
-    background-color: rgba(255, 255, 255, 0.661);
+    left: 29%;
+    background-color: rgba(255, 255, 255, 0.905);
+    backdrop-filter: blur(10px);
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 10px;
@@ -127,16 +130,17 @@
 .search-results-dropdown-item {
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: flex-start;
-    font-size: 1.2rem;
+    align-items: center;
+    font-size: 0.8rem;
     width: 95%;
-    height: 40px;
+    height: 30px;
     transition: 0.3s;
     border-radius: 5px;
-    padding: 0;
-    margin: 0;
     padding-left: 10px;
+}
+.search-results-dropdown-item p {
+    margin: 0;
 }
 .search-results-dropdown-item:hover {
     background-color: rgb(30, 30, 30);
@@ -172,6 +176,7 @@
     top: 70px;
     right: 0;
     background-color: rgba(255, 255, 255, 0.938);
+    box-shadow: -2px 4px 5px 0 rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     border-radius: 10px;
     padding: 2px;

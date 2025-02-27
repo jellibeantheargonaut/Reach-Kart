@@ -828,7 +828,7 @@ async function getOrderDeliveryAddress(orderId){
             const orderContract = await ethers.getContractAt('Order',orderAddress,provider);
             const deliveryAddress = await orderContract.getOrderDeliveryAddress();
             RKWriteLog(`[ rk-chainapi ] 🚚 Delivery address of order ${orderId} : ${deliveryAddress}`,'rk-chainapi');
-            resolve(await getAddress(deliveryAddress));
+            resolve(deliveryAddress);
         });
     });
 }

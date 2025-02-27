@@ -1,12 +1,4 @@
 // javascript implementation of seller operations
-// uploadProduct
-// removeProduct
-// editProduct
-// viewOrders
-// viewBalance
-// viewShop
-// generateInvoice
-// refundAmount
 // 
 // @author: JellibeanTheArgonaut
 
@@ -86,7 +78,7 @@ async function viewOrders(email){
     let orders = [];
     // get all the orders from the orders table
     return new Promise((resolve,reject) => {
-        db.all(`SELECT * FROM orders WHERE sellerAddress IN (${wallets})`, async (err,rows) => {
+        db.all(`SELECT * FROM orders WHERE sellerAddress IN (${wallets}) AND `, async (err,rows) => {
             if(err){
                 reject(err);
             }
@@ -103,7 +95,7 @@ async function viewOrders(email){
             }
             RKWriteLog(`[ rk-sellerops ] 🛒 Orders to seller ${email}`,'rk-sellerops');
             resolve(orders);
-        })
+        });
     })
 }
 

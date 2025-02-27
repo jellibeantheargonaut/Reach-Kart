@@ -1,9 +1,21 @@
 /* styles for the main web app elements */
 .landing-page {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     width: 100%;
     height: fit-content;
+}
+.product-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+    height: fit-content;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
 }

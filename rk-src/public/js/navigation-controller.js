@@ -1,5 +1,9 @@
 /* javascript to handle navigation bar */
 
+// functions to handle search bar 
+//==========================================================================
+// contents are displayed in a container with class 'search-results-dropdown'
+
 
 // functions to control and manage the account icon dropdown menu
 //==========================================================================
@@ -172,6 +176,8 @@ async function showCartDropdown(element) {
             backgroundOverlay.style.display = 'none';
         }
     }); 
+
+    getCart();
 }
 
 async function setAccountName() {

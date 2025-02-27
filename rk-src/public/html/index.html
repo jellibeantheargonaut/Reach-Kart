@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="/css/customer/account-menu-page.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/site-mainarea.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/landing-page.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/products-page.css">
 
         <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
         <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
@@ -20,6 +21,7 @@
         <script src="/js/customer/transaction-handler.js" defer></script>
         <script src="/js/customer/orders-handler.js" defer></script>
         <script src="/js/customer/wallets-handler.js" defer></script>
+        <script src="/js/customer/cart-handler.js" defer></script>
     </head>
     <body>
         <div class="navigation-bar">
@@ -34,14 +36,21 @@
                 <input type="text" id="search-bar" placeholder="Search for products">
                 <div class="search-results-dropdown">
                     <div class="search-results-dropdown-item">
-                        Product 1
+                        <p>Product 1</p>
                     </div>
                     <div class="search-results-dropdown-item">
-                        Product 2
+                        <p>Product 2</p>
                     </div>
                     <div class="search-results-dropdown-item">
-                        Product 3
+                        <p>Product 3</p>
                     </div>
+                    <div class="search-results-dropdown-item">
+                        <p>Product 4</p>
+                    </div>
+                    <div class="search-results-dropdown-item">
+                        <p>Product 5</p>
+                    </div>
+
                 </div>
             </div>
             <div class="navigation-bar-menu-item">
@@ -74,7 +83,7 @@
                             <p> Dildo </p>
                             <p> 69.69 <i class="fa-brands fa-ethereum"></i></i> </p>
                             <p> Total : 69.69 <i class="fa-brands fa-ethereum"></i> </p>
-                            <input type="number" value="1">
+                            <input type="number" value="1" min="1">
                             <div class="cart-item-controls">
                                 <div class="cart-item-control-button">
                                     Remove
@@ -83,6 +92,14 @@
                                     Buy
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="cart-controls">
+                        <div class="cart-control-button">
+                            Checkout
+                        </div>
+                        <div class="cart-control-button">
+                            Empty
                         </div>
                     </div>
                 </div>
@@ -258,6 +275,53 @@
             </div>
             <div class="product-page">
                 <!-- The product details page with all the rest -->
+                <div class="product-details-container">
+                    <div class="product-details-image">
+                        <img src="https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-sm-s928bzkqins-thumb-539573274">
+                    </div>
+                    <div class="product-details-info">
+                        <p> Samsung Galaxy S24 </p>
+                        <p> Samsung Galaxy S24 smartphone | 6.7" display | 12GB RAM | 256GB storage | 108MP camera | 5000mAh battery </p>
+                        <p> Samsung Store</p>
+                        <p style="font-size: 2rem;"> 1.203 <i class="fa-brands fa-ethereum"></i> </p>
+                        <div class="product-checkout-controls">
+                            <div class="product-checkout-control-button">
+                                Add to Cart
+                            </div>
+                            <div class="product-checkout-control-button">
+                                Buy Now
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="similar-products-container">
+                    <div class="similar-products-card">
+                        <img src="https://m.media-amazon.com/images/I/3150P3KQFlL._SR290,290_.jpg">
+                    </div>
+                    <div class="similar-products-card">
+                        <img src="https://m.media-amazon.com/images/I/31hcJbP0BuL._SR290,290_.jpg">
+                    </div>
+                    <div class="similar-products-card">
+                        <img src="https://m.media-amazon.com/images/I/41tS3gyOW1L._SR290,290_.jpg">
+                    </div>
+                    <div class="similar-products-card">
+                        <img src="https://m.media-amazon.com/images/I/418mFfRZu-L._SR290,290_.jpg">
+                    </div>
+                    <div class="similar-products-card">
+                        <img src="https://m.media-amazon.com/images/I/41yAce7gd4L.jpg">
+                    </div>
+                    <div class="similar-products-card">
+                        <img src="https://m.media-amazon.com/images/I/61LI5G00UNL.jpg">
+                    </div>
+                    <div class="similar-products-card">
+                        <img src="https://m.media-amazon.com/images/I/61Mr3os9ZQL._AC_UF1000,1000_QL80_.jpg">
+                    </div>
+                    <div class="similar-products-card">
+                        <img src="https://m.media-amazon.com/images/I/613SAOPmLeL._AC_UF1000,1000_QL80_.jpg">
+                    </div>
+                    <div class="similar-products-card">
+                    </div>
+                </div>
             </div>
             <div class="product-checkout-page">
                 <!-- The product checkout page with all the rest -->

@@ -191,6 +191,22 @@ app.get('/seller/viewOrder/:orderId', sellerOnly, async (req, res) => {
 });
 
 //==============================================================================
+// routes for shipments
+//==============================================================================
+// app.post('/seller/shipOrder', sellerOnly,(req, res) => {}
+// app.post('/seller/pendingShipments', sellerOnly,(req, res) => {}
+app.get('/seller/pendingShipments', sellerOnly, async (req, res) => {
+    const token = req.cookies.jwt;
+    const email = loggingApi.verifyToken(token).email;
+    try {
+      const shipments = await sellerOps.ordersToShip(email);
+      return res.status(200).json(shipments);
+    } catch (error) {
+      return res.status(500).json({message:'Error fetching shipments'});
+    }
+});
+
+//==============================================================================
 
 // middleware function to allow only logged in users
 
@@ -412,6 +428,22 @@ app.get('/user/viewCart', loggedIn, async (req, res) => {
   } catch (error) {
     res.status(500).json({message:'Error fetching cart'});
   }
+
+  //const details = [
+  //  {
+  //    productId: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+  //    productName: 'Product 1',
+  //    productPrice: 100,
+  //    productQuantity: 2,
+  //  },
+  //  {
+  //    productId: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+  //    productName: 'Product 2',
+  //    productPrice: 200,
+  //    productQuantity: 1,
+  //  },
+  //]
+  //res.status(200).json(details);
 });
 
 // app.post('/user/emptyCart', loggedIn, (req, res) => {}
@@ -427,6 +459,34 @@ app.post('/user/emptyCart', loggedIn, async (req, res) => {
 });
 
 // app.post('/user/checkoutCart', loggedIn, (req, res) => {}
+
+//==============================================================================
+// User transactions operations
+//==============================================================================
+// app.get('/user/getTransactions', loggedIn, (req, res) => {}
+app.get('/user/getTransactions', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  try {
+    const transactions = await userOps.getTransactions(email);
+    res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({message:'Error fetching transactions'});
+  }
+});
+
+// app.post('/user/getTransactionReceipt', loggedIn, (req, res) => {}
+app.get('/user/getTransactionReceipt/:txHash', loggedIn, async (req, res) => {
+  const token = req.cookies.jwt;
+  const email = loggingApi.verifyToken(token).email;
+  const transactionId = req.params.txHash;
+  try {
+    const receipt = await userOps.getTransactionReceipt(transactionId);
+    res.status(200).json(receipt);
+  } catch (error) {
+    res.status(500).json({message:'Error fetching receipt'});
+  }
+});
 
 //==============================================================================
 

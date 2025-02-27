@@ -14,6 +14,7 @@ const sqlite3  = require('sqlite3');
 const { v4: uuid } = require('uuid');
 const path = require('path');
 const chainApi = require('./rk-chainapi');
+const loggingApi = require('./rk-logging');
 const { RKWriteLog } = require('./rk-logs');
 const { createClient } = require('redis');
 
@@ -141,7 +142,6 @@ async function getTransactions(email){
                 reject(err);
             }
             for(const row of rows){
-                console.log(row);
                 const data = {
                     transactionId: row.transactionId,
                     transactionFrom: row.buyerAddress,
@@ -157,15 +157,36 @@ async function getTransactions(email){
     });  
 }
 
+// function to generate the transaction receipt
+async function getTransactionReceipt(txHash) {
+    return new Promise(async (resolve,reject) => {
+        try {
+            const details = await chainApi.getTransactionDetails(txHash);
+            const data = {
+                transactionHash: txHash,
+                transactionFrom: details.from,
+                transactionTo: details.to,
+                transactionAmount: details.value,
+                transactionDate: details.time,
+                transactionSenderMail: await loggingApi.getEmail(details.from),
+                transactionReceiverMail: await loggingApi.getEmail(details.to)
+            }
+            resolve(data);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
 //========================================================================================================
 // Orders related functions
 //========================================================================================================
 // function to place an order
-async function placeOrder(wid, productId, quantity){
+async function placeOrder(wid, productId, quantity, deliveryAddress){
     return new Promise(async (resolve,reject) => {
         const sellerWid = await chainApi.getProductSeller(productId);
         const buyerWid = wid;
-        await chainApi.deployOrderContract(buyerWid, sellerWid, productId, quantity).catch(err => {
+        await chainApi.deployOrderContract(buyerWid, sellerWid, productId, quantity, deliveryAddress).catch(err => {
             RKWriteLog(`[ rk-userops ] ❌ Error placing order for ${productId}`,'rk-error');
             reject(err);
         });
@@ -403,6 +424,8 @@ async function viewCart(email){
             const product = {
                 productId: key,
                 productName: (await chainApi.getProductName(key)),
+                productDescription: (await chainApi.getProductDescription(key)),
+                productPrice: (await chainApi.getProductPrice(key)),
                 quantity: data[key],
                 price: (await chainApi.getProductPrice(key))*data[key]
             }
@@ -414,6 +437,13 @@ async function viewCart(email){
 }
 
 // function to checkout cart
+async function checkoutCart(email,wid){
+    const cartItems = await viewCart(email);
+    for(const item of cartItems){
+        await placeOrder(wid, item.productId, item.quantity);
+    }
+}
+
 // function to empty cart
 async function emptyCart(email){
     return new Promise(async (resolve,reject) => {
@@ -444,9 +474,14 @@ module.exports = {
     addAddress,
     getAddresses,
     getTransactions,
+    getTransactionReceipt,
     getWallets,
     getUserAccountDetails,
     viewOrders,
+    placeOrder,
+    confirmOrder,
+    cancelOrder,
+    payForOrder,
     generateBill,
     generateShipmentBill,
 
