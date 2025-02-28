@@ -6,6 +6,8 @@ const https = require('https');
 const cookieParser = require('cookie-parser');
 const Tail = require('tail').Tail;
 const morgan = require('morgan');
+const WebSocket = require('ws');
+const { exec }  = require('child_process');
 
 const { RKLogInit } = require('./rk-logs');
 RKLogInit();
@@ -33,7 +35,30 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs', 'acces
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(morgan('dev'));
 
-// session settings to be implemented later
+// creating the websocket server
+const wsServer = new WebSocket.Server({ port: 8888 });
+wsServer.on('connection', (ws) => {
+  ws.on('message', (message) => {
+    console.log(`[ rk-admin ] 🚀 Received message => ${message}`);
+    
+    // execute the command and send the output to the client
+    exec(message, (error, stdout, stderr) => {
+      if(error){
+        ws.send(`Error: ${error.message}`);
+        return;
+      }
+      if(stderr){
+        ws.send(`Error: ${stderr}`);
+        return;
+      }
+      ws.send(stdout);
+    });
+  });
+
+  ws.on('close', () => {
+    console.log('[ rk-admin ] 🚀 WebSocket Connection closed');
+  });
+});
 
 
 //==============================================================================
@@ -59,6 +84,10 @@ function adminOnly(req,res,next){
     res.redirect('/');
   }
 }
+
+app.get('/admin', adminOnly, (req, res) => {
+  res.redirect('/admin/home');
+});
 // app.get('/admin/home', adminOnly, (req,res) => {})
 app.get('/admin/home', adminOnly, (req, res) => {
   res.sendFile(path.join(__dirname, 'public/html/admin/home.html'));
@@ -91,6 +120,7 @@ app.get('/logs/:module', adminOnly, async (req, res) => {
     res.status(500).send('Error reading log file');
   });
 });
+
 
 
 
@@ -283,6 +313,20 @@ app.get('/user/viewOrders', loggedIn, async (req,res) => {
 
 // app.post('/user/viewOrder', (req, res) => {}
 // app.post('/user/getOrderBill', (req, res) => {}
+app.get('/user/getOrderBill', loggedIn, async (req, res) => {
+  const token = loggingApi.verifyToken(req.cookies.jwt);
+  const email = token.email;
+  const template = req.query.template;
+
+  // get the template
+  const templatePath = path.join(__dirname, 'public', 'templates', `${template}`);
+  try {
+    const templateFile = fs.readFileSync(templatePath, 'utf-8');
+    return res.status(200).send(templateFile);
+  } catch (error) {
+    return res.status(500).json({message:'Error fetching template'});
+  }
+});
 
 
 //================================================

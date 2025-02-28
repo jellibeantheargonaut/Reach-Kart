@@ -1,5 +1,6 @@
 /* javascript functions for admin page */
 
+
 async function deselectButtons(){
     let buttons = document.querySelectorAll('.navbar-button');
     buttons.forEach(button => {
@@ -117,4 +118,31 @@ async function realTimeLogs() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await realTimeLogs();
+
+    // set up a websocket
+    const ws = new WebSocket('ws://localhost:8888');
+    ws.onopen = () => {
+        console.log('connected to websocket');
+    };
+    ws.onmessage = (event) => {
+        const terminalPanel = document.querySelector('.terminal-output-container');
+        terminalPanel.innerHTML += event.data.replace(/\n/g, '<br>');
+        terminalInput.scrollTop = terminalInput.scrollHeight;
+    };
+    ws.onclose = () => {
+        console.log('disconnected from websocket');
+    };
+
+    async function sendCommand(command) {
+        ws.send(command);
+    }
+
+    const terminalInput = document.querySelector('.terminal-input-container');
+    terminalInput.addEventListener('keyup', async (event) => {
+        const commandInput = document.getElementById('terminal-input');
+        if (event.key === 'Enter') {
+            await sendCommand(commandInput.value);
+            commandInput.value = '';
+        }
+    });
 });
