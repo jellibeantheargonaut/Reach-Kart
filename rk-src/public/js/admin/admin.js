@@ -76,7 +76,7 @@ async function realTimeLogs() {
     const errorModule = 'rk-error';
 
     // logging
-    const loggingEvent = new EventSource(`https://reach-kart.onrender.com:3000/logs/${loggingModule}`);
+    const loggingEvent = new EventSource(`https://reach-kart.onrender.com/logs/${loggingModule}`);
     loggingEvent.onmessage = (event) => {
         const loggingPanel = document.querySelector('.logging-panel');
         //loggingPanel.innerHTML = '';
@@ -86,7 +86,7 @@ async function realTimeLogs() {
     };
 
     // userops
-    const useropsEvent = new EventSource(`https://reach-kart.onrender.com:3000/logs/${useropsModule}`);
+    const useropsEvent = new EventSource(`https://reach-kart.onrender.com/logs/${useropsModule}`);
     useropsEvent.onmessage = (event) => {
         const useropsPanel = document.querySelector('.userops-panel');
         //useropsPanel.innerHTML = '';
@@ -96,7 +96,7 @@ async function realTimeLogs() {
     };
 
     // sellerops
-    const selleropsEvent = new EventSource(`https://reach-kart.onrender.com:3000/logs/${selleropsModule}`);
+    const selleropsEvent = new EventSource(`https://reach-kart.onrender.com/logs/${selleropsModule}`);
     selleropsEvent.onmessage = (event) => {
         const selleropsPanel = document.querySelector('.sellerops-panel');
         //selleropsPanel.innerHTML = '';
@@ -106,7 +106,7 @@ async function realTimeLogs() {
     };
 
     // chainapi
-    const chainapiEvent = new EventSource(`https://reach-kart.onrender.com:3000/logs/${chainapiModule}`);
+    const chainapiEvent = new EventSource(`https://reach-kart.onrender.com/logs/${chainapiModule}`);
     chainapiEvent.onmessage = (event) => {
         const chainapiPanel = document.querySelector('.chainapi-panel');
         //chainapiPanel.innerHTML = '';
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await realTimeLogs();
 
     // set up a websocket
-    const ws = new WebSocket('ws://reach-kart:onrender.com:8888');
+    const ws = new WebSocket('https://reach-kart:onrender.com:8888');
     ws.onopen = () => {
         console.log('connected to websocket');
     };
