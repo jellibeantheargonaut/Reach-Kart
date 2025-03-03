@@ -23,3 +23,7 @@ ignition/deployments/chain-31337
 rk-src/logs
 rk-src/docs/.vitepress/dist
 rk-src/docs/.vitepress/cache
+
+## meilisearch data
+search-bin/data.ms
+search-bin/dumps
