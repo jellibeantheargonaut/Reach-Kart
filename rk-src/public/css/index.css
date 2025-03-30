@@ -1,0 +1,93 @@
+/* styles for the index page */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    background-color: rgb(26, 26, 26);
+    color: white;
+    gap: 10px;
+}
+
+.site-mainarea {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    top: 100px;
+    gap: 20px;
+    width: 100%;
+    height: fit-content;
+}
+
+.site-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 100px;
+    gap: 20px;
+    width: 100%;
+    height: fit-content;
+    background-color: rgba(255, 255, 255, 0.694);
+    color: black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.footer-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    gap: 20px;
+}
+.footer-head div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 30%;
+    height: 80%;
+    padding: 40px;
+    gap: 10px;
+}
+.footer-head div p {
+    font-size: 1em;
+    font-weight: normal;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-self: center;
+    padding: 0;
+    margin: 0;
+}
+.footer-head div p:first-child {
+    padding-top: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.footer-head div p img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    justify-self: center;
+}
+
+.footer-logo {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.footer-logo p {
+    height: fit-content;
+    padding: 20px;
+    margin: 0;
+}

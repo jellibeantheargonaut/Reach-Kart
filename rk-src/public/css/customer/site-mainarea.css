@@ -1,0 +1,46 @@
+/* styles for the main web app elements */
+.landing-page {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+}
+
+.search-results-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+    height: fit-content;
+    background-color: white;
+}
+
+.product-page {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+    height: fit-content;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+}
+
+.product-checkout-page {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+    height: fit-content;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+}

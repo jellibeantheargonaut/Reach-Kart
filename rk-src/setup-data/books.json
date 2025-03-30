@@ -1,0 +1,873 @@
+[
+    {
+        "productName": "The Silent Patient",
+        "productPrice": 12.99,
+        "productStock": 45,
+        "productDescription": "A psychological thriller about a woman who shoots her husband and then stops speaking. A criminal psychotherapist tries to unravel the mystery.",
+        "tags": [
+            "thriller",
+            "mystery",
+            "psychological",
+            "bestseller",
+            "fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0072",
+        "productImage": "https://m.media-amazon.com/images/I/81JJPDNlxSL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "Atomic Habits",
+        "productPrice": 14.99,
+        "productStock": 120,
+        "productDescription": "A guide to building good habits and breaking bad ones through small, incremental changes.",
+        "tags": [
+            "self-help",
+            "productivity",
+            "non-fiction",
+            "motivation",
+            "books"
+        ],
+        "productPriceETH": "0.0083",
+        "productImage": "https://m.media-amazon.com/images/I/81F90H7hnML._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "Dune",
+        "productPrice": 9.99,
+        "productStock": 80,
+        "productDescription": "A science fiction epic set in a distant future amidst a feudal interstellar society.",
+        "tags": [
+            "sci-fi",
+            "classic",
+            "adventure",
+            "Frank Herbert",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/817Xh+bqwOL._AC_UL640_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Hobbit",
+        "productPrice": 10.5,
+        "productStock": 65,
+        "productDescription": "A fantasy novel about Bilbo Baggins, who is swept into an epic quest to reclaim a dwarf kingdom.",
+        "tags": [
+            "fantasy",
+            "Tolkien",
+            "adventure",
+            "classic",
+            "books"
+        ],
+        "productPriceETH": "0.0058",
+        "productImage": "https://m.media-amazon.com/images/I/71rGUj32JdL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "Sapiens: A Brief History of Humankind",
+        "productPrice": 15.99,
+        "productStock": 90,
+        "productDescription": "Explores the history of Homo sapiens from ancient times to the modern era.",
+        "tags": [
+            "history",
+            "non-fiction",
+            "anthropology",
+            "Yuval Noah Harari",
+            "books"
+        ],
+        "productPriceETH": "0.0089",
+        "productImage": "https://m.media-amazon.com/images/I/713jIoMO3UL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "1984",
+        "productPrice": 8.99,
+        "productStock": 75,
+        "productDescription": "A dystopian novel about totalitarianism, surveillance, and thought control.",
+        "tags": [
+            "dystopian",
+            "classic",
+            "George Orwell",
+            "political fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0050",
+        "productImage": "https://m.media-amazon.com/images/I/91wTb2PkiHL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Alchemist",
+        "productPrice": 11.25,
+        "productStock": 110,
+        "productDescription": "A philosophical novel about a shepherd boy's journey to find a hidden treasure.",
+        "tags": [
+            "inspirational",
+            "Paulo Coelho",
+            "adventure",
+            "fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0063",
+        "productImage": "https://m.media-amazon.com/images/I/61HAE8zahLL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Great Gatsby",
+        "productPrice": 7.99,
+        "productStock": 50,
+        "productDescription": "A story of wealth, love, and tragedy in the Roaring Twenties.",
+        "tags": [
+            "classic",
+            "F. Scott Fitzgerald",
+            "American literature",
+            "tragedy",
+            "books"
+        ],
+        "productPriceETH": "0.0044",
+        "productImage": "https://m.media-amazon.com/images/I/91wIvvkvOnL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "Educated",
+        "productPrice": 13.5,
+        "productStock": 60,
+        "productDescription": "A memoir about a woman who leaves her survivalist family and goes on to earn a PhD.",
+        "tags": [
+            "memoir",
+            "non-fiction",
+            "autobiography",
+            "Tara Westover",
+            "books"
+        ],
+        "productPriceETH": "0.0075",
+        "productImage": "https://m.media-amazon.com/images/I/71N2HZwRo3L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Martian",
+        "productPrice": 9.99,
+        "productStock": 85,
+        "productDescription": "A science fiction novel about an astronaut stranded on Mars who must find a way to survive.",
+        "tags": [
+            "sci-fi",
+            "adventure",
+            "Andy Weir",
+            "space",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/51yLfinzpvL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "To Kill a Mockingbird",
+        "productPrice": 8.5,
+        "productStock": 70,
+        "productDescription": "A novel about racial injustice and moral growth in the American South.",
+        "tags": [
+            "classic",
+            "Harper Lee",
+            "historical fiction",
+            "social justice",
+            "books"
+        ],
+        "productPriceETH": "0.0047",
+        "productImage": "https://m.media-amazon.com/images/I/81gepf1eMqL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Road",
+        "productPrice": 10.99,
+        "productStock": 40,
+        "productDescription": "A post-apocalyptic novel about a father and son's journey through a desolate world.",
+        "tags": [
+            "dystopian",
+            "Cormac McCarthy",
+            "survival",
+            "dark",
+            "books"
+        ],
+        "productPriceETH": "0.0061",
+        "productImage": "https://m.media-amazon.com/images/I/91bwHfPx-SL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Girl on the Train",
+        "productPrice": 12.99,
+        "productStock": 55,
+        "productDescription": "A psychological thriller about a woman who becomes entangled in a missing persons investigation.",
+        "tags": [
+            "thriller",
+            "mystery",
+            "bestseller",
+            "Paula Hawkins",
+            "books"
+        ],
+        "productPriceETH": "0.0072",
+        "productImage": "https://m.media-amazon.com/images/I/71vWnStCnEL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Power of Now",
+        "productPrice": 11.99,
+        "productStock": 95,
+        "productDescription": "A spiritual guide to living in the present moment and achieving inner peace.",
+        "tags": [
+            "self-help",
+            "spirituality",
+            "Eckhart Tolle",
+            "mindfulness",
+            "books"
+        ],
+        "productPriceETH": "0.0067",
+        "productImage": "https://m.media-amazon.com/images/I/61JZDfNjFhL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Night Circus",
+        "productPrice": 13.25,
+        "productStock": 30,
+        "productDescription": "A fantasy novel about a magical competition between two young illusionists.",
+        "tags": [
+            "fantasy",
+            "magical realism",
+            "romance",
+            "Erin Morgenstern",
+            "books"
+        ],
+        "productPriceETH": "0.0074",
+        "productImage": "https://m.media-amazon.com/images/I/815D5sneiNL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Subtle Art of Not Giving a F*ck",
+        "productPrice": 14.99,
+        "productStock": 100,
+        "productDescription": "A counterintuitive approach to living a good life by embracing life's struggles.",
+        "tags": [
+            "self-help",
+            "Mark Manson",
+            "philosophy",
+            "non-fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0083",
+        "productImage": "https://m.media-amazon.com/images/I/71t4GuxLCuL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Book Thief",
+        "productPrice": 9.99,
+        "productStock": 65,
+        "productDescription": "A historical novel set in Nazi Germany, narrated by Death, about a girl who steals books.",
+        "tags": [
+            "historical fiction",
+            "World War II",
+            "bestseller",
+            "Markus Zusak",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/91JGwQlnu7L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "Brave New World",
+        "productPrice": 8.99,
+        "productStock": 45,
+        "productDescription": "A dystopian novel about a futuristic society controlled by technology and conditioning.",
+        "tags": [
+            "dystopian",
+            "Aldous Huxley",
+            "sci-fi",
+            "classic",
+            "books"
+        ],
+        "productPriceETH": "0.0050",
+        "productImage": "https://m.media-amazon.com/images/I/51CWnp7rtlL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Handmaid's Tale",
+        "productPrice": 10.99,
+        "productStock": 50,
+        "productDescription": "A dystopian novel about a woman living in a totalitarian society where women are oppressed.",
+        "tags": [
+            "dystopian",
+            "Margaret Atwood",
+            "feminist",
+            "political fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0061",
+        "productImage": "https://m.media-amazon.com/images/I/81lsLnsttzL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "Where the Crawdads Sing",
+        "productPrice": 12.5,
+        "productStock": 70,
+        "productDescription": "A novel about a young woman who grows up isolated in the marshes of North Carolina.",
+        "tags": [
+            "mystery",
+            "literary fiction",
+            "Delia Owens",
+            "bestseller",
+            "books"
+        ],
+        "productPriceETH": "0.0069",
+        "productImage": "https://m.media-amazon.com/images/I/618PomChUsL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Da Vinci Code",
+        "productPrice": 9.99,
+        "productStock": 85,
+        "productDescription": "A mystery thriller that follows a symbologist as he investigates a murder in the Louvre.",
+        "tags": [
+            "thriller",
+            "mystery",
+            "Dan Brown",
+            "conspiracy",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/71r1CyikDaL._AC_UL640_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Catcher in the Rye",
+        "productPrice": 7.99,
+        "productStock": 60,
+        "productDescription": "A novel about a teenager's experiences with alienation and identity in New York City.",
+        "tags": [
+            "classic",
+            "J.D. Salinger",
+            "coming-of-age",
+            "American literature",
+            "books"
+        ],
+        "productPriceETH": "0.0044",
+        "productImage": "https://m.media-amazon.com/images/I/7108sdEUEGL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Lord of the Rings",
+        "productPrice": 19.99,
+        "productStock": 40,
+        "productDescription": "An epic fantasy trilogy about a quest to destroy a powerful ring and defeat the Dark Lord Sauron.",
+        "tags": [
+            "fantasy",
+            "Tolkien",
+            "adventure",
+            "classic",
+            "books"
+        ],
+        "productPriceETH": "0.0111",
+        "productImage": "https://m.media-amazon.com/images/I/913sMwNHsBL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Hitchhiker's Guide to the Galaxy",
+        "productPrice": 8.99,
+        "productStock": 75,
+        "productDescription": "A comedic science fiction series about an unwitting human's adventures in space.",
+        "tags": [
+            "sci-fi",
+            "humor",
+            "Douglas Adams",
+            "adventure",
+            "books"
+        ],
+        "productPriceETH": "0.0050",
+        "productImage": "https://m.media-amazon.com/images/I/619bygRFOUL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Kite Runner",
+        "productPrice": 11.99,
+        "productStock": 55,
+        "productDescription": "A novel about friendship, betrayal, and redemption set in Afghanistan.",
+        "tags": [
+            "historical fiction",
+            "Khaled Hosseini",
+            "drama",
+            "bestseller",
+            "books"
+        ],
+        "productPriceETH": "0.0067",
+        "productImage": "https://m.media-amazon.com/images/I/81IzbD2IiIL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Shining",
+        "productPrice": 9.99,
+        "productStock": 50,
+        "productDescription": "A horror novel about a family staying at an isolated hotel where supernatural events occur.",
+        "tags": [
+            "horror",
+            "Stephen King",
+            "thriller",
+            "supernatural",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/81zqohMOk-L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "Gone Girl",
+        "productPrice": 12.99,
+        "productStock": 65,
+        "productDescription": "A psychological thriller about a woman's disappearance and the dark secrets behind her marriage.",
+        "tags": [
+            "thriller",
+            "mystery",
+            "Gillian Flynn",
+            "bestseller",
+            "books"
+        ],
+        "productPriceETH": "0.0072",
+        "productImage": "https://m.media-amazon.com/images/I/61Sx28fdUoL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Name of the Wind",
+        "productPrice": 13.99,
+        "productStock": 35,
+        "productDescription": "A fantasy novel about a legendary wizard recounting his life story.",
+        "tags": [
+            "fantasy",
+            "Patrick Rothfuss",
+            "magic",
+            "adventure",
+            "books"
+        ],
+        "productPriceETH": "0.0078",
+        "productImage": "https://m.media-amazon.com/images/I/611iKJa7a-L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Hunger Games",
+        "productPrice": 9.99,
+        "productStock": 90,
+        "productDescription": "A dystopian novel about a televised battle where teenagers fight to the death.",
+        "tags": [
+            "dystopian",
+            "Suzanne Collins",
+            "young adult",
+            "adventure",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/81zlHaEBHaS._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Fault in Our Stars",
+        "productPrice": 10.99,
+        "productStock": 70,
+        "productDescription": "A young adult novel about two teenagers with cancer who fall in love.",
+        "tags": [
+            "young adult",
+            "romance",
+            "John Green",
+            "drama",
+            "books"
+        ],
+        "productPriceETH": "0.0061",
+        "productImage": "https://m.media-amazon.com/images/I/817tHNcyAgL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Seven Husbands of Evelyn Hugo",
+        "productPrice": 12.99,
+        "productStock": 60,
+        "productDescription": "A novel about a Hollywood icon who reveals the truth about her scandalous life.",
+        "tags": [
+            "historical fiction",
+            "romance",
+            "Taylor Jenkins Reid",
+            "drama",
+            "books"
+        ],
+        "productPriceETH": "0.0072",
+        "productImage": "https://m.media-amazon.com/images/I/71KcUgYanhL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Midnight Library",
+        "productPrice": 11.99,
+        "productStock": 80,
+        "productDescription": "A novel about a woman who gets to explore alternate versions of her life in a magical library.",
+        "tags": [
+            "fantasy",
+            "Matt Haig",
+            "philosophical",
+            "fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0067",
+        "productImage": "https://m.media-amazon.com/images/I/81J6APjwxlL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Giver",
+        "productPrice": 8.99,
+        "productStock": 55,
+        "productDescription": "A dystopian novel about a boy who discovers the dark truth behind his seemingly perfect society.",
+        "tags": [
+            "dystopian",
+            "Lois Lowry",
+            "young adult",
+            "classic",
+            "books"
+        ],
+        "productPriceETH": "0.0050",
+        "productImage": "https://m.media-amazon.com/images/I/71GpyNeToCL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Outsider",
+        "productPrice": 10.99,
+        "productStock": 45,
+        "productDescription": "A crime novel about a detective investigating a seemingly impossible murder case.",
+        "tags": [
+            "thriller",
+            "mystery",
+            "Stephen King",
+            "horror",
+            "books"
+        ],
+        "productPriceETH": "0.0061",
+        "productImage": "https://m.media-amazon.com/images/I/91b5+gtdg+L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Stand",
+        "productPrice": 14.99,
+        "productStock": 30,
+        "productDescription": "A post-apocalyptic horror novel about a deadly pandemic and the battle between good and evil.",
+        "tags": [
+            "horror",
+            "Stephen King",
+            "dystopian",
+            "epic",
+            "books"
+        ],
+        "productPriceETH": "0.0083",
+        "productImage": "https://m.media-amazon.com/images/I/91YWt2jiowL._AC_UL640_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Girl with the Dragon Tattoo",
+        "productPrice": 11.99,
+        "productStock": 50,
+        "productDescription": "A crime thriller about a journalist and a hacker investigating a decades-old disappearance.",
+        "tags": [
+            "thriller",
+            "mystery",
+            "Stieg Larsson",
+            "crime",
+            "books"
+        ],
+        "productPriceETH": "0.0067",
+        "productImage": "https://m.media-amazon.com/images/I/81ui1fPaPDL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Secret History",
+        "productPrice": 12.5,
+        "productStock": 40,
+        "productDescription": "A novel about a group of classics students who become entangled in a murder.",
+        "tags": [
+            "mystery",
+            "Donna Tartt",
+            "dark academia",
+            "literary fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0069",
+        "productImage": "https://m.media-amazon.com/images/I/81YhQfeiynL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Goldfinch",
+        "productPrice": 13.99,
+        "productStock": 35,
+        "productDescription": "A novel about a boy who survives a terrorist attack and becomes involved in art theft.",
+        "tags": [
+            "literary fiction",
+            "Donna Tartt",
+            "drama",
+            "bestseller",
+            "books"
+        ],
+        "productPriceETH": "0.0078",
+        "productImage": "https://m.media-amazon.com/images/I/71ud9Tcj5YL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Help",
+        "productPrice": 10.99,
+        "productStock": 65,
+        "productDescription": "A novel about African American maids working in white households in 1960s Mississippi.",
+        "tags": [
+            "historical fiction",
+            "Kathryn Stockett",
+            "drama",
+            "social justice",
+            "books"
+        ],
+        "productPriceETH": "0.0061",
+        "productImage": "https://m.media-amazon.com/images/I/91bmFCtOCEL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Pillars of the Earth",
+        "productPrice": 14.99,
+        "productStock": 25,
+        "productDescription": "A historical novel about the construction of a cathedral in 12th-century England.",
+        "tags": [
+            "historical fiction",
+            "Ken Follett",
+            "epic",
+            "medieval",
+            "books"
+        ],
+        "productPriceETH": "0.0083",
+        "productImage": "https://m.media-amazon.com/images/I/817PpMf4d0L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Shadow of the Wind",
+        "productPrice": 11.99,
+        "productStock": 40,
+        "productDescription": "A novel about a boy who discovers a mysterious book that leads him into a labyrinth of secrets.",
+        "tags": [
+            "mystery",
+            "Carlos Ruiz Zafón",
+            "gothic",
+            "literary fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0067",
+        "productImage": "https://m.media-amazon.com/images/I/81N+A+Mfv7L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Song of Achilles",
+        "productPrice": 12.99,
+        "productStock": 55,
+        "productDescription": "A retelling of the Iliad from the perspective of Patroclus, Achilles' companion.",
+        "tags": [
+            "historical fiction",
+            "mythology",
+            "romance",
+            "Madeline Miller",
+            "books"
+        ],
+        "productPriceETH": "0.0072",
+        "productImage": "https://m.media-amazon.com/images/I/51PH05QauDL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Lies of Locke Lamora",
+        "productPrice": 13.5,
+        "productStock": 30,
+        "productDescription": "A fantasy novel about a group of con artists in a city of thieves.",
+        "tags": [
+            "fantasy",
+            "heist",
+            "Scott Lynch",
+            "adventure",
+            "books"
+        ],
+        "productPriceETH": "0.0075",
+        "productImage": "https://m.media-amazon.com/images/I/71Hp0VjEETL._AC_UL640_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Martian Chronicles",
+        "productPrice": 9.99,
+        "productStock": 50,
+        "productDescription": "A collection of science fiction stories about human colonization of Mars.",
+        "tags": [
+            "sci-fi",
+            "Ray Bradbury",
+            "classic",
+            "short stories",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/613HKMdb1rL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Bell Jar",
+        "productPrice": 8.99,
+        "productStock": 45,
+        "productDescription": "A novel about a young woman's descent into mental illness and her struggle for recovery.",
+        "tags": [
+            "classic",
+            "Sylvia Plath",
+            "mental health",
+            "feminist",
+            "books"
+        ],
+        "productPriceETH": "0.0050",
+        "productImage": "https://m.media-amazon.com/images/I/91fHh-+hyfL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Road Less Traveled",
+        "productPrice": 11.99,
+        "productStock": 60,
+        "productDescription": "A self-help book that explores the psychology of love, discipline, and spiritual growth.",
+        "tags": [
+            "self-help",
+            "psychology",
+            "M. Scott Peck",
+            "philosophy",
+            "books"
+        ],
+        "productPriceETH": "0.0067",
+        "productImage": "https://m.media-amazon.com/images/I/81argEh1oPL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Art of War",
+        "productPrice": 7.99,
+        "productStock": 85,
+        "productDescription": "An ancient Chinese treatise on military strategy and tactics.",
+        "tags": [
+            "non-fiction",
+            "strategy",
+            "Sun Tzu",
+            "philosophy",
+            "books"
+        ],
+        "productPriceETH": "0.0044",
+        "productImage": "https://m.media-amazon.com/images/I/71jQ6nea+2L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Count of Monte Cristo",
+        "productPrice": 10.99,
+        "productStock": 40,
+        "productDescription": "A novel about betrayal, revenge, and redemption in 19th-century France.",
+        "tags": [
+            "classic",
+            "adventure",
+            "Alexandre Dumas",
+            "revenge",
+            "books"
+        ],
+        "productPriceETH": "0.0061",
+        "productImage": "https://m.media-amazon.com/images/I/61FCKwzntFL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Picture of Dorian Gray",
+        "productPrice": 8.5,
+        "productStock": 55,
+        "productDescription": "A novel about a man who remains youthful while his portrait ages and reflects his sins.",
+        "tags": [
+            "classic",
+            "gothic",
+            "Oscar Wilde",
+            "philosophical",
+            "books"
+        ],
+        "productPriceETH": "0.0047",
+        "productImage": "https://m.media-amazon.com/images/I/51vlaFE6XRL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Stranger",
+        "productPrice": 9.99,
+        "productStock": 50,
+        "productDescription": "A philosophical novel about a man who commits a senseless murder and faces the absurdity of life.",
+        "tags": [
+            "classic",
+            "existentialism",
+            "Albert Camus",
+            "philosophy",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/61o9KXVgiqL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Old Man and the Sea",
+        "productPrice": 7.99,
+        "productStock": 65,
+        "productDescription": "A novel about an aging fisherman's struggle to catch a giant marlin.",
+        "tags": [
+            "classic",
+            "Ernest Hemingway",
+            "adventure",
+            "literary fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0044",
+        "productImage": "https://m.media-amazon.com/images/I/81uaGXiRF4L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Brothers Karamazov",
+        "productPrice": 12.99,
+        "productStock": 30,
+        "productDescription": "A philosophical novel about family, faith, and morality in 19th-century Russia.",
+        "tags": [
+            "classic",
+            "Fyodor Dostoevsky",
+            "philosophy",
+            "Russian literature",
+            "books"
+        ],
+        "productPriceETH": "0.0072",
+        "productImage": "https://m.media-amazon.com/images/I/919LJ0ts6fL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Divine Comedy",
+        "productPrice": 10.99,
+        "productStock": 25,
+        "productDescription": "An epic poem about the soul's journey through Hell, Purgatory, and Heaven.",
+        "tags": [
+            "classic",
+            "Dante Alighieri",
+            "poetry",
+            "religious",
+            "books"
+        ],
+        "productPriceETH": "0.0061",
+        "productImage": "https://m.media-amazon.com/images/I/71mOHd81-SL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Odyssey",
+        "productPrice": 9.99,
+        "productStock": 40,
+        "productDescription": "An ancient Greek epic poem about Odysseus's journey home after the Trojan War.",
+        "tags": [
+            "classic",
+            "Homer",
+            "mythology",
+            "adventure",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/71GRVFSo-hL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Iliad",
+        "productPrice": 9.99,
+        "productStock": 35,
+        "productDescription": "An ancient Greek epic poem about the Trojan War and the wrath of Achilles.",
+        "tags": [
+            "classic",
+            "Homer",
+            "mythology",
+            "war",
+            "books"
+        ],
+        "productPriceETH": "0.0056",
+        "productImage": "https://m.media-amazon.com/images/I/91TxD4knTSL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Republic",
+        "productPrice": 8.99,
+        "productStock": 50,
+        "productDescription": "A philosophical dialogue about justice, governance, and the ideal state.",
+        "tags": [
+            "philosophy",
+            "Plato",
+            "classic",
+            "non-fiction",
+            "books"
+        ],
+        "productPriceETH": "0.0050",
+        "productImage": "https://m.media-amazon.com/images/I/91nYfNvYa7L._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Prince",
+        "productPrice": 7.99,
+        "productStock": 60,
+        "productDescription": "A political treatise on power, leadership, and statecraft.",
+        "tags": [
+            "philosophy",
+            "Niccolò Machiavelli",
+            "politics",
+            "classic",
+            "books"
+        ],
+        "productPriceETH": "0.0044",
+        "productImage": "https://m.media-amazon.com/images/I/61PAVClGwIL._AC_UY436_FMwebp_QL65_.jpg"
+    },
+    {
+        "productName": "The Art of Happiness",
+        "productPrice": 11.99,
+        "productStock": 70,
+        "productDescription": "A book exploring the Dalai Lama's teachings on achieving happiness.",
+        "tags": [
+            "self-help",
+            "spirituality",
+            "Dalai Lama",
+            "philosophy",
+            "books"
+        ],
+        "productPriceETH": "0.0067",
+        "productImage": "https://m.media-amazon.com/images/I/717HdXTLX-L._AC_UY436_FMwebp_QL65_.jpg"
+    }
+]

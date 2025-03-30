@@ -1,0 +1,376 @@
+<!-- HTML page for profile of users -->
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/profile-page.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/orders-container.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/shipments-container.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/transactions-container.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/wallets-container.css">
+    <link rel="stylesheet" type="text/css" href="/css/seller/addresses-container.css">
+
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/regular.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/solid.css">
+
+    <script defer src="/js/seller/home.js"></script>
+    <script defer src="/js/seller/orders-handler.js"></script>
+</head>
+<body>
+    <div class="sidebar-menu">
+        <div class="sidebar-menu-header">
+            <div class="profile-icon" onclick="window.history.back()">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+            <div class="profile-name">
+                John Doe
+            </div>
+        </div>
+        <div class="sidebar-menu-items">
+            <div class="sidebar-menu-item" onclick="showAccountDetails(this)">
+                <i class="fa-solid fa-user"></i> Account
+            </div>
+            <div class="sidebar-menu-item" onclick="showShop(this)">
+                <i class="fa-solid fa-shop"></i> Shop
+            </div>
+            <div class="sidebar-menu-item" onclick="showOrders(this)">
+                <i class="fa-solid fa-box"></i> Orders
+            </div>
+            <div class="sidebar-menu-item" onclick="showShipments(this)">
+                <i class="fa-solid fa-truck"></i> Shipments
+            </div>
+            <div class="sidebar-menu-item" onclick="showTransactions(this)">
+                <i class="fa-solid fa-money-check-dollar"></i> Transactions
+            </div>
+            <div class="sidebar-menu-item" onclick="showWallets(this)">
+                <i class="fa-solid fa-wallet"></i> Wallets
+            </div>
+            <div class="sidebar-menu-item" onclick="showAddresses(this)">
+                <i class="fa-solid fa-address-card"></i> Addresses
+            </div>
+        </div>
+        <div class="sidebar-menu-footer">
+            <div class="logout-button" onclick="logout()">
+                Logout
+            </div>
+        </div>
+    </div>
+    <div class="mainarea">
+        <div class="message-overlay">
+            <div class="message-container">
+                <div class="message-spinner-container">
+                    <span class="message-spinner"></span>
+                </div>
+                <div class="message-content">
+                    Hacking Nasa...
+                </div>
+            </div>
+            <div class="message-confirm">
+                <div class="message-text">
+                    Are you sure you want to hack Nasa?
+                </div>
+                <div class="message-buttons">
+                    <div class="message-button"> Yes </div>
+                    <div class="message-button"> No </div>
+                </div>
+            </div>
+        </div>
+        <div class="account-container">
+            <!-- Account details -->
+            <div class="account-details-card">
+                <p id="account-name">John Doe</p>
+                <p id="account-email">Email : john@gmail.com</p>
+                <p id="account-walletid">Wallet ID: 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C</p>
+                <p id="account-address">Address : 21, South Pole, Antarctica</p>
+            </div>
+        </div>
+        <div class="shop-container">
+            <!-- Shop details ( and other functions ) -->
+            <div class="shop-header">
+                <div class="shop-name">
+                    John's Shop
+                </div>
+            </div>
+            <div class="product-add-container">
+                <div class="product-add-button" onclick="closeAddProductCard()" style="display: none;">
+                    Cancel
+                </div>
+                <div class="product-add-button" onclick="openAddProductCard()">
+                    + Add
+                </div>
+            </div>
+            <div class="product-add-card">
+                <div class="product-add-card-header">
+                    Add Product to Shop
+                </div>
+                <div class="product-add-card-body">
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Name" id="product-name">
+                    </div>
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Description" id="product-description">
+                    </div>
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Price" id="product-price">
+                    </div>
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Quantity" id="product-quantity">
+                    </div>
+                    <div class="product-add-card-input">
+                        <input type="text" placeholder="Product Image URL" id="product-image">
+                    </div>
+                    <div class="product-add-card-input">
+                        <select id="wallet-select">
+                            <option value="0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C">0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="product-add-card-footer">
+                    <div class="product-add-card-button" onclick="uploadProduct(this)">
+                        +Add
+                    </div>
+                    <p><i class="fa-solid fa-circle-info"></i> Adding a product will require some transaction fee. Make sure you have enough balance in your wallet.</p>
+                </div>
+            </div>
+            <div class="products-list-container">
+                <!-- Products Listing available in the shop -->
+                <div class="products-list-header">
+                    <!-- For the search bar and stuff -->
+                    <div class="products-list-search">
+                        <input type="text" placeholder="Search Products" id="product-search">
+                    </div>
+                </div>
+                <div class="products-list-body">
+                    <!-- Products listing -->
+                    <div class="product-list-card">
+                        <div class="product-list-card-header">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </div>
+                        <div class="product-list-card-image">
+                            <img src="https://media3.giphy.com/media/6BZaFXBVPBtok/giphy.gif?cid=6c09b952rjuqvisd6rgqk93j7goduey2yg4n9xyj4mrjsvcg&ep=v1_gifs_search&rid=giphy.gif&ct=g">
+                        </div>
+                        <div class="product-list-card-info">
+                            <p class="product-list-card-name"> Giphy </p>
+                            <p class="product-list-card-description"> Spanking Tom</p>
+                            <p class="product-list-card-price"> <i class="fa-brands fa-ethereum"></i> 1000 </p>
+                        </div>
+                    </div>
+                    <div class="product-list-card">
+                    </div>
+                    <div class="product-list-card">
+                    </div>
+                    <div class="product-list-card">
+                    </div>
+                </div>
+            </div>
+            <div class="products-overlay-view">
+                <!-- Product details view ovarley -->
+            </div>
+        </div>
+        <div class="orders-container">
+            <div class="orders-list">
+                <div class="orders-list-item" onclick="openOrderView(this)">
+                    <div class="orders-list-item-image">
+                        <img src="https://m.media-amazon.com/images/I/41JU2LkT45L._SY445_SX342_.jpg">
+                    </div>
+                    <div class="orders-list-item-info">
+                        <p class="orders-list-item-name"> Dildo </p>
+                        <p class="orders-list-item-id"> 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                        <p class="orders-list-item-price"> <i class="fa-brands fa-ethereum"></i> 1000 </p>
+                        <p class="orders-list-item-date"> 19 February, 2025 at 1:48 PM </p>
+                    </div>
+                </div>
+            </div>
+            <div class="orders-overlay-view">
+                <div class="orders-overlay-container">
+                    <div class="orders-view-image">
+                        <img src="https://m.media-amazon.com/images/I/41JU2LkT45L._SY445_SX342_.jpg">
+                    </div>
+                    <div class="orders-view-details">
+                        <div class="orders-view-details-buyer">
+                            <p> email : john@gmail.com </p>
+                            <p> wallet ID : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                            <p> quantity : 1 </p>
+                            <p> price : 1000 <i class="fa-brands fa-ethereum"></i></p>
+                        </div>
+                        <div class="orders-view-details-timeline">
+                            <p> Order Placed : 19-02-2025 at 7:22 PM</p>
+                            <p> Order Confirmed : 19-02-2025 at 7:22 PM </p>
+                            <p> Order Paid : 19-02-2025 at 7:22 PM </p>
+                            <p> Order Shipped : 19-02-2025 at 7:22 PM </p>
+                        </div>
+                        <div class="orders-view-details-chain">
+                            <p> Order Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                            <p> Product Address : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                            <p> Order ID : 2cba052c-fe19-411b-bde2-55ee14cc36ac</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="shipments-container">
+            <div class="shipments-add-card-container">
+                <!-- Add shipment card for deploying a new shipment -->
+                <div class="shipments-add-card-buttons">
+                    <div class="shipments-add-card-button" onclick="closeAddShipmentCard()" style="display: none;">
+                        Cancel
+                    </div>
+                    <div class="shipments-add-card-button" onclick="openAddShipmentCard()">
+                        + New
+                    </div>
+                </div>
+                <div class="shipments-add-card">
+                    <div class="shipments-add-card-header">
+                        Deploy Shipment
+                    </div>
+                    <div class="shipments-add-card-body">
+                        <div class="shipments-add-card-input">
+                            <input type="text" placeholder="Buyer Email" id="shipment-order-id">
+                        </div>
+                        <div class="shipments-add-card-input">
+                            <select id="shipment-wallet-select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="shipments-add-card-footer">
+                        <div class="shipment-add-card-button">
+                            Ship
+                        </div>
+                        <p><i class="fa-solid fa-circle-info"></i> Deploying a shipment contract requires a fee. Make sure you have enough balance in your wallet.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- For viewing and managing shipments -->
+            <div class="shipments-list">
+                <!-- List of shpiments-->
+                <div class="shipments-list-item" onclick="openShipmentView(this)">
+                    <p class="shipments-list-item-id">
+                        75948023-363e-4c74-8740-be0de458ed37
+                    </p>
+                    <p class="shipments-list-item-date">
+                        🚚  19 Feb, 2025 at 1:48 PM
+                    </p>
+                </div>
+                <div class="shipments-list-item">
+
+                </div>
+                <div class="shipments-list-item">
+
+                </div>
+            </div>
+            <div class="shipments-overlay-view">
+                <!-- For viewing and controlling the shipment details -->
+                <div class="shipments-overlay-container">
+                    <div class="shipments-overlay-container-shipment">
+                        <!-- Shipment details -->
+                        <p class="shipments-overlay-container-shipment-id"> Shipment ID : 75948023-363e-4c74-8740-be0de458ed37 </p>
+                        <p class="shipments-overlay-container-shipment-order"> Order ID : 2cba052c-fe19-411b-bde2-55ee14cc36ac </p>
+                        <p class="shipments-overlay-container-shipment-price"> Price : 1000 <i class="fa-brands fa-ethereum"></i> </p>
+                        <p class="shipments-overlay-container-shipment-status"> Pending </p>
+                    </div>
+                    <div class="shipments-overlay-container-addresses">
+                        <!-- Address details -->
+                        <div class="shipments-overlay-container-addresses-source">
+                            <p>Source : </p>
+                            <p> John </p>
+                            <p> john@gmail.com </p>
+                            <p> 21, South Pole, Antarctica </p>
+                        </div>
+                        <div class="shipments-overlay-container-addresses-destination">
+                            <p>Destination : </p>
+                            <p> Jane </p>
+                            <p> jane@gmail.com </p>
+                            <p> 21, North Pole, Antarctica </p>
+                        </div>
+                    </div>
+                    <div class="shipments-overlay-container-timeline">
+                        <!-- Timeline details -->
+                        <div class="shipments-overlay-container-timeline-order">
+                            <p> Order : </p>
+                            <p>Placed:  19-02-2025 at 7:22 PM </p>
+                            <p>Confirmed:  19-02-2025 at 7:22 PM </p>
+                            <p>Paid:  19-02-2025 at 7:22 PM</p>
+                            <p>Cancelled:  19-02-2025 at 7:22 PM</p>
+                            <p>Refunded: 19-02-2025 at 7:22 PM</p>
+                        </div>
+                        <div class="shipments-overlay-container-timeline-shipment">
+                            <p> Shipment : </p>
+                            <p>Shipped:  19-02-2025 at 7:22 PM </p>
+                            <p>Delivered:  19-02-2025 at 7:22 PM </p>
+                            <p>Cancelled:  19-02-2025 at 7:22 PM</p>
+                            <p>Returned: 19-02-2025 at 7:22 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="transactions-container">
+            <!-- For viewing and managing transactions -->
+            <div class="transactions-list">
+                <!-- List of transactions -->
+                <div class="transactions-list-item" onclick="openTransactionView(this)">
+                    <p> <i class="fa-solid fa-circle-user"></i> john@gmail.com : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                    <p> 1000 <i class="fa-brands fa-ethereum"></i> </p>
+                    <p> <i class="fa-solid fa-arrow-right-arrow-left"></i> 19 Feb, 2025 at 1:48 PM </p>
+                </div>
+            </div>
+            <div class="transactions-send-card">
+                <!-- Send transaction card for sending a new transaction -->
+            </div>
+            <div class="transactions-overlay-view">
+                <!-- For viewing and controlling the transaction details -->
+                <div class="transactions-overlay-container">
+                    <div class="transactions-overlay-container-body">
+                        <p> Transaction Hash : 0x5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060 </p>
+                        <p> From : John (john@gmail.com) : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                        <p> To : Jane (jane@gmail.com) : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                        <p> Amount : 1000 <i class="fa-brands fa-ethereum"></i> </p>
+                        <p> Date : 19 Feb, 2025 at 1:48 PM </p>
+                    </div>
+                    <div class="transactions-overlay-container-footer">
+                        <div class="transactions-overlay-container-button">
+                            <!-- Refunding function to be attached later -->
+                            <i class="fa-regular fa-paper-plane"></i> Refund
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wallets-container">
+            <!-- For viewing and managing wallets -->
+            <!-- Useless for now as no functionality to use other wallets  -->
+            <div class="wallets-list">
+                <!-- List of wallets -->
+                <div class="wallets-list-item">
+                    <p> Wallet ID : 0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C </p>
+                    <p> Balance : 1000 <i class="fa-brands fa-ethereum"></i> </p>
+                </div>
+            </div>
+            <div class="wallets-add-card">
+                <!-- Add wallet card for deploying a new wallet -->
+                <div class="wallet-add-button" onclick="createWallet()">
+                    + New Wallet
+                </div>
+            </div>
+            <div class="wallets-overlay-view">
+                <!-- For viewing and controlling the wallet details -->
+            </div>
+        </div>
+        <div class="addresses-container">
+            <!-- For viewing and managing addresses -->
+            <!-- Useless for now -->
+            <div class="addresses-list">
+                <!-- List of addresses -->
+            </div>
+            <div class="addresses-add-card">
+                <!-- Add address card for deploying a new address -->
+            </div>
+            <div class="addresses-overlay-view">
+                <!-- For viewing and controlling the address details -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

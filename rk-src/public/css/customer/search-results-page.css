@@ -1,0 +1,91 @@
+.search-results-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+}
+
+.search-results-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 90%;
+    height: fit-content;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    color: black;
+    padding: 10px;
+    gap: 10px;
+}
+
+.search-results-item:hover {
+    transform: scale(1.02);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.search-results-item-image {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 20%;
+    height: fit-content;
+}
+
+.search-results-item-image img {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    aspect-ratio: 1/1;
+    object-fit: scale-down;
+}
+
+.search-results-item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.search-results-item-info p {
+    padding: 0;
+    margin: 0;
+}
+
+.search-results-item-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 20px;
+    gap: 20px;
+}
+
+.search-results-item-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    width: fit-content;
+    height: 50px;
+    background-color: rgb(43, 43, 43);
+    font-weight: 600;
+    border-radius: 10px;
+    color: white;
+}
+
+.search-results-item-button:hover {
+    cursor: pointer;
+}
+
+.search-results-item-button:active {
+    cursor: pointer;
+    background-color: rgb(73, 73, 73);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}

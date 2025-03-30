@@ -1,0 +1,116 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(27, 27, 27);
+    color: white;
+}
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: fit-content;
+    background-color: rgba(255, 255, 255, 0.434);
+    backdrop-filter: blur(15px);
+    color: black;
+    border-radius: 10px;
+}
+.form-container-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 90px;
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.form-container-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+}
+.form-container-input {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 50px;
+    font-size: 20px;
+    margin: 10px;
+    gap: 10px;
+}
+.form-container-input input {
+    width: 80%;
+    height: 100%;
+    font-size: 20px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.498);
+    backdrop-filter: blur(15px);
+    color: black;
+    border: none;
+    outline: none;
+    padding: 10px;
+}
+.form-container-input input:focus {
+    background-color: rgba(255, 255, 255, 0.871);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+.form-container-input select {
+    width: 80%;
+    height: 100%;
+    font-size: 20px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.498);
+    backdrop-filter: blur(15px);
+    color: black;
+    border: none;
+    outline: none;
+    padding: 10px;
+}
+.form-container-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    font-size: 1rem;
+    gap: 20px;
+}
+.form-container-footer-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    background-color: #24355d;
+    color: white;
+    border-radius: 10px;
+}
+.form-container-footer-button:hover {
+    cursor: pointer;
+}
+.form-container-footer-button:active {
+    background-color: #24355d;
+    color: black;
+}
+.form-container-messages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    font-size: 1.5rem;
+    color: rgb(229, 54, 54);
+    margin: 0;
+}

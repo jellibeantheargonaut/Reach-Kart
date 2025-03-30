@@ -1,0 +1,51 @@
+[
+    {
+        "productName": "Samsung Galaxy S23",
+        "productPrice": "$799",
+        "productStock": "In stock, 200 units",
+        "productDescription": "The latest flagship smartphone from Samsung, featuring a powerful Snapdragon 8 Gen 1 processor.",
+        "tags": ["smartphones", "Samsung", "Galaxy S23", "flagship", "Android"]
+    },
+    {
+        "productName": "Google Pixel 7",
+        "productPrice": "$699",
+        "productStock": "Limited availability, 50 units per color",
+        "productDescription": "The latest smartphone from Google, featuring a pure Android experience and a powerful Snapdragon 8 Gen 2 processor.",
+        "tags": ["smartphones", "Google", "Pixel 7", "Android", "flagship"]
+    },
+    {
+        "productName": "Apple iPhone 14",
+        "productPrice": "$999",
+        "productStock": "Available in stores, limited colors",
+        "productDescription": "The latest addition to Apple's flagship series, featuring a A16 Bionic chip and enhanced camera capabilities.",
+        "tags": ["smartphones", "Apple", "iPhone 14", "iOS", "flagship"]
+    },
+    {
+        "productName": "OnePlus Nord 3",
+        "productPrice": "$599",
+        "productStock": "In stock, 1500 units",
+        "productDescription": "A mid-range smartphone from OnePlus, featuring a Snapdragon 780G processor and a 6.43-inch Fluid AMOLED display.",
+        "tags": ["smartphones", "OnePlus", "Nord 3", "mid-range", "flagship"]
+    },
+    {
+        "productName": "Xiaomi Mi 12 Pro Plus",
+        "productPrice": "$999",
+        "productStock": "Limited availability, 100 units per region",
+        "productDescription": "A flagship smartphone from Xiaomi, equipped with a Snapdragon 8 Gen 1 processor and a 6.7-inch WQHD+ AMOLED display.",
+        "tags": ["smartphones", "Xiaomi", "Mi 12 Pro Plus", "flagship", "Android"]
+    },
+    {
+        "productName": "Motorola Moto G10",
+        "productPrice": "$299",
+        "productStock": "In stock, 500 units per color",
+        "productDescription": "A budget smartphone from Motorola, featuring a Snapdragon 678 processor and a 6.4-inch HD+ display.",
+        "tags": ["smartphones", "Motorola", "Moto G10", "budget", "Android"]
+    },
+    {
+        "productName": "Nokia X5",
+        "productPrice": "$249",
+        "productStock": "Limited stock, 300 units per region",
+        "productDescription": "A budget smartphone from Nokia, equipped with a Snapdragon 615 processor and a 5.5-inch HD display.",
+        "tags": ["smartphones", "Nokia", "X5", "budget", "Android"]
+    }
+]

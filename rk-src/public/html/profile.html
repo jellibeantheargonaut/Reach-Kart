@@ -1,0 +1,130 @@
+<!-- HTML page for profile of users -->
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/profile-page.css">
+
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/regular.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/solid.css">
+
+    <script defer src="/js/profile-page.js"></script>
+</head>
+<body>
+    <div class="sidebar-menu">
+        <div class="sidebar-menu-header">
+            <div class="profile-icon" onclick="window.history.back()">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+            <div class="profile-name">
+                John Doe
+            </div>
+        </div>
+        <div class="sidebar-menu-items">
+            <div class="sidebar-menu-item" onclick="showAccountDetails()">
+                <i class="fa-solid fa-user"></i> Account
+            </div>
+            <div class="sidebar-menu-item" onclick="showOrders()">
+                <i class="fa-solid fa-box"></i> Orders
+            </div>
+            <div class="sidebar-menu-item">
+                <i class="fa-solid fa-money-check-dollar"></i> Transactions
+            </div>
+            <div class="sidebar-menu-item" onclick="showWalletDetails()">
+                <i class="fa-solid fa-wallet"></i> Wallets
+            </div>
+            <div class="sidebar-menu-item">
+                <i class="fa-solid fa-address-card"></i> Addresses
+            </div>
+        </div>
+        <div class="sidebar-menu-footer">
+            <div class="logout-button" onclick="logout()">
+                Logout
+            </div>
+        </div>
+    </div>
+    <div class="mainarea">
+        <div class="account-container">
+            <div class="account-details-card">
+                <p id="account-name">John Doe</p>
+                <p id="account-email">john@gmail.com</p>
+                <p id="account-walletid">0x40BD293e0cc4929F0d5CD9289Cc35bF4Ab99914C</p>
+                <p id="account-address">21, South Pole, Antarctica</p>
+                <p id="account-password">********<a href="/changePassword"> Change </a></p>
+            </div>
+        </div>
+        <div class="orders-container">
+            <div class="order-container">
+                <div class="order-container-header">
+                    <p id="order-uuid">b3507d77-a126-4122-8f2a-f4d46366dac1</p>
+                </div>
+                <div class="order-container-content">
+                    <p id="order-uuid">orderId: 📦 b3507d77-a126-4122-8f2a-f4d46366dac1</p>
+                    <p id="order-product-id">productId: b3507d77-a126-4122-8f2a-f4d46366dac1</p>
+                    <p id="order-shipment-id">shipmentId: 🚛 b3507d77-a126-4122-8f2a-f4d46366dac1</p>
+                    <div class="product-details-card">
+                        <div class="product-image">
+                            Image here
+                        </div>
+                        <div class="product-details">
+                            <p id="product-details-name"> Dildo </p>
+                            <p id="product-details-description"> Girls get it </p>
+                            <p id="product-details-price"> Price: 0.0001 ETH </p>
+                            <p id="product-details-quantity"> Quantity: 1 </p>
+                            <div class="order-timeline">
+                                <p id="order-timeline-date"> Placed :  2025-02-15 </p>
+                                <p id="order-timeline-date"> Confirmed : 2025-02-15 </p>
+                                <p id="order-timeline-date"> Paid : 2025-02-15 </p>
+                                <p id="order-timeline-date"> Shipped : 2025-02-15 </p>
+                                <p id="order-timeline-date"> Delivered : 2025-02-15 </p>
+                            </div>
+                            <div class="product-details-addresses">
+                                <div class="product-shipment-source">
+                                    <p id="shipment-source"> Seller </p>
+                                    Penguin Inc.
+                                    21, North Pole
+                                    Antarctica
+                                </div>
+                                <div class="product-shipment-destination">
+                                    <p id="shipment-destination"> Buyer </p>
+                                    John Doe
+                                    21, South Pole
+                                    Antarctica
+                                </div>
+                            </div>
+                            <div class="product-shipment-status">
+                                <p id="order-status">📦 Pending </p>
+                                <p id="order-status">📦 Confirmed </p>
+                                <p id="order-status">📦 Paid </p>
+                                <p id="shipment-status">🚚 Pending </p>
+                                <p id="shipment-status">🚚 Shipped </p>
+                                <p id="shipment-status">🚚 Delivered </p>
+                            </div>
+                            <div class="order-buttons">
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="wallets-container">
+            <div class="wallet-container">
+                <div class="wallet-container-header">
+                    <div class="wallet-address">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                </div>
+                <div class="wallet-content">
+                    <div class="wallet-balance">
+                        <i class="fa-brands fa-ethereum"></i> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="addresses-container">
+        </div>
+    </div>
+</body>
+</html>

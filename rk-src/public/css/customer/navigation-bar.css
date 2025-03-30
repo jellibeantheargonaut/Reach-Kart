@@ -1,0 +1,210 @@
+/* styles for the navigation bar */
+.navigation-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 98%;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.954);
+    color: black;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 10px;
+    position: fixed;
+    top: 10px;
+    gap: 20px;
+    z-index: 1000;
+}
+.navigation-bar-logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 20px;
+    width: fit-content;
+    height: 40px;
+    font-size: 1.2rem;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.navigation-bar-logo:hover {
+    cursor: pointer;
+    background-color: rgb(168, 168, 168);
+    border-radius: 10px;
+}
+.navigation-bar-location {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    height: 40px;
+    font-size: 1rem;
+    padding-top: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgb(168, 168, 168);
+    border-radius: 10px;
+    color: black;
+    gap: 10px;
+}
+.navigation-bar-search {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: 90%;
+}
+.navigation-bar-search input {
+    width: 400px;
+    height: 60%;
+    border-radius: 10px;
+    background-color: rgba(33, 33, 33, 0.619);
+    backdrop-filter: blur(10px);
+    border: none;
+    outline: none;
+    padding: 5px;
+    padding-left: 10px;
+    margin-left: 10px;
+    font-size: 1rem;
+}
+.navigation-bar-search input::placeholder {
+    color: rgb(168, 168, 168);
+}
+.navigation-bar-search input:focus {
+    background-color: rgb(35, 35, 35);
+    color: white;
+}
+.navigation-bar-menu-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    background-color: rgb(168, 168, 168);
+    color: black;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+.navigation-bar-menu-item:hover {
+    background-color: rgb(116, 116, 116);
+    cursor: pointer;
+}
+.navigation-bar select {
+    width: fit-content;
+    height: 40px;
+    font-size: 1rem;
+    border-radius: 10px;
+    background-color: rgb(168, 168, 168);
+    color: black;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: none;
+    outline: none;
+}
+.search-results-dropdown {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 400px;
+    height: fit-content;
+    min-height: 200px;
+    max-height: 400px;
+    position: fixed;
+    top: 70px;
+    left: 29%;
+    background-color: rgba(255, 255, 255, 0.905);
+    backdrop-filter: blur(10px);
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    padding: 2px;
+    overflow-y: auto;
+    gap: 5px;
+}
+.search-results-dropdown-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 0.8rem;
+    width: 95%;
+    height: 30px;
+    transition: 0.3s;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+.search-results-dropdown-item p {
+    margin: 0;
+}
+.search-results-dropdown-item:hover {
+    background-color: rgb(30, 30, 30);
+    color: white;
+    cursor: pointer;
+}
+.navigation-bar-account {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    height: 40px;
+    gap: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 10px;
+    background-color: rgb(168, 168, 168);
+    border-radius: 10px;
+    color: black;
+    font-size: 1rem;
+}
+.navigation-bar-account:hover {
+    background-color: rgb(116, 116, 116);
+    cursor: pointer;
+}
+.account-drop-down {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    height: fit-content;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.938);
+    box-shadow: -2px 4px 5px 0 rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 2px;
+}
+.account-drop-down-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 90%;
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    color: black;
+    font-size: 1rem;
+    transition: 0.3s;
+    gap: 10px;
+}
+.account-drop-down-item:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+.account-drop-down-item:last-child {
+    color: rgb(208, 91, 91);
+}
+.account-drop-down-item:last-child:hover {
+    background-color: rgb(208, 91, 91);
+    color: white;
+}

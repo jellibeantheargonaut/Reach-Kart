@@ -1,0 +1,177 @@
+/* styles for orders-container div in home.html */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+    width: 100%;
+}
+.orders-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.792);
+    backdrop-filter: blur(15px);
+    color: black;
+    border-radius: 15px;
+}
+.orders-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.871);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+.orders-list-item-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    height: 80%;
+    margin-left: 20px;
+}
+.orders-list-item-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    object-fit: scale-down;
+}
+.orders-list-item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 60%;
+    height: 80%;
+    margin-left: 20px;
+    gap: 10px;
+}
+.orders-list-item-info p {
+    padding: 5px;
+    margin: 0;
+}
+.orders-list-item-name {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    height: fit-content;
+    width: fit-content;
+}
+.orders-list-item-id {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    background-color: rgb(73, 189, 89);
+    color: black;
+    padding: 5px;
+    border-radius: 10px;
+    height: fit-content;
+    width: fit-content;
+}
+.orders-list-item-price {
+    font-family:'Courier New', Courier, monospace;
+    font-size: 1.2rem;
+    height: fit-content;
+    width: fit-content;
+}
+.orders-list-item-date {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: black;
+}
+
+/* style for orders overlay */
+.orders-overlay-view {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 20%;
+    width: 80%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.253);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+}
+.orders-overlay-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: 60%;
+    background-color: rgba(255, 255, 255, 0.91);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    padding: 20px;
+    gap: 20px;
+}
+.orders-view-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 90%;
+}
+.orders-view-image img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 15px;
+    object-fit: scale-down;
+}
+.orders-view-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 60%;
+    height: 90%;
+    gap: 5px;
+}
+.orders-view-details p {
+    padding: 0;
+    padding-left: 10px;
+    margin: 0;
+    font-size: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: black;
+}
+.orders-view-details-buyer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 90%;
+    height: fit-content;
+    gap: 5px;
+    border: 1px black solid;
+    border-radius: 10px;
+}
+.orders-view-details-timeline {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 90%;
+    height: fit-content;
+    gap: 5px;
+    border: 1px black solid;
+    border-radius: 10px;
+}
+.orders-view-details-chain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 90%;
+    height: fit-content;
+    gap: 5px;
+    border: 1px black solid;
+    border-radius: 10px;
+}

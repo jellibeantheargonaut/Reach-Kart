@@ -1,0 +1,77 @@
+/* styles for wallets-container */
+.wallets-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: fit-content;
+    margin-top: 20px;
+    gap: 20px;
+}
+.wallets-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 90%;
+    gap: 20px;
+}
+.wallets-list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 60%;
+    height: fit-content;
+    background-color: rgba(255, 255, 255, 0.766);
+    backdrop-filter: blur(15px);
+    color: black;
+    border-radius: 15px;
+    gap: 10px;
+}
+.wallets-list-item p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5rem;
+    color: black;
+    padding-left: 20px;
+    height: fit-content;
+    margin: 0;
+    padding: 20px;
+}
+.wallets-list-item p:first-child {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.wallets-add-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 90%;
+    height: fit-content;
+}
+.wallet-add-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: 50px;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    background-color: #3c61b5;
+    border-radius: 10px;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.wallet-add-button:hover {
+    background-color: #2c4a8c;
+}
+.wallet-add-button:active {
+    background-color: #1c3063;
+    color: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;;
+}

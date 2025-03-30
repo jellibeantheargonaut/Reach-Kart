@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/regular.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/solid.css">
+
+        <link rel="stylesheet" type="text/css" href="/css/admin/admin-home.css">
+        <script src="/js/admin/admin.js" defer ></script>
+    </head>
+    <body>
+        <div class="admin-panel">
+            <div class="navbar">
+                <div class="navbar-button" onclick="showLogging(this)">
+                    logging
+                </div>
+                <div class="navbar-button" onclick="showUserOps(this)">
+                    userops
+                </div>
+                <div class="navbar-button" onclick="showSellerOps(this)">
+                    sellerops
+                </div>
+                <div class="navbar-button" onclick="showChainApi(this)">
+                    chainapi
+                </div>
+                <div class="navbar-button" onclick="showError(this)">
+                    error
+                </div>
+                <div class="navbar-button" onclick="showTerminal(this)">
+                    terminal
+                </div>
+            </div>
+            <div class="main-panel">
+                <div class="logging-panel">
+                    <!-- logs from rk-logging module -->
+                </div>
+                <div class="userops-panel">
+                    <!-- logs from rk-userops module -->
+                </div>
+                <div class="sellerops-panel">
+                    <!-- logs from rk-sellerops module -->
+                </div>
+                <div class="chainapi-panel">
+                    <!-- logs from rk-chainapi module -->
+                </div>
+                <div class="error-panel">
+                    <!-- error logs -->
+                </div>
+                <div class="terminal-panel">
+                    <!-- terminal -->
+                    <div class="terminal-output-container">
+                        
+                    </div>
+                    <div class="terminal-input-container">
+                        <input type="text" id="terminal-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/index.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/navigation-bar.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/cart-dropdown.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/orders-dropdown.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/account-menu-page.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/site-mainarea.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/landing-page.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/products-page.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/search-results-page.css"
+
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/brands.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/fontawesome.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/regular.css">
+        <link rel="stylesheet" type="text/css" href="/font-awesome-6.2-web/css/solid.css">
+
+        <script src="/js/index.js" defer></script>
+        <script src="/js/navigation-controller.js" defer></script>
+        <script src="/js/customer/transaction-handler.js" defer></script>
+        <script src="/js/customer/orders-handler.js" defer></script>
+        <script src="/js/customer/wallets-handler.js" defer></script>
+        <script src="/js/customer/cart-handler.js"></script>
+        <script src="/js/customer/product-search.js" defer></script>
+    </head>
+    <body>
+        <div class="navigation-bar">
+            <div class="navigation-bar-logo" onclick="window.location.href='/home'">
+                <p> Reachkart <i class="fa-solid fa-cart-shopping"></i></p>
+            </div>
+            <div class="navigation-bar-location">
+                <i class="fa-solid fa-location-dot"></i>
+                <p> Bangalore </p>
+            </div>
+            <div class="navigation-bar-search">
+                <input type="text" id="search-bar" placeholder="Search for products">
+                <div class="search-results-dropdown">
+                    <div class="search-results-dropdown-item">
+                        <p>Product 1</p>
+                    </div>
+                    <div class="search-results-dropdown-item">
+                        <p>Product 2</p>
+                    </div>
+                    <div class="search-results-dropdown-item">
+                        <p>Product 3</p>
+                    </div>
+                    <div class="search-results-dropdown-item">
+                        <p>Product 4</p>
+                    </div>
+                    <div class="search-results-dropdown-item">
+                        <p>Product 5</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="navigation-bar-menu-item">
+                <p> en <i class="fa-solid fa-language"></i></p>
+                <!--<select>
+                    <option value="en"> English </option>
+                    <option value="hi"> Hindi </option>
+                    <option value="kn"> Telugu </option>
+                </select>-->
+            </div>
+            <div class="navigation-bar-menu-item" onclick="showOrdersDropdown(this)">
+                <p> Orders <i class="fa-solid fa-bag-shopping"></i> </p>
+                
+            </div>
+            <div class="orders-dropdown">
+                <!-- List orders by user -->
+            </div>
+            <div class="navigation-bar-menu-item" onclick="showCartDropdown(this)">
+                <p> Cart <i class="fa-solid fa-cart-shopping"></i> </p>
+                  
+            </div>
+            <div class="cart-dropdown">
+                <!-- List of cart items by user -->
+                <div class="cart-items-list">
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img>
+                        </div>
+                        <div class="cart-item-body">
+                            <p> ViewSonic Monitor </p>
+                            <p> 69.69 <i class="fa-brands fa-ethereum"></i></i> </p>
+                            <p> Total : 69.69 <i class="fa-brands fa-ethereum"></i> </p>
+                            <input type="number" value="1" min="1">
+                            <div class="cart-item-controls">
+                                <div class="cart-item-control-button">
+                                    Remove
+                                </div>
+                                <div class="cart-item-control-button">
+                                    Buy
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-controls">
+                        <div class="cart-control-button">
+                            Checkout
+                        </div>
+                        <div class="cart-control-button" onclick="emptyCart()">
+                            Empty
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div class="navigation-bar-account" onclick="showAccountDropdown()">
+                <p> John Steiner </p>
+                <i class="fa-solid fa-circle-user"></i>
+                <div class="account-drop-down">
+                    <div class="account-drop-down-item" onclick="openAccountsPage()">
+                        <i class="fa-solid fa-user"></i>  Account
+                    </div>
+                    <div class="account-drop-down-item" onclick="openOrdersPage()">
+                        <i class="fa-solid fa-cube"></i>  Orders
+                    </div>
+                    <div class="account-drop-down-item" onclick="openWalletsPage()">
+                        <i class="fa-solid fa-wallet"></i> Wallets
+                    </div>
+                    <div class="account-drop-down-item" onclick="openTransactionsPage()">
+                        <i class="fa-solid fa-right-left"></i> Transactions
+                    </div>
+                    <div class="account-drop-down-item" onclick="openSettingsPage()">
+                        <i class="fa-solid fa-gear"></i> Settings
+                    </div>
+                    <div class="account-drop-down-item" onclick="logout()">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="background-overlay">
+            <!-- Background overlay to blur the background -->
+        </div>
+        <div class="account-menu-page">
+            <div class="accounts-page">
+                <!-- The accounts page which contains user details and stuff -->
+                <div class="account-details-container">
+                    <p><i class="fa-solid fa-circle-user"></i></p>
+                    <p> John Steiner </p>
+                    <p> john@gmail.com </p>
+                    <div class="account-details-body">
+                        <p> primary wallet : 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                        <p> phone : 9876543210 </p>
+                        <p> address : 123, 4th cross, 5th main, 6th sector, Bangalore </p>
+                    </div>
+                </div>
+            </div>
+            <div class="orders-page">
+                <!-- The orders page which contains user orders and stuff -->
+                <div class="orders-list-container">
+                    <div class="orders-list-item">
+                        <div class="orders-item-thumbnail">
+                            <img src="/img/ether-coin.png">
+                            <div>
+                                <p> 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                                <p> 54.23 <i class="fa-brands fa-ethereum"></i> </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wallets-page">
+                <!-- The wallets page which contains user wallets and stuff -->
+                <div class="wallets-list-container">
+                    <div class="wallets-list-item">
+                        <div class="wallets-item-thumbnail" onclick="expandWallet(this)">
+                            <img src="/img/ether-wallet.png">
+                            <div>
+                                <p> 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                                <p> 54.23 <i class="fa-brands fa-ethereum"></i></p>
+                            </div>
+                        </div>
+                        <div class="wallets-item-controls">
+                            <div class="wallets-item-control-button">
+                                Delete 
+                            </div>
+                            <div class="wallets-item-control-button">
+                                Set primary
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="new-wallet-button" onclick="createWallet()">
+                    New Wallet
+                </div>
+            </div>
+            <div class="transactions-page">
+                <!-- The transactions page which contains user transactions and stuff -->
+                <div class="transactions-list-container">
+                    <div class="transactions-list-item">
+                        <div class="transactions-item-thumbnail" onclick="expandTransaction(this)">
+                            <img src="/img/ether-coin.png">
+                            <div>
+                                <p> 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                                <p> 
+                                    54.23 <i class="fa-brands fa-ethereum"></i>
+                                    at 2021-10-10 12:34:56
+                                </p>
+                            </div>
+                        </div>
+                        <div class="transactions-item-details">
+                            <p> Sender : 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                            <p> Receiver : 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                            <p> Amount : 54.23 <i class="fa-brands fa-ethereum"></i> </p>
+                            <p> Date : 2021-10-10 12:34:56 </p>
+                            <p> Tx Hash : 0x7Cd54B5b4F98e32AD3Ca7cebF754482fec80072E </p>
+                        </div>
+                        <div class="transactions-item-footer">
+                            <div class="transactions-item-button" onclick="downloadInvoice()">
+                                <i class="fa-solid fa-download"></i> Invoice
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="new-transaction-container">
+                    <div class="new-transaction-header">
+                    </div>
+                    <div class="new-transaction-form">
+                        <div class="transaction-form-title">
+                        </div>
+                        <div class="transaction-form-fields">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-page">
+                <!-- The settings page which contains user settings and stuff -->
+                <div class="settings-list-container">
+                </div>
+            </div>
+        </div>
+        <div class="site-mainarea">
+            
+            <div class="landing-page">
+                <!-- The main landing page which contains banners and stuff -->
+                <div class="landing-page-banner">
+                    <p> Welcome to Reachkart  </p>
+                    <p> An online shopping website that runs ethereum network</p>
+                </div>
+                <div class="landing-page-content">
+                    <div class="landing-page-content-header">
+                        <p> Explore our shop </p>
+                    </div>
+                    <div class="landing-page-content-body">
+                        <p> Groceries </p>
+                        <div>
+                            <img src="/img/site-images/Bun.jpg">
+                            <img src="/img/site-images/Yougurt.jpeg">
+                            <img src="/img/site-images/Rin Soap.jpeg">
+                            <img src="/img/site-images/Coconut.jpeg">
+                            <img src="/img/site-images/Salt.jpg">
+
+                        </div>
+                    </div>
+                    <div class="landing-page-content-body">
+                        <p> Kitchen & Home </p>
+                        <div>
+                            <img style="width: 100%; height: 150px;padding: 0;margin:0" src="https://5.imimg.com/data5/SELLER/Default/2022/3/MM/JY/NK/146681207/kitchen-accessories-jpg-500x500.jpg">
+                        </div>
+                    </div>
+                    <div class="landing-page-content-body">
+                        <p> Electronics </p>
+                        <div>
+                            <img style="width: 100%; height: 150px;padding: 0;margin:0" src="https://channelx.world/wp-content/uploads/2024/03/Amazon-Consumer-Electronics-shortened-Returns-window-shutterstock_738107467.jpg">
+                        </div>
+                    </div>
+                    <div class="landing-page-content-body">
+                        <p> Fashion </p>
+                        <div>
+                            <img style="width: 100%; height: 150px;padding: 0;margin:0" src="https://m.media-amazon.com/images/I/71oAN+CKKxL._AC_UF1000,1000_QL80_.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="search-results-page">
+                <!-- Search results page-->
+                <div class="search-results-container">
+                    <div class="search-results-item">
+                        <div class="search-results-item-image">
+                            <img src="https://m.media-amazon.com/images/I/81vxWpPpgNL._AC_UY436_FMwebp_QL65_.jpg">
+                        </div>
+                        <div class="search-results-item-info">
+                            <p style="font-size: 1.8rem;font-weight: 600;"> Samsung S24 5g</p>
+                            <p style="font-size: 1.2rem;font-weight: 300;"> Some garbage about the phone </p>
+                            <p style="font-weight: 800; padding-top: 10px;"> Price : 0.9999 ETH </p>
+                            <p> Samsung Store </p>
+                            <p style="font-size: 1rem; color: rgb(9, 138, 9); padding-top: 10px; font-weight: 800;"> In Stock: 20 </p>
+                            <div class="search-results-item-buttons">
+                                <div class="search-results-item-button">
+                                    Buy Now
+                                </div>
+                                <div class="search-results-item-button">
+                                    Add to Cart
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-page">
+                <!-- The product details page with all the rest -->
+                <div class="product-details-container">
+                    <div class="product-details-image">
+                        <img src="https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-sm-s928bzkqins-thumb-539573274">
+                    </div>
+                    <div class="product-details-info">
+                        <p> Samsung Galaxy S24 </p>
+                        <p> Samsung Galaxy S24 smartphone | 6.7" display | 12GB RAM | 256GB storage | 108MP camera | 5000mAh battery </p>
+                        <p> Samsung Store</p>
+                        <p style="font-size: 2rem;"> 1.203 <i class="fa-brands fa-ethereum"></i> </p>
+                        <div class="product-checkout-controls">
+                            <div class="product-checkout-control-button">
+                                Add to Cart
+                            </div>
+                            <div class="product-checkout-control-button">
+                                Buy Now
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-checkout-page">
+                <!-- The product checkout page with all the rest -->
+                <div class="product-checkout-container">
+                    <div class="product-checkout-container-header">
+                        <p style="font-size: 1 rem;color:black"> Checkout </p>
+                    </div>
+                    <div class="product-checkout-container-content">
+                        <div class="product-checkout-item">
+                            <img src="https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-sm-s928bzkqins-thumb-539573274">
+                            <div class="product-checkout-item-info">
+                                <p style="font-size: 1.5rem;font-weight: 600;"> Samsung Galaxy S24 Ultra</p>
+                                <p style="font-size: 1.2rem;font-weight: 400;"> Some garbage info about the product</p>
+                                <p style="font-size: 1rem;font-weight: 700; padding-top: 20px;"> 1.233 <i class="fa-brands fa-ethereum"></i> </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-checkout-container-footer">
+                        <div class="product-checkout-dropdown">
+                            <p> Select Wallet : </p>
+                            <select>
+                                <option>0x00000000000000000000000000000000000</option>
+                            </select>
+                        </div>
+                        <div class="product-checkout-dropdown">
+                            <p> Select Address : </p>
+                            <select>
+                                <option>
+                                    6-150, Chintalapalem, India
+                                </option>
+                            </select>
+                        </div>
+                        <div class="product-checkout-buttons">
+                            <div class="checkout-button">
+                                Place Order
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="site-footer">
+            <div class="footer-head">
+                <div>
+                    <p> Contact Us </p>
+                    <p> Customer Service </p>
+                    <p> Contact Desk </p>
+                    <p> Help Center </p>
+                </div>
+                <div>
+                    <p> Follow Us </p>
+                    <p> 
+                        <img src="/img/facebook.png">
+                        Facebook 
+                    </p>
+                    <p> 
+                        <img src="/img/twitter.png">
+                        Twitter 
+                    </p>
+                    <p> 
+                        <img src="/img/instagram.png">
+                        Instagram 
+                    </p>
+                </div>
+                <div>
+                    <p> Reachkart for Sellers </p>
+                    <p> Sell on Reachkart </p>
+                    <p> Advertise on Reachkart </p>
+                    <p> Reachkart Wholesale </p>
+                </div>
+            </div>
+            <div class="footer-logo">
+                <p> Reachkart <i class="fa-solid fa-cart-shopping"></i> </p>
+            </div>
+        </div>
+        <div class="message-overlay">
+            <div class="message-container">
+                <div class="message-spinner-container">
+                    <span class="message-spinner"></span>
+                </div>
+                <div class="message-content">
+                    Hacking Nasa...
+                </div>
+            </div>
+            <div class="message-confirm">
+                <div class="message-text">
+                    Are you sure you want to hack Nasa?
+                </div>
+                <div class="message-buttons">
+                    <div class="message-button"> Yes </div>
+                    <div class="message-button"> No </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
