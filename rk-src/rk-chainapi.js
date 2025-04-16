@@ -660,6 +660,9 @@ async function deployOrderContract(buyerAddress, sellerAddress, productId, produ
             const Order = await ethers.getContractFactory('Order',buyer);
             const orderId = uuid();
             const orderContract = await Order.deploy(Date.now(),sellerAddress,buyerAddress,orderId,totalPrice,productQuantity, deliveryAddressId);
+
+            // send evm_mine rpc call
+            await provider.send("evm_mine");
             RKWriteLog(`[ rk-chainapi ] 👍🏻 Order contract deployed at ${orderContract.address}`,'rk-chainapi');
 
             // insert the order into the orders table

@@ -14,7 +14,11 @@ module.exports = {
           balance: ethers.parseEther("10000000000").toString()
         }
       ],
-      loggingEnabled: true
+      loggingEnabled: true,
+      mining: {
+        auto: true,
+        //interval: 2000
+      }
     }
   }
 };

@@ -58,6 +58,7 @@ async function getOrders() {
 
     orders.forEach(async (order) => {
         const productData = await fetch(`/product/${order.productId}`).then((res) => res.json());
+        const orderData = await fetch(`/user/viewOrder/${order.orderId}`).then((res) => res.json());
         const element = document.createElement('div');
         element.classList.add('orders-list-item');
         element.innerHTML = `
@@ -70,7 +71,10 @@ async function getOrders() {
             </div>
             <div class="orders-item-details">
                 <p style="font-weight : 600;"> ${productData.productName} </p>
-                <p> Quantity : ${productData.productQuantity} </p>
+                <p> Quantity : ${orderData.orderQuantity} </p>
+                <p> Price : ${orderData.orderPrice} </p>
+                <p> Buyer WID: ${orderData.orderBuyer} </p>
+                <p> Seller WID : ${orderData.orderSeller} </p>
                 <p> Order Placed : ${formatDate(order.orderPlaced)} </p>
                 ${
                     order.orderConfirmed

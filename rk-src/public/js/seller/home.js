@@ -102,7 +102,7 @@ async function showShop(element) {
     const shopDiv = document.querySelector('.shop-container');
     shopDiv.style.display = 'flex';
 
-    //viewAvailableProducts();
+    viewAvailableProducts();
 }
 
 async function openAddProductCard() {

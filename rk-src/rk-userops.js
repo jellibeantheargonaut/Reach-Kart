@@ -199,6 +199,7 @@ async function placeOrder(wid, productId, quantity, deliveryAddress){
             RKWriteLog(`[ rk-userops ] ❌ Error placing order for ${productId}`,'rk-error');
             reject(err);
         });
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         RKWriteLog(`[ rk-userops ] 📦 Order placed for ${productId} by user ${wid}`,'rk-userops');
         resolve();
     });
@@ -455,7 +456,7 @@ async function checkoutCart(email,wid,deliveryAddress){
         } catch(err) {
             return false;
         }
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
     }
     emptyCart(email);
     return true;

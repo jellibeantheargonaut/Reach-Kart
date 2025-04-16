@@ -1,6 +1,6 @@
 /* styles for the main web app elements */
 .landing-page {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;

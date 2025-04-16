@@ -149,6 +149,33 @@ async function showOrdersDropdown(element) {
             backgroundOverlay.style.display = 'none';
         }
     });
+
+    // List the orders of the users
+    // get orders from server
+    const orders = await fetch('/user/viewOrders', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((res) => res.json());
+
+    const ordersList = ordersDropdown.querySelector('.orders-dropdown-list');
+    ordersList.innerHTML = '';
+    orders.forEach(async (order) => {
+        const orderItem = document.createElement('div');
+        orderItem.classList.add('orders-dropdown-list-item');
+        const productData = await fetch(`/product/${order.productId}`).then((res) => res.json());
+        orderItem.innerHTML = `
+            <div class="orders-dropdown-item-image">
+                <img src="${productData.productImage}">
+            </div>
+            <div class="orders-dropdown-item-info">
+                <p style="font-size: 1rem; font-weight: 600;"> ${order.orderId} </p>
+            </div>
+        `;
+        ordersList.appendChild(orderItem);
+    });
+    ordersDropdown.appendChild(ordersList);
 }
 async function showCartDropdown(element) {
     const cartIcon = element;

@@ -14,3 +14,51 @@
     padding: 10px;
     gap: 10px;
 }
+
+.orders-dropdown-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    overflow-y: auto;
+}
+
+.orders-dropdown-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    height: fit-content;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin: 10px;
+    gap: 20px;
+}
+
+.orders-dropdown-item-image {
+    display: flex;
+    width: 10%;
+    height: 100px;
+    padding: 10px;
+}
+
+.orders-dropdown-item-image img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: scale-down;
+}
+
+.orders-dropdown-item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 80%;
+}
+
+.orders-dropdown-item-info p {
+    text-overflow: ellipsis;
+}

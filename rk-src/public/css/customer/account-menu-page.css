@@ -426,6 +426,13 @@
     margin: 0;
 }
 
+.orders-item-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 /* style for message overlay */
 .message-overlay {
     display: none;

@@ -1,0 +1,121 @@
+/* style for settings page */
+.settings-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 80%;
+    height: fit-content;
+    gap: 20px;
+}
+
+.wallet-settings-container , .address-settings-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+}
+
+.wallet-settings-dropdown , .address-settings-dropdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    font-size: 1.5rem;
+}
+
+.wallet-settings-dropdown select , .address-settings-dropdown select {
+    width: 300px;
+    height: 100%;
+    font-size: 1rem;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.498);
+    backdrop-filter: blur(15px);
+    color: black;
+    border: none;
+    outline: none;
+    padding: 10px;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+}
+
+.wallet-settings-button , .address-settings-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    font-size: 1rem;
+    background-color: #24355d;
+    color: white;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.wallet-settings-button:hover , .address-settings-button:hover {
+    cursor: pointer;
+}
+.wallet-settings-button:active , .address-settings-button:active {
+    cursor: pointer;
+    background-color: #7d7d7d;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.address-add-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    gap: 20px;
+}
+
+.new-address-container {
+    display: none;
+    justify-content: center;
+    width: 100%;
+    height: 200px;
+}
+ .new-address-container textarea {
+    width: 100%;
+    outline: none;
+    border-radius: 10px;
+    padding: 10px;
+ }
+
+ .address-add-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    gap: 10px;
+ }
+
+ .address-add-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 40px;
+    font-size: 1rem;
+    background-color: #3f3f3f;
+    color: white;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+ }
+
+ .address-add-button:hover {
+    cursor: pointer;
+ }
+
+ .address-add-button:active {
+    cursor: pointer;
+    background-color: #767676;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+ }

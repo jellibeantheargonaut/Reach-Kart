@@ -55,7 +55,7 @@ async function showSearchResults(searchString){
                 <p style="font-weight: 600; padding-top: 10px;"> ${product.productPrice} <i class="fa-brands fa-ethereum"></i></p>
                 <p style="font-size: 1rem; color: rgb(9, 138, 9); padding-top: 10px; font-weight: 800;"> In Stock: ${product.productQuantity} </p>
                 <div class="search-results-item-buttons">
-                    <div class="search-results-item-button">
+                    <div class="search-results-item-button" onclick="productCheckout('${product.productId}','product')">
                         Buy Now
                     </div>
                     <div class="search-results-item-button" onclick="addItemToCart('${product.productId}')" >
@@ -124,6 +124,7 @@ async function productCheckout(productId,mode){
         const details = await getProductDetails(productId);
         const checkoutItem = document.createElement('div');
         checkoutItem.classList.add('product-checkout-item');
+        checkoutItem.id = details.productId;
         checkoutItem.innerHTML = `
             <img src="${details.productImage}">
             <div class="product-checkout-item-info">
@@ -146,6 +147,7 @@ async function productCheckout(productId,mode){
             const details = await getProductDetails(product.productId);
             const checkoutItem = document.createElement('div');
             checkoutItem.classList.add('product-checkout-item');
+            checkoutItem.id = details.productId;
             checkoutItem.innerHTML = `
                 <img src="${details.productImage}">
                 <div class="product-checkout-item-info">
@@ -205,6 +207,53 @@ async function productCheckout(productId,mode){
         option.innerText = address.addressValue;
         select2.appendChild(option);
     });
+}
+
+async function placeOrder(productId, addressId, walletId, quantity) {
+    const data = {
+        addressId: addressId,
+        walletId: walletId,
+        productId: productId,
+        quantity: quantity,
+    };
+
+    try {
+        const response = await fetch('/user/placeOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            showOverlayMessage(`Error: ${error.message}`);
+            return;
+        }
+
+        const result = await response.json();
+        showOverlayMessage(result.message);
+
+        // Wait for the transaction to be mined
+        await new Promise((resolve) => setTimeout(resolve, 3000)); // Adjust delay if needed
+    } catch (err) {
+        console.error('Error placing order:', err);
+        showOverlayMessage('Failed to place order. Please try again.');
+    } finally {
+        setTimeout(() => {
+            closeOverlayMessage();
+        }, 2000);
+    }
+}
+
+async function showPurchaseConfirmation() {
+    const productId = document.querySelector('.product-checkout-item').id;
+    const options = document.querySelectorAll('.product-checkout-dropdown select');
+
+    const walletId = options[0].value;
+    const addressId = options[1].value;
+    showConfirmMessage("Place order", () => placeOrder(productId,addressId,walletId,1), () => {});
 }
 
 document.addEventListener('DOMContentLoaded', () => {

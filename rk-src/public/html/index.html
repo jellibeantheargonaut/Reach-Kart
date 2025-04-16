@@ -6,6 +6,7 @@
         <link rel="stylesheet" type="text/css" href="/css/customer/cart-dropdown.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/orders-dropdown.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/account-menu-page.css">
+        <link rel="stylesheet" type="text/css" href="/css/customer/settings-page.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/site-mainarea.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/landing-page.css">
         <link rel="stylesheet" type="text/css" href="/css/customer/products-page.css">
@@ -24,6 +25,7 @@
         <script src="/js/customer/wallets-handler.js" defer></script>
         <script src="/js/customer/cart-handler.js"></script>
         <script src="/js/customer/product-search.js" defer></script>
+        <script src="/js/customer/settings-handler.js" defer></script>
     </head>
     <body>
         <div class="navigation-bar">
@@ -69,10 +71,11 @@
             </div>
             <div class="orders-dropdown">
                 <!-- List orders by user -->
+                <div class="orders-dropdown-list">
+               </div>
             </div>
             <div class="navigation-bar-menu-item" onclick="showCartDropdown(this)">
-                <p> Cart <i class="fa-solid fa-cart-shopping"></i> </p>
-                  
+                <p> Cart <i class="fa-solid fa-cart-shopping"></i> </p>  
             </div>
             <div class="cart-dropdown">
                 <!-- List of cart items by user -->
@@ -228,7 +231,42 @@
             </div>
             <div class="settings-page">
                 <!-- The settings page which contains user settings and stuff -->
-                <div class="settings-list-container">
+                <div class="wallet-settings-container">
+                    <div class="wallet-settings-dropdown">
+                        <select>
+                            <option>0x980f78d6fv867576586fcvfhfghhh</option>
+                        </select>
+                    </div>
+                    <div class="wallet-settings-button">
+                        Set Default
+                    </div>
+                </div>
+                <div class="address-settings-container">
+                    <div class="address-settings-dropdown">
+                        <select>
+                            <option> 6-150 Chintalapalem, Hanuman Statue , 523274 </option>
+                        </select>
+                    </div>
+                    <div class="address-settings-button">
+                        Set Default
+                    </div>
+                </div>
+                <div class="address-add-container">
+                    <div class="new-address-container">
+                        <textarea>
+                        </textarea>
+                    </div>
+                    <div class="address-add-buttons">
+                        <div class="address-add-button" onclick="newAddAddress()">
+                            + New
+                        </div>
+                        <div class="address-add-button" style="display: none;" onclick="addAddress()">
+                            Save
+                        </div>
+                        <div class="address-add-button" style="display: none;" onclick="cancelAddAddress()">
+                            Cancel
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -278,26 +316,6 @@
             <div class="search-results-page">
                 <!-- Search results page-->
                 <div class="search-results-container">
-                    <div class="search-results-item">
-                        <div class="search-results-item-image">
-                            <img src="https://m.media-amazon.com/images/I/81vxWpPpgNL._AC_UY436_FMwebp_QL65_.jpg">
-                        </div>
-                        <div class="search-results-item-info">
-                            <p style="font-size: 1.8rem;font-weight: 600;"> Samsung S24 5g</p>
-                            <p style="font-size: 1.2rem;font-weight: 300;"> Some garbage about the phone </p>
-                            <p style="font-weight: 800; padding-top: 10px;"> Price : 0.9999 ETH </p>
-                            <p> Samsung Store </p>
-                            <p style="font-size: 1rem; color: rgb(9, 138, 9); padding-top: 10px; font-weight: 800;"> In Stock: 20 </p>
-                            <div class="search-results-item-buttons">
-                                <div class="search-results-item-button">
-                                    Buy Now
-                                </div>
-                                <div class="search-results-item-button">
-                                    Add to Cart
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="product-page">
@@ -354,7 +372,7 @@
                             </select>
                         </div>
                         <div class="product-checkout-buttons">
-                            <div class="checkout-button">
+                            <div class="checkout-button" onclick="showPurchaseConfirmation()">
                                 Place Order
                             </div>
                         </div>
